@@ -6,6 +6,8 @@
   fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
 
   networking = {
+    hostName = "herd";
+    domain = "heyi7086.com";
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
     defaultGateway = "172.31.1.1";
     defaultGateway6 = {

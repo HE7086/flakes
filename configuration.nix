@@ -25,8 +25,6 @@
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
-  networking.hostName = "herd";
-  networking.domain = "";
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
