@@ -14,7 +14,7 @@
         "curve25519-sha256@libssh.org"
       ];
       Macs = [ "hmac-sha2-512-etm@openssh.com" ];
-      PermitRootLogin = "no";
+      PermitRootLogin = "prohibit-password";
       PasswordAuthentication = false;
     };
     extraConfig = ''
