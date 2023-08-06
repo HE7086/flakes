@@ -11,14 +11,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, sops-nix, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, nur, sops-nix, home-manager, ... }@inputs:
+  let commonModules = [
+    sops-nix.nixosModules.sops
+    ./configuration.nix
+  ]; in {
     nixosConfigurations = {
       herd = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-	  sops-nix.nixosModules.sops
+        modules = commonModules ++ [
+          ./hosts/herd.nix
         ];
       };
     };

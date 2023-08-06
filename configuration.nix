@@ -1,10 +1,8 @@
 { inputs, lib, config, pkgs, sops-nix, ... }: {
   imports = [
-    ./modules/hardware-configuration.nix
-    ./modules/networking.nix
-    ./modules/service.nix
-    ./modules/user.nix
     ./modules/sops.nix
+    ./modules/ssh.nix
+    ./modules/user.nix
   ];
 
   nixpkgs = {
@@ -45,7 +43,6 @@
     (neovim.override { vimAlias = true; })
     htop
     bat
-    bat-extras
     aria2
     fd
     fzf
