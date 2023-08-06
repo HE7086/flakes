@@ -44,5 +44,15 @@
     git
     (neovim.override { vimAlias = true; })
     htop
+    bat
+    bat-extras
+    aria2
+    fd
+    fzf
+    ripgrep
+    mtr
+    inxi
+    unar
+    just
   ];
 }
