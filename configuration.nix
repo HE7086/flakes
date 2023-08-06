@@ -42,6 +42,8 @@
     git
     (neovim.override { vimAlias = true; })
     htop
+    exa
+    ranger
     bat
     aria2
     fd
