@@ -1,9 +1,9 @@
-{ modulesPath, lib, sops-nix, ... }: {
+{ disks, modulesPath, lib, sops-nix, ... }: {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
-  boot.loader.grub.device = "/dev/sda";
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
-  fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
+
+  disko.devices = import ../modules/bios-btrfs-gpt-disk.nix "/dev/sda";
 
   networking = {
     hostName = "herd";
@@ -36,6 +36,10 @@
     ATTR{address}=="96:00:02:6d:8f:82", NAME="eth0"
   '';
 
-  sops.secrets."herd/ssh_host_ed25519_key" = {};
-  sops.secrets."herd/ssh_host_ed25519_key.pub" = {};
+  sops.secrets."herd/ssh_host_ed25519_key" = {
+    path = "/etc/ssh/ssh_host_ed25519_key";
+  };
+  sops.secrets."herd/ssh_host_ed25519_key.pub" = {
+    path = "/etc/ssh/ssh_host_ed25519_key.pub";
+  };
 }
