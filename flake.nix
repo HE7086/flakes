@@ -25,22 +25,7 @@
   flake-utils.lib.eachDefaultSystem (system:
     let 
       pkgs = import nixpkgs { inherit system; };
-      commonModules = [
-        sops-nix.nixosModules.sops
-        disko.nixosModules.disko
-        ./configuration.nix
-      ];
     in {
-      nixosConfigurations = {
-        herd = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          system = "x86_64-linux";
-          modules = commonModules ++ [
-            ./hosts/herd.nix
-          ];
-        };
-      };
-
       devShells.default = pkgs.mkShellNoCC {
         buildInputs = with pkgs; [
           coreutils
@@ -54,5 +39,20 @@
         ];
       };
     }
-  );
+  ) // {
+    nixosConfigurations =
+      let commonModules = [
+        sops-nix.nixosModules.sops
+        disko.nixosModules.disko
+        ./configuration.nix
+      ]; in {
+        herd = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          system = "x86_64-linux";
+          modules = commonModules ++ [
+            ./hosts/herd.nix
+          ];
+        };
+      };
+  };
 }
