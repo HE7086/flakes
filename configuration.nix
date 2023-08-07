@@ -34,6 +34,7 @@
   environment.systemPackages = with pkgs; [
     openssl
     binutils
+    coreutils
     file
     zsh
     rsync
