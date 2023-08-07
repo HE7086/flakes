@@ -3,6 +3,7 @@
     ./modules/sops.nix
     ./modules/ssh.nix
     ./modules/user.nix
+    ./modules/packages.nix
   ];
 
   nixpkgs = {
@@ -27,30 +28,6 @@
   zramSwap.enable = true;
 
   programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
   environment.shells = [ pkgs.zsh ];
   environment.binsh = "${pkgs.dash}/bin/dash";
-
-  environment.systemPackages = with pkgs; [
-    openssl
-    binutils
-    coreutils
-    file
-    zsh
-    rsync
-    git
-    (neovim.override { vimAlias = true; })
-    htop
-    exa
-    ranger
-    bat
-    aria2
-    fd
-    fzf
-    ripgrep
-    mtr
-    inxi
-    unar
-    just
-  ];
 }
