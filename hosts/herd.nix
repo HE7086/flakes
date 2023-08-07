@@ -1,5 +1,8 @@
 { disks, modulesPath, lib, sops-nix, ... }: {
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+    ../modules/ssh-host-key.nix
+  ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
 
@@ -35,13 +38,4 @@
   services.udev.extraRules = ''
     ATTR{address}=="96:00:02:6d:8f:82", NAME="eth0"
   '';
-
-  sops.secrets."herd/ssh_host_ed25519_key" = {
-    path = "/etc/ssh/ssh_host_ed25519_key";
-    mode = "0600";
-  };
-  sops.secrets."herd/ssh_host_ed25519_key.pub" = {
-    path = "/etc/ssh/ssh_host_ed25519_key.pub";
-    mode = "0644";
-  };
 }
