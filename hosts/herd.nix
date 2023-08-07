@@ -1,12 +1,11 @@
 { disks, modulesPath, lib, sops-nix, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    (import ../modules/bios-btrfs-gpt-disk.nix "/dev/sda")
     ../modules/ssh-host-key.nix
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
-
-  disko.devices = import ../modules/bios-btrfs-gpt-disk.nix "/dev/sda";
 
   networking = {
     hostName = "herd";

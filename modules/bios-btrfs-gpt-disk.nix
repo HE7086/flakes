@@ -1,5 +1,5 @@
 diskDevice: {
-  disk.${diskDevice} = {
+  disko.devices.disk.${diskDevice} = {
     device = diskDevice;
     type = "disk";
     content = {
