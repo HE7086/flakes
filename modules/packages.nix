@@ -21,5 +21,6 @@
     unar
     just
     tmux
+    jq
   ];
 }

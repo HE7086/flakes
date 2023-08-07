@@ -36,6 +36,7 @@
           openssh
           age
           sops
+          jq
         ];
       };
     }
