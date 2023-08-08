@@ -2,8 +2,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
     nur.url = "github:nix-community/NUR";
-    sops-nix.url = "github:Mic92/sops-nix";
-    disko.url = "github:nix-community/disko";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
