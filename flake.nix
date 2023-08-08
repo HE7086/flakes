@@ -48,6 +48,7 @@
             age
             sops
             jq
+            mkpasswd
           ];
         };
         formatter = pkgs.nixpkgs-fmt;
