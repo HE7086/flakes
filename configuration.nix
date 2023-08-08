@@ -26,6 +26,7 @@
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
+  services.logind.extraConfig = "RuntimeDirectorySize=50%";
 
   programs.zsh.enable = true;
   environment.shells = [ pkgs.zsh ];
