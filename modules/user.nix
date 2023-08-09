@@ -16,5 +16,6 @@ in
     root.openssh.authorizedKeys.keys = keys;
   };
 
+  nix.settings.trusted-users = [ "he" ];
   security.sudo.wheelNeedsPassword = false;
 }
