@@ -20,12 +20,11 @@
     defaultGateway = "172.31.1.1";
     defaultGateway6 = {
       address = "fe80::1";
-      interface = "eth0";
+      interface = "ens3";
     };
     dhcpcd.enable = false;
-    usePredictableInterfaceNames = lib.mkForce false;
     interfaces = {
-      eth0 = {
+      ens3 = {
         ipv4 = {
           addresses = [{ address = "91.107.230.166"; prefixLength = 32; }];
           routes = [{ address = "172.31.1.1"; prefixLength = 32; }];
@@ -40,7 +39,4 @@
       };
     };
   };
-  services.udev.extraRules = ''
-    ATTR{address}=="96:00:02:6d:8f:82", NAME="eth0"
-  '';
 }
