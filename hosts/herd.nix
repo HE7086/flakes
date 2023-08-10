@@ -13,30 +13,22 @@
     }
   ];
 
+  systemd.network.enable = true;
+  systemd.network.networks."10-wan" = {
+    matchConfig.Name = "ens3";
+    networkConfig.DHCP = "no";
+    address = [
+      "91.107.230.166/32"
+      "2a01:4f8:c0c:1be5::1/64"
+    ];
+    routes = [
+      { routeConfig.Destination = "172.31.1.1"; }
+      { routeConfig = { Gateway = "172.31.1.1"; GatewayOnLink = true; }; }
+      { routeConfig.Gateway = "fe80::1"; }
+    ];
+  };
   networking = {
     hostName = "herd";
     domain = "heyi7086.com";
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
-    defaultGateway = "172.31.1.1";
-    defaultGateway6 = {
-      address = "fe80::1";
-      interface = "ens3";
-    };
-    dhcpcd.enable = false;
-    interfaces = {
-      ens3 = {
-        ipv4 = {
-          addresses = [{ address = "91.107.230.166"; prefixLength = 32; }];
-          routes = [{ address = "172.31.1.1"; prefixLength = 32; }];
-        };
-        ipv6 = {
-          addresses = [
-            { address = "2a01:4f8:c0c:1be5::1"; prefixLength = 64; }
-            { address = "fe80::9400:2ff:fe6d:8f82"; prefixLength = 64; }
-          ];
-          routes = [{ address = "fe80::1"; prefixLength = 128; }];
-        };
-      };
-    };
   };
 }
