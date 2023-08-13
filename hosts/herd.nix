@@ -3,6 +3,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/bios-btrfs-gpt-disk.nix "/dev/sda")
     ../modules/ssh-host-key.nix
+    ../modules/ddns.nix
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
