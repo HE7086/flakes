@@ -22,6 +22,10 @@
       "91.107.230.166/32"
       "2a01:4f8:c0c:1be5::1/64"
     ];
+    dns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
     routes = [
       { routeConfig.Destination = "172.31.1.1"; }
       { routeConfig = { Gateway = "172.31.1.1"; GatewayOnLink = true; }; }
