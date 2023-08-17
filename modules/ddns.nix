@@ -8,6 +8,7 @@
     proxied = false;
     ipv4 = true;
     ipv6 = true;
+    deleteMissing = false;
   };
 
   systemd.timers.cloudflare-dyndns = {
