@@ -7,7 +7,7 @@
     zsh
     rsync
     git
-    (neovim.override { vimAlias = true; })
+    (unstable.neovim.override { vimAlias = true; })
     htop
     unstable.eza
     exa

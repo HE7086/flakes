@@ -37,16 +37,11 @@ diskDevice: {
         relatime = "on";
         "com.sun:auto-snapshot" = "false";
       };
+      mountpoint = null;
       datasets = {
-        "root" = {
+        root = {
           type = "zfs_fs";
           mountpoint = "/";
-          options."com.sun:auto-snapshot" = "true";
-        };
-        "home" = {
-          type = "zfs_fs";
-          mountpoint = "/home";
-          options."com.sun:auto-snapshot" = "true";
         };
       };
     };
