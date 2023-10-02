@@ -4,6 +4,7 @@
       (import ../modules/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
       (import ../modules/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
       ../modules/ssh-host-key.nix
+      ../modules/samba.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -27,7 +28,7 @@
 
   networking = {
     hostName = "fridge";
-    domain = "heyi7086.com";
+    domain = "heyi7086.local";
     hostId = "83d9da0a";
     useDHCP = true;
   };
