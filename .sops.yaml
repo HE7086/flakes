@@ -1,9 +1,11 @@
 keys: 
-  - &he   age1cz7kkx8w8hxy7qgps20nw7v55963gqz5n53zxy990cv4sj8gjgnqlcz64s
-  - &herd age1n6n0rgcje2q4hl0lsugskx4uy7gcc3pvezkpstypj9kzgw0vu5uqn3hc49
+  - &he     age1cz7kkx8w8hxy7qgps20nw7v55963gqz5n53zxy990cv4sj8gjgnqlcz64s
+  - &herd   age1n6n0rgcje2q4hl0lsugskx4uy7gcc3pvezkpstypj9kzgw0vu5uqn3hc49
+  - &fridge age1q6888hvqtptznc7ae9m3wnr93ygjxkzc65h344yvwwprvrggjpxqswrmg7
 creation_rules:
   - path_regex: secrets\.(yaml|json)$
     key_groups:
     - age:
       - *he
       - *herd
+      - *fridge
