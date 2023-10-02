@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, sops-nix, ... }: {
+{ inputs, outputs, lib, config, pkgs, sops-nix, ... }: {
   imports = [
     ./modules/sops.nix
     ./modules/ssh.nix
@@ -7,7 +7,7 @@
   ];
 
   nixpkgs = {
-    overlays = [ ];
+    overlays = [ outputs.overlays.unstable ];
     config = {
       allowUnfree = true;
     };

@@ -2,12 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, disko, ... }:
 
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
-      (import ../modules/efi-zfs-gpt-disk-root.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56-part2")
+      (import ../modules/efi-zfs-gpt-disk-root.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
       ../modules/ssh-host-key.nix
     ];
 
@@ -16,8 +16,10 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.device = "nodev";
 
   networking.hostName = "fridge";
   networking.hostId = "83d9da0a";
@@ -53,31 +55,37 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  disko.devices.disk."/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93-part1" = {
-    type = "disk";
-    device = "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93-part1";
-    content = {
-      type = "gpt";
-      partitions = {
-        zfs = {
-          size = "100%";
-          conent = {
-            type = "zfs";
-            pool = "zshare";
-          };
-        };
-      };
-    };
-  };
-  disko.devices.zpool = {
-    zshare = {
-      type = "zpool";
-      mode = "mirror";
-      rootFsOptions = {
-        compression = "zstd";
-        "com.sun:auto-snapshot" = "false";
-      };
-      mountpoint = "/share";
-    };
-  };
+  # disko.devices = {
+  #   disk.disk1 = {
+  #     type = "disk";
+  #     device = "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93";
+  #     content = {
+  #       type = "gpt";
+  #       partitions = {
+  #         zfs = {
+  #           size = "100%";
+  #           content = {
+  #             type = "zfs";
+  #             pool = "zshare";
+  #           };
+  #         };
+  #       };
+  #     };
+  #   };
+  #   zpool.zshare = {
+  #     type = "zpool";
+  #     rootFsOptions = {
+  #       compression = "zstd";
+  #       xattr = "sa";
+  #       atime = "off";
+  #       acltype = "posixacl";
+  #       dnodesize = "auto";
+  #       normalization = "formD";
+  #       relatime = "on";
+  #       "com.sun:auto-snapshot" = "false";
+  #     };
+  #     mountpoint = "/share";
+  #     datasets = {};
+  #   };
+  # };
 }

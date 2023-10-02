@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
     nur.url = "github:nix-community/NUR";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -25,6 +26,7 @@
     { self
     , nixpkgs
     , nur
+    , nixpkgs-unstable
     , sops-nix
     , disko
     , flake-utils
@@ -53,7 +55,9 @@
         };
         formatter = pkgs.nixpkgs-fmt;
       }
-      ) // {
+      ) // rec {
+      inherit (self) outputs;
+      overlays = import ./nix/overlays.nix { inherit inputs; };
       nixosConfigurations =
         let
           commonModules = [
@@ -64,14 +68,14 @@
         in
         {
           herd = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
+            specialArgs = { inherit inputs outputs; };
             system = "x86_64-linux";
             modules = commonModules ++ [
               ./hosts/herd.nix
             ];
           };
           fridge = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
+            specialArgs = { inherit inputs outputs; };
             system = "x86_64-linux";
             modules = commonModules ++ [
               ./hosts/fridge.nix
