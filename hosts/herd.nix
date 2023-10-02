@@ -1,7 +1,7 @@
 { disks, modulesPath, lib, sops-nix, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    (import ../modules/bios-btrfs-gpt-disk.nix "/dev/sda")
+    (import ../modules/btrfs-bios-gpt-disk.nix "/dev/sda")
     ../modules/ssh-host-key.nix
     ../modules/ddns.nix
   ];
