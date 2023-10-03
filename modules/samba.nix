@@ -1,12 +1,12 @@
-{
+{ config, ... }: {
   services.samba = {
     enable = true;
     securityType = "user";
     openFirewall = true;
     extraConfig = ''
       workgroup = WORKGROUP
-      server string = fridge
-      netbios name = fridge
+      server string = ${config.networking.hostName}-samba
+      netbios name = ${config.networking.hostName}
       security = user 
       #use sendfile = yes
       #max protocol = smb2
@@ -31,6 +31,11 @@
   };
 
   services.samba-wsdd.enable = true;
+  ## TODO: update unstable
+  # services.samba-wsdd = {
+  #   enable = true;
+  #   openFirewall = true;
+  # };
   networking.firewall = {
     allowedTCPPorts = [
       5357 # wsdd
