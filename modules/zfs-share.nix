@@ -5,7 +5,7 @@ diskDevice: {
     content = {
       type = "gpt";
       partitions = {
-        zshare = {
+        share = {
           size = "100%";
           content = {
             type = "zfs";
