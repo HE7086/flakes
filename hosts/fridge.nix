@@ -33,5 +33,6 @@
   };
   networking.firewall = {
     enable = true;
+    logRefusedConnections = false;
   };
 }
