@@ -27,4 +27,11 @@
     hostId = "83d9da0a";
     useDHCP = true;
   };
+
+  networking.nftables = {
+    enable = true;
+  };
+  networking.firewall = {
+    enable = true;
+  };
 }
