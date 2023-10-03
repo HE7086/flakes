@@ -4,15 +4,10 @@
     (import ../modules/btrfs-bios-gpt-disk.nix "/dev/sda")
     ../modules/ssh-host-key.nix
     ../modules/ddns.nix
+    ../modules/swap.nix
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 4 * 1024;
-    }
-  ];
 
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {

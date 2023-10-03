@@ -6,6 +6,7 @@
       ../modules/ssh-host-key.nix
       ../modules/samba.nix
       ../modules/avahi.nix
+      ../modules/swap.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -17,13 +18,6 @@
 
   powerManagement.cpuFreqGovernor = "performance";
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
-
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 4 * 1024;
-    }
-  ];
 
   time.timeZone = "Europe/Berlin";
 
