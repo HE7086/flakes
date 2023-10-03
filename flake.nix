@@ -51,6 +51,7 @@
             sops
             jq
             mkpasswd
+            ssh-to-age
           ];
         };
         formatter = pkgs.nixpkgs-fmt;
