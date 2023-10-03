@@ -27,7 +27,13 @@ diskDevice: {
       relatime = "on";
       "com.sun:auto-snapshot" = "false";
     };
-    mountpoint = "/share";
+    options.mountpoint = "legacy";
     datasets = {};
+  };
+
+  boot.zfs.extraPools = [ "share" ];
+  fileSystems."/share" = {
+    device = "share";
+    fsType = "zfs";
   };
 }
