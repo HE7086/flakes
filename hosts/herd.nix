@@ -1,10 +1,11 @@
 { disks, modulesPath, lib, sops-nix, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    (import ../modules/btrfs-bios-gpt-disk.nix "/dev/sda")
+    (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
     ../modules/ssh-host-key.nix
     ../modules/ddns.nix
     ../modules/swap.nix
+    ../modules/rathole.nix
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];

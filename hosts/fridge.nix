@@ -1,8 +1,8 @@
 { config, lib, pkgs, modulesPath, disko, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    (import ../modules/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
-    (import ../modules/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
+    (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
+    (import ../modules/filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
     ../modules/ssh-host-key.nix
     ../modules/samba.nix
     ../modules/avahi.nix
