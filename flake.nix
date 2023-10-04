@@ -65,7 +65,7 @@
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             nur.nixosModules.nur
-            ./configuration.nix
+            ./common.nix
           ];
         in
         {
