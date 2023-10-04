@@ -61,20 +61,20 @@
       overlays = import ./nix/overlays.nix { inherit inputs; };
       nixosConfigurations =
         let
-          baseSystem = { system ? "x86_64-linux", modules ? [] }:
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = { inherit inputs outputs; };
-            modules = [
-              sops-nix.nixosModules.sops
-              disko.nixosModules.disko
-              nur.nixosModules.nur
-              ./common.nix
-            ] ++ modules;
-          };
+          baseSystem = { system ? "x86_64-linux", modules ? [ ] }:
+            nixpkgs.lib.nixosSystem {
+              inherit system;
+              specialArgs = { inherit inputs outputs; };
+              modules = [
+                sops-nix.nixosModules.sops
+                disko.nixosModules.disko
+                nur.nixosModules.nur
+                ./common.nix
+              ] ++ modules;
+            };
         in
         {
-          herd   = baseSystem { modules = [ ./hosts/herd.nix ]; };
+          herd = baseSystem { modules = [ ./hosts/herd.nix ]; };
           fridge = baseSystem { modules = [ ./hosts/fridge.nix ]; };
         };
     };

@@ -28,7 +28,7 @@ diskDevice: {
       "com.sun:auto-snapshot" = "false";
     };
     options.mountpoint = "legacy";
-    datasets = {};
+    datasets = { };
   };
 
   boot.zfs.extraPools = [ "share" ];

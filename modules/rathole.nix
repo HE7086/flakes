@@ -39,7 +39,7 @@ in
 
     networking.firewall = mkIf (cfg.role == "server") {
       allowedTCPPorts = [ 7086 ];
-      allowedTCPPortRanges = [ { from = 16380; to = 16390; } ];
+      allowedTCPPortRanges = [{ from = 16380; to = 16390; }];
     };
   };
 
