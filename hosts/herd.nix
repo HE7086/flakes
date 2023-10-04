@@ -32,4 +32,9 @@
     hostName = "herd";
     domain = "heyi7086.com";
   };
+
+  services.rathole = {
+    enable = true;
+    role = "server";
+  };
 }
