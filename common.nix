@@ -22,6 +22,11 @@
     };
   };
 
+  boot.kernelModules = [ "tcp_bbr" ];
+  boot.kernel.sysctl = {
+    "net.ipv4.tcp_congestion_control" = "bbr";
+  };
+
   system.stateVersion = "23.05";
 
   boot.tmp.cleanOnBoot = true;
