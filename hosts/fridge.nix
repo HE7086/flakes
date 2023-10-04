@@ -1,13 +1,13 @@
 { config, lib, pkgs, modulesPath, disko, ... }: {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-      (import ../modules/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
-      (import ../modules/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
-      ../modules/ssh-host-key.nix
-      ../modules/samba.nix
-      ../modules/avahi.nix
-      ../modules/swap.nix
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    (import ../modules/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
+    (import ../modules/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
+    ../modules/ssh-host-key.nix
+    ../modules/samba.nix
+    ../modules/avahi.nix
+    ../modules/swap.nix
+  ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
   boot.loader.systemd-boot.enable = true;
