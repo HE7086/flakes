@@ -1,0 +1,14 @@
+[Unit]
+Description=flask server for detecting webhook from IFTTT
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/gunicorn --chdir /usr/share/wol-service -w 1 -b 127.0.0.1:6666 main:app
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
