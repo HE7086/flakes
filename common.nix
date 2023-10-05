@@ -25,6 +25,7 @@
   boot.kernelModules = [ "tcp_bbr" ];
   boot.kernel.sysctl = {
     "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.ipv4.ip_forward" = 1;
   };
 
   system.stateVersion = "23.05";
