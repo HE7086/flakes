@@ -7,7 +7,7 @@
     ../modules/samba.nix
     ../modules/avahi.nix
     ../modules/swap.nix
-    ../modules/rathole.nix
+    # ../modules/rathole.nix
     ../modules/hosts.nix
   ];
 
@@ -37,9 +37,9 @@
     enable = true;
     logRefusedConnections = false;
   };
-  services.rathole = {
-    enable = true;
-    role = "client";
-  };
+  # services.rathole = {
+  #   enable = true;
+  #   role = "client";
+  # };
   services.fwupd.enable = true;
 }
