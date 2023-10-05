@@ -1,5 +1,14 @@
 {
-  services.avahi.enable = true;
-  services.avahi.nssmdns = true;
-  services.avahi.openFirewall = true;
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    openFirewall = true;
+    publish = {
+      enable = true;
+      userServices = true;
+      addresses = true;
+      hinfo = true;
+      domain = true;
+    };
+  };
 }
