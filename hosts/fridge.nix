@@ -41,4 +41,5 @@
     enable = true;
     role = "client";
   };
+  services.fwupd.enable = true;
 }
