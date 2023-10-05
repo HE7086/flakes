@@ -9,6 +9,7 @@
     ../modules/swap.nix
     # ../modules/rathole.nix
     ../modules/hosts.nix
+    ../modules/ddns.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
