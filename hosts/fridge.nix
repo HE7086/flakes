@@ -7,6 +7,7 @@
     ../modules/samba.nix
     ../modules/avahi.nix
     ../modules/swap.nix
+    ../modules/rathole.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -34,5 +35,9 @@
   networking.firewall = {
     enable = true;
     logRefusedConnections = false;
+  };
+  services.rathole = {
+    enable = true;
+    role = "client";
   };
 }

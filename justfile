@@ -1,3 +1,5 @@
+alias d := deploy
+
 FLAKE_PATH := `nix flake metadata --json | jq '.path'`
 
 deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:

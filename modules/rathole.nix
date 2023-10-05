@@ -23,7 +23,7 @@ in
   config = mkIf cfg.enable {
     systemd.services.rathole = {
       wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" "sops-nix.service" ];
+      after = [ "network-online.target" "sops-nix.service" ];
       description = "rathole Daemon";
 
       serviceConfig = {
