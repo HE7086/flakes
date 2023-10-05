@@ -8,6 +8,7 @@
     ../modules/avahi.nix
     ../modules/swap.nix
     ../modules/rathole.nix
+    ../modules/hosts.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -24,7 +25,7 @@
 
   networking = {
     hostName = "fridge";
-    domain = "heyi7086.local";
+    domain = "heyi7086.com";
     hostId = "83d9da0a";
     useDHCP = true;
   };
