@@ -33,41 +33,27 @@
     defaultGateway = "192.168.1.1";
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
     interfaces = {
-      enp1s0 = {
-        useDHCP = false;
-      };
-      enp2s0 = {
-        useDHCP = false;
-      };
-      enp3s0 = {
-        useDHCP = false;
-      };
-      enp4s0 = {
-        useDHCP = false;
-      };
+      enp1s0.useDHCP = false;
+      enp2s0.useDHCP = false;
+      enp3s0.useDHCP = false;
+      enp4s0.useDHCP = false;
       br0 = {
         useDHCP = true;
-        ipv4 = {
-          addresses = [
-            {
-              address = "192.168.1.2";
-              prefixLength = 24;
-            }
-          ];
-        };
+        ipv4.addresses = [{
+          address = "192.168.1.2";
+          prefixLength = 24;
+        }];
       };
     };
 
-    bridges = {
-      br0 = {
-        interfaces = [
-          "enp1s0"
-          "enp2s0"
-          "enp3s0"
-          "enp4s0"
-        ];
-        rstp = true;
-      };
+    bridges.br0 = {
+      interfaces = [
+        "enp1s0"
+        "enp2s0"
+        "enp3s0"
+        "enp4s0"
+      ];
+      rstp = true;
     };
   };
 
