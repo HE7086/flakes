@@ -12,6 +12,8 @@
   };
 
   systemd.timers.cloudflare-dyndns = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
     timerConfig = {
       OnBootSec = "10s";
       OnCalendar = lib.mkForce "*-*-* 00:00:00";
