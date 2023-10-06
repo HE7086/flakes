@@ -27,11 +27,12 @@
   networking = {
     hostName = "fridge";
     domain = "heyi7086.com";
+    search = [ "heyi7086.lan" ];
     hostId = "83d9da0a";
     useDHCP = true;
 
     defaultGateway = "192.168.1.1";
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    nameservers = [ "1.1.1.1" "8.8.8.8" "2606:4700:4700::1111" "2001:4860:4860::8888" ];
     interfaces = {
       enp1s0.useDHCP = false;
       enp2s0.useDHCP = false;
