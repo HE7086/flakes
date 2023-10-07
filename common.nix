@@ -37,4 +37,6 @@
   programs.zsh.enable = true;
   environment.shells = [ pkgs.zsh ];
   environment.binsh = "${pkgs.dash}/bin/dash";
+
+  services.dbus.implementation = "broker";
 }
