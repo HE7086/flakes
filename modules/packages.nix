@@ -20,8 +20,15 @@
     mtr
     inxi
     unar
+    unzip
     just
     tmux
     jq
+
+    lm_sensors
+    ethtool
+    smartmontools
+    pciutils
+    usbutils
   ];
 }
