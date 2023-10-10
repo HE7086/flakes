@@ -16,8 +16,8 @@
     wants = [ "network-online.target" ];
     timerConfig = {
       OnBootSec = "10s";
-      OnCalendar = lib.mkForce "*-*-* 00:00:00";
-      RandomizedDelaySec = "30m";
+      OnCalendar = lib.mkForce "*-*-* *:00/2:00";
+      RandomizedDelaySec = "10m";
     };
   };
 }
