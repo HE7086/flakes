@@ -37,8 +37,7 @@
       (system:
       let
         pkgs = import nixpkgs { inherit system; };
-      in
-      {
+      in {
         devShells.default = pkgs.mkShellNoCC {
           buildInputs = with pkgs; [
             coreutils
@@ -55,8 +54,7 @@
           ];
         };
         formatter = pkgs.nixpkgs-fmt;
-      }
-      ) // rec {
+      }) // rec {
       inherit (self) outputs;
       overlays = import ./nix/overlays.nix { inherit inputs; };
       nixosConfigurations =
