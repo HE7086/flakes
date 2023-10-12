@@ -4,6 +4,7 @@ FLAKE_PATH := `nix flake metadata --json | jq '.path'`
 
 deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
     #!/bin/bash
+    [[ -z "{{FLAKE_PATH}}" ]] && echo FLAKE_PATH is empty, check your nix daemon && exit 1
     for host in {{HOSTS}}; do
         printf "\033[1;31m[$host] Deploying...\033[0m\n"
         rsync -acvF -hh --info=stats1 --info=progress2 --modify-window=1 --delete -e ssh \
