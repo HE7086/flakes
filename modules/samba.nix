@@ -8,8 +8,6 @@
       server string = ${config.networking.hostName}-samba
       netbios name = ${config.networking.hostName}
       security = user 
-      #use sendfile = yes
-      #max protocol = smb2
       hosts allow = 192.168.1. 127.0.0.1 localhost
       hosts deny = 0.0.0.0/0
       guest account = nobody
