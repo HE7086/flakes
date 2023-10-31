@@ -10,6 +10,7 @@
     # ../modules/rathole.nix
     ../modules/hosts.nix
     ../modules/ddns.nix
+    ../modules/firewall-local.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -58,17 +59,6 @@
     };
   };
 
-  networking.nftables = {
-    enable = true;
-  };
-  networking.firewall.extraInputRules = ''
-    ip saddr 192.168.1.0/24 accept comment "allow local traffic"
-    ip6 saddr fe80::/64 accept comment "allow local traffic"
-  '';
-  networking.firewall = {
-    enable = true;
-    logRefusedConnections = false;
-  };
   # services.rathole = {
   #   enable = true;
   #   role = "client";
