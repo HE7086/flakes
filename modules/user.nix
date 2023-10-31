@@ -18,4 +18,5 @@ in
 
   nix.settings.trusted-users = [ "he" ];
   security.sudo.wheelNeedsPassword = false;
+  services.getty.autologinUser = "he";
 }
