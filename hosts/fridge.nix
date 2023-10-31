@@ -62,8 +62,8 @@
     enable = true;
   };
   networking.firewall.extraInputRules = ''
-    ip saddr 192.168.1.0/24 accept
-    ip6 saddr fe80::/64 accept
+    ip saddr 192.168.1.0/24 accept comment "allow local traffic"
+    ip6 saddr fe80::/64 accept comment "allow local traffic"
   '';
   networking.firewall = {
     enable = true;

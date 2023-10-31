@@ -14,7 +14,7 @@
       map to guest = bad user
     '';
     shares = {
-      public = {
+      fridge = {
         path = "/share";
         browseable = "yes";
         writeable = "yes";
