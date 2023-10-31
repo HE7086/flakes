@@ -2,7 +2,7 @@
   services.samba = {
     enable = true;
     securityType = "user";
-    openFirewall = true;
+    # openFirewall = true;
     extraConfig = ''
       workgroup = WORKGROUP
       server string = ${config.networking.hostName}-samba
@@ -34,12 +34,12 @@
   #   enable = true;
   #   openFirewall = true;
   # };
-  networking.firewall = {
-    allowedTCPPorts = [
-      5357 # wsdd
-    ];
-    allowedUDPPorts = [
-      3702 # wsdd
-    ];
-  };
+  # networking.firewall = {
+  #   allowedTCPPorts = [
+  #     5357 # wsdd
+  #   ];
+  #   allowedUDPPorts = [
+  #     3702 # wsdd
+  #   ];
+  # };
 }

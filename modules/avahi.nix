@@ -2,7 +2,7 @@
   services.avahi = {
     enable = true;
     nssmdns = true;
-    openFirewall = true;
+    # openFirewall = true;
     publish = {
       enable = true;
       userServices = true;
