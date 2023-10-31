@@ -1,4 +1,4 @@
-{ disks, modulesPath, lib, sops-nix, ... }: {
+{ modulesPath, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
@@ -30,6 +30,10 @@
   networking = {
     hostName = "herd";
     domain = "heyi7086.com";
+  };
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
   };
 
   services.rathole = {
