@@ -26,6 +26,7 @@
   boot.kernel.sysctl = {
     "net.ipv4.tcp_congestion_control" = "bbr";
     "net.ipv4.ip_forward" = 1;
+    "net.core.default_qdisc" = "fq";
   };
 
   system.stateVersion = "23.05";
