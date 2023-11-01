@@ -1,4 +1,4 @@
-{ modulesPath, ... }: {
+{ pkgs, modulesPath, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
@@ -7,6 +7,7 @@
     ../modules/swap.nix
     ../modules/rathole.nix
     ../modules/docker.nix
+    ../modules/stalwart-mail.nix
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
@@ -40,5 +41,10 @@
   services.rathole = {
     enable = true;
     role = "server";
+  };
+
+  services.stalwart-mail = {
+    enable = false;
+    package = pkgs.unstable.stalwart-mail;
   };
 }
