@@ -30,5 +30,7 @@
     smartmontools
     pciutils
     usbutils
+
+    nix-output-monitor
   ];
 }
