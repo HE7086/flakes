@@ -1,9 +1,9 @@
-{ inputs, outputs, lib, config, pkgs, sops-nix, ... }: {
+{ inputs, outputs, lib, config, pkgs, ... }: {
   imports = [
-    ./modules/sops.nix
-    ./modules/ssh.nix
-    ./modules/user.nix
-    ./modules/packages.nix
+    ./sops.nix
+    ./ssh.nix
+    ./user.nix
+    ./packages.nix
   ];
 
   nixpkgs = {
