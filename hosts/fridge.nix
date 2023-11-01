@@ -65,4 +65,5 @@
   #   role = "client";
   # };
   services.fwupd.enable = true;
+  networking.firewall.enable = false;
 }
