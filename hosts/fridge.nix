@@ -11,6 +11,7 @@
     ../modules/hosts.nix
     ../modules/ddns.nix
     # ../modules/firewall-local.nix
+    ../modules/docker.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
