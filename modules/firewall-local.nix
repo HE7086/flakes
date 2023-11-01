@@ -8,6 +8,7 @@
         ip saddr 192.168.1.0/24 accept comment "allow local traffic"
         ip6 saddr fe80::/64 accept comment "allow local traffic"
       '';
+      # TODO: dynamic ipv6 prefix
     };
   };  
 }

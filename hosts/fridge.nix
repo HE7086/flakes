@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, disko, ... }: {
+{ config, modulesPath, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
@@ -10,7 +10,7 @@
     # ../modules/rathole.nix
     ../modules/hosts.nix
     ../modules/ddns.nix
-    ../modules/firewall-local.nix
+    # ../modules/firewall-local.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
