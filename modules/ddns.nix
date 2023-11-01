@@ -1,5 +1,7 @@
 { config, lib, ... }: {
-  sops.secrets."cloudflare/token/ddns" = { };
+  sops.secrets."cloudflare/token/ddns" = {
+    sopsFile = ../secrets/secrets.yaml;
+  };
 
   services.cloudflare-dyndns = {
     enable = true;

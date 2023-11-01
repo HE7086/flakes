@@ -1,4 +1,4 @@
-{ sops-nix, ... }: {
-  sops.defaultSopsFile = ../secrets.yaml;
+{ config, ... }: {
+  sops.defaultSopsFile = ../secrets/${config.networking.hostName}.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 }
