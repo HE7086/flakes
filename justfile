@@ -22,3 +22,6 @@ update-sops:
 
 get-age:
     nix shell 'nixpkgs#ssh-to-age' -c ssh-to-age </etc/ssh/ssh_host_ed25519_key.pub
+
+repl:
+    nix --extra-experimental-features 'repl-flake' repl .#nixosConfigurations
