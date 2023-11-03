@@ -4,7 +4,7 @@
     securityType = "user";
     # openFirewall = true;
     extraConfig = ''
-      workgroup = WORKGROUP
+      workgroup = heyi7086.lan
       server string = ${config.networking.hostName}-samba
       netbios name = ${config.networking.hostName}
       security = user 
@@ -14,7 +14,7 @@
       map to guest = bad user
     '';
     shares = {
-      fridge = {
+      share = {
         path = "/share";
         browseable = "yes";
         writeable = "yes";
