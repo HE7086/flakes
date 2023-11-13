@@ -25,3 +25,6 @@ get-age:
 
 repl:
     nix --extra-experimental-features 'repl-flake' repl .#nixosConfigurations
+
+update:
+    nix flake update && git add flake.lock && git commit -m "flake update"
