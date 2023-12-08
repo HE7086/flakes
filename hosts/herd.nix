@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, ... }: {
+{ modulesPath, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
@@ -7,7 +7,6 @@
     ../modules/swap.nix
     ../modules/rathole.nix
     ../modules/docker.nix
-    # ../modules/stalwart-mail.nix
     ../modules/nginx.nix
     ../modules/arch-repo.nix
   ];
@@ -44,10 +43,5 @@
   services.rathole = {
     enable = true;
     role = "server";
-  };
-
-  services.stalwart-mail = {
-    enable = false;
-    package = pkgs.unstable.stalwart-mail;
   };
 }

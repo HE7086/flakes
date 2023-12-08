@@ -1,4 +1,4 @@
-{ pkgs, outputs, ... }: {
+{ pkgs, ... }: {
   environment.systemPackages = with pkgs; [
     openssl
     binutils
@@ -9,8 +9,7 @@
     git
     (unstable.neovim.override { vimAlias = true; })
     htop
-    unstable.eza
-    exa
+    eza
     ranger
     bat
     aria2
