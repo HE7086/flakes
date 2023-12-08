@@ -7,7 +7,8 @@
     ../modules/swap.nix
     ../modules/rathole.nix
     ../modules/docker.nix
-    ../modules/stalwart-mail.nix
+    # ../modules/stalwart-mail.nix
+    ../modules/nginx.nix
     ../modules/arch-repo.nix
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
