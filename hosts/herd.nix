@@ -34,6 +34,8 @@
   networking = {
     hostName = "herd";
     domain = "heyi7086.com";
+    useDHCP = false;
+    useNetworkd = true;
   };
   networking.nftables.enable = true;
   networking.firewall = {
