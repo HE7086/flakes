@@ -12,6 +12,8 @@
       hosts deny = 0.0.0.0/0
       guest account = nobody
       map to guest = bad user
+      veto files = /._*/.DS_Store/
+      delete veto files = yes
     '';
     shares = {
       share = {
