@@ -75,6 +75,7 @@
         {
           herd = baseSystem { modules = [ ./hosts/herd.nix ]; };
           fridge = baseSystem { modules = [ ./hosts/fridge.nix ]; };
+          toaster = baseSystem { system = "aarch64-linux"; modules = [ ./hosts/toaster.nix ]; };
         };
     };
 }
