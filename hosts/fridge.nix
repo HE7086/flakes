@@ -1,4 +1,4 @@
-{ config, modulesPath, ... }: {
+{ pkgs, config, modulesPath, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
@@ -68,4 +68,5 @@
   # };
   services.fwupd.enable = true;
   networking.firewall.enable = false;
+  environment.systemPackages = [ pkgs.megacmd ];
 }
