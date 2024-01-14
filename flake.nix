@@ -21,6 +21,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    dotfiles = {
+      url = "github:HE7086/dotfiles";
+      flake = false;
+    };
   };
 
   outputs =
@@ -32,6 +37,7 @@
     , disko
     , flake-utils
     , home-manager
+    , dotfiles
     , ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem
