@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, config, ... }:
 let
   keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgQ10239M1Ehw6nmY7mFxGyqfpCkfSHAjZzSZZZ7NLA" ];
 in
@@ -19,4 +19,11 @@ in
   nix.settings.trusted-users = [ "he" ];
   security.sudo.wheelNeedsPassword = false;
   services.getty.autologinUser = "he";
+
+  home-manager.users.he = { ... }: {
+    home.stateVersion = config.system.stateVersion;
+    home.file.dotfiles = {
+      source = inputs.dotfiles.outPath;
+    };
+  };
 }

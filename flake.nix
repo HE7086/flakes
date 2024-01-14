@@ -23,8 +23,10 @@
     };
 
     dotfiles = {
-      url = "github:HE7086/dotfiles";
+      url = "https://github.com/HE7086/dotfiles";
       flake = false;
+      type = "git";
+      submodules = true;
     };
   };
 
@@ -74,6 +76,7 @@
                 sops-nix.nixosModules.sops
                 disko.nixosModules.disko
                 nur.nixosModules.nur
+                home-manager.nixosModules.home-manager
                 ./modules/common.nix
               ] ++ modules;
             };

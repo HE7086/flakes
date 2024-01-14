@@ -24,16 +24,18 @@
       "flake": false,
       "locked": {
         "lastModified": 1705210317,
-        "narHash": "sha256-2VOqGoUsNTpyqEL7uZhAYgRihxyNTKGGVd7c4OfROAM=",
-        "owner": "HE7086",
-        "repo": "dotfiles",
+        "narHash": "sha256-XdWCjEzuapnWmR/ZnU+UKWA2rxa27/LxZf2kilUr5xA=",
+        "ref": "refs/heads/master",
         "rev": "1b52f2b696fca2b11b5a439562c76a160aed7151",
-        "type": "github"
+        "revCount": 546,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/HE7086/dotfiles"
       },
       "original": {
-        "owner": "HE7086",
-        "repo": "dotfiles",
-        "type": "github"
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/HE7086/dotfiles"
       }
     },
     "flake-utils": {
