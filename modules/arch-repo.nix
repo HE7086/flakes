@@ -11,4 +11,7 @@
     };
   };
   services.nginx.additionalModules = [ pkgs.nginxModules.fancyindex ];
+  systemd.tmpfiles.rules = [
+    "d /var/www/repo 755 root root"
+  ];
 }
