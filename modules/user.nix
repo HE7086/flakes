@@ -21,9 +21,18 @@ in
   services.getty.autologinUser = "he";
 
   home-manager.users.he = { ... }: {
-    home.stateVersion = config.system.stateVersion;
-    home.file.dotfiles = {
-      source = inputs.dotfiles.outPath;
+    home = {
+      stateVersion = config.system.stateVersion;
+      packages = [
+        pkgs.gnumake
+        pkgs.stow
+      ];
+      file.dotfiles = {
+        source = inputs.dotfiles.outPath;
+        onChange = ''
+          make -C /home/he/dotfiles all Submodules
+        '';
+      };
     };
   };
 }
