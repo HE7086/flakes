@@ -46,7 +46,8 @@
       (system:
       let
         pkgs = import nixpkgs { inherit system; };
-      in {
+      in
+      {
         devShells.default = pkgs.mkShellNoCC {
           buildInputs = with pkgs; [
             coreutils

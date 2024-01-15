@@ -26,7 +26,7 @@ diskDevice: {
       normalization = "formD";
       relatime = "off";
       "com.sun:auto-snapshot" = "false";
-      canmount="off";
+      canmount = "off";
     };
     mountpoint = null;
     datasets = {

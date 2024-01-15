@@ -5,8 +5,8 @@
       enableACME = true;
       root = "/var/www/repo";
       locations."/".extraConfig = ''
-          fancyindex on;              # Enable fancy indexes.
-          fancyindex_exact_size off;  # Output human-readable file sizes.
+        fancyindex on;              # Enable fancy indexes.
+        fancyindex_exact_size off;  # Output human-readable file sizes.
       '';
     };
   };

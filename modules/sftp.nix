@@ -16,6 +16,6 @@
     # forceLocalDataSSL = true;
     userlistDeny = false;
     localUsers = true;
-    userlist = ["he"];
+    userlist = [ "he" ];
   };
 }

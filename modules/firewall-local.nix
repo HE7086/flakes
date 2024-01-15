@@ -10,5 +10,5 @@
       '';
       # TODO: dynamic ipv6 prefix
     };
-  };  
+  };
 }

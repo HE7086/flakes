@@ -1,4 +1,12 @@
-{ lib, fetchFromGitHub, python3Packages, file, less, highlight, w3m, ranger, testers
+{ lib
+, fetchFromGitHub
+, python3Packages
+, file
+, less
+, highlight
+, w3m
+, ranger
+, testers
 , imagePreviewSupport ? true
 , neoVimSupport ? true
 , improvedEncodingDetection ? true
@@ -23,9 +31,9 @@ python3Packages.buildPythonApplication rec {
     less
     file
   ] ++ lib.optionals imagePreviewSupport [ python3Packages.pillow ]
-    ++ lib.optionals neoVimSupport [ python3Packages.pynvim ]
-    ++ lib.optionals improvedEncodingDetection [ python3Packages.chardet ]
-    ++ lib.optionals rightToLeftTextSupport [ python3Packages.python-bidi ];
+  ++ lib.optionals neoVimSupport [ python3Packages.pynvim ]
+  ++ lib.optionals improvedEncodingDetection [ python3Packages.chardet ]
+  ++ lib.optionals rightToLeftTextSupport [ python3Packages.python-bidi ];
 
   preConfigure = ''
     ${lib.optionalString (highlight != null) ''
@@ -53,7 +61,7 @@ python3Packages.buildPythonApplication rec {
     package = ranger;
   };
 
-  meta =  with lib; {
+  meta = with lib; {
     description = "File manager with minimalistic curses interface";
     homepage = "https://ranger.github.io/";
     license = licenses.gpl3Only;
