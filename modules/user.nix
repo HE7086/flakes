@@ -23,10 +23,6 @@ in
   home-manager.users.he = { ... }: {
     home = {
       stateVersion = config.system.stateVersion;
-      packages = [
-        pkgs.gnumake
-        pkgs.stow
-      ];
       file.dotfiles = {
         source = inputs.dotfiles.outPath;
         onChange = ''

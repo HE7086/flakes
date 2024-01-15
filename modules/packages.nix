@@ -31,5 +31,7 @@
     usbutils
 
     nix-output-monitor
+    gnumake
+    stow
   ];
 }
