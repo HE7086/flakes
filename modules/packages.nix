@@ -23,6 +23,7 @@
     just
     tmux
     jq
+    unstable.yazi
 
     lm_sensors
     ethtool
