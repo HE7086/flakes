@@ -11,7 +11,7 @@ deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
             $FLAKE_PATH/ root@$host:/etc/nixos
         ssh root@$host nixos-rebuild switch --fast --flake /etc/nixos
         if [ $? -eq 0 ]; then
-            printf "\033[1;32mDeploy complete for [$host]\033[0m\n"
+            printf "\033[1;32m[$host] Deploy Complete\033[0m\n"
         else
             printf "\033[1;31m[$host] Deploy Failed!!!\033[0m\n"
         fi
@@ -24,7 +24,7 @@ build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
         printf "\033[1;31m[$host] Deploying...\033[0m\n"
         nix shell 'nixpkgs#nixos-rebuild' -c nixos-rebuild --target-host root@$host --flake ".#$host" switch
         if [ $? -eq 0 ]; then
-            printf "\033[1;32mDeploy complete for [$host]\033[0m\n"
+            printf "\033[1;32m[$host] Deploy Complete\033[0m\n"
         else
             printf "\033[1;31m[$host] Deploy Failed!!!\033[0m\n"
         fi
