@@ -66,7 +66,7 @@
   #   enable = true;
   #   role = "client";
   # };
-  services.fwupd.enable = true;
+  # services.fwupd.enable = true;
   networking.firewall.enable = false;
   environment.systemPackages = [ pkgs.megacmd ];
 }
