@@ -18,7 +18,7 @@ diskDevice: {
   disko.devices.zpool.share = {
     type = "zpool";
     rootFsOptions = {
-      compression = "zstd";
+      compression = "lz4";
       xattr = "sa";
       atime = "off";
       acltype = "posixacl";
