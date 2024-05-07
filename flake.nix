@@ -22,12 +22,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    dotfiles = {
-      url = "https://github.com/HE7086/dotfiles";
-      flake = false;
-      type = "git";
-      submodules = true;
-    };
+    # dotfiles = {
+    #   url = "https://github.com/HE7086/dotfiles";
+    #   flake = false;
+    #   type = "git";
+    #   submodules = true;
+    # };
   };
 
   outputs =
@@ -39,7 +39,7 @@
     , disko
     , flake-utils
     , home-manager
-    , dotfiles
+    # , dotfiles
     , ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem

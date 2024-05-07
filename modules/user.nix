@@ -23,12 +23,12 @@ in
   home-manager.users.he = { ... }: {
     home = {
       stateVersion = config.system.stateVersion;
-      file.dotfiles = {
-        source = inputs.dotfiles.outPath;
-        onChange = ''
-          make -C /home/he/dotfiles all Submodules
-        '';
-      };
+      # file.dotfiles = {
+      #   source = inputs.dotfiles.outPath;
+      #   onChange = ''
+      #     make -C /home/he/dotfiles all Submodules
+      #   '';
+      # };
     };
   };
 }
