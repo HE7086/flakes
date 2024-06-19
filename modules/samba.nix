@@ -2,7 +2,7 @@
   services.samba = {
     enable = true;
     securityType = "user";
-    # openFirewall = true;
+    openFirewall = true;
     extraConfig = ''
       workgroup = heyi7086.lan
       server string = ${config.networking.hostName}-samba
@@ -30,18 +30,8 @@
     };
   };
 
-  services.samba-wsdd.enable = true;
-  ## TODO: update unstable
-  # services.samba-wsdd = {
-  #   enable = true;
-  #   openFirewall = true;
-  # };
-  # networking.firewall = {
-  #   allowedTCPPorts = [
-  #     5357 # wsdd
-  #   ];
-  #   allowedUDPPorts = [
-  #     3702 # wsdd
-  #   ];
-  # };
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
+  };
 }
