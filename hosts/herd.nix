@@ -5,7 +5,7 @@
     ../modules/ssh-host-key.nix
     # ../modules/ddns.nix
     ../modules/swap.nix
-    ../modules/rathole.nix
+    # ../modules/rathole.nix
     ../modules/docker.nix
     ../modules/nginx.nix
     ../modules/arch-repo.nix
@@ -42,8 +42,8 @@
     enable = true;
   };
 
-  services.rathole = {
-    enable = true;
-    role = "server";
-  };
+  # services.rathole = {
+  #   enable = true;
+  #   role = "server";
+  # };
 }

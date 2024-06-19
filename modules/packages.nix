@@ -34,5 +34,6 @@
     nix-output-monitor
     gnumake
     stow
+    kitty.terminfo
   ];
 }

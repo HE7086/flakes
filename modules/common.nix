@@ -29,7 +29,7 @@
     "net.core.default_qdisc" = "fq";
   };
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
