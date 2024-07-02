@@ -17,7 +17,6 @@ deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
             --target-host root@$host \
             --build-host root@$host \
             --flake ".#$host" \
-            --verbose \
             --fast \
             switch
         if [ $? -eq 0 ]; then
@@ -37,7 +36,6 @@ build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
             --target-host root@$host \
             --build-host localhost \
             --flake ".#$host" \
-            --verbose \
             switch
         if [ $? -eq 0 ]; then
             printf "\033[1;32m[$host] Deploy Complete\033[0m\n"
