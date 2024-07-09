@@ -4,14 +4,8 @@ alias bd := build-deploy
 deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
     #!/bin/bash
     set -euo pipefail
-    FLAKE_PATH=$(nix flake metadata --json | jq -r '.path')
     for host in {{HOSTS}}; do
         printf "\033[1;31m[$host] Deploying...\033[0m\n"
-        # rsync -acvF -hh --info=stats1 --info=progress2 --modify-window=1 --delete \
-        #     -e ssh \
-        #     $FLAKE_PATH/ \
-        #     root@$host:/etc/nixos
-        # ssh root@$host nixos-rebuild switch --flake /etc/nixos
         nix shell 'nixpkgs#nixos-rebuild' \
             -c nixos-rebuild \
             --target-host root@$host \
@@ -43,6 +37,24 @@ build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
             printf "\033[1;31m[$host] Deploy Failed!!!\033[0m\n"
         fi
     done
+
+deploy-config HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
+    #!/bin/bash
+    set -euo pipefail
+    FLAKE_PATH=$(nix flake metadata --json | jq -r '.path')
+    for host in {{HOSTS}}; do
+        printf "\033[1;31m[$host] Deploying Config...\033[0m\n"
+        rsync -acvF -hh --info=stats1 --info=progress2 --modify-window=1 --delete \
+            -e ssh \
+            $FLAKE_PATH/ \
+            root@$host:/etc/nixos
+        if [ $? -eq 0 ]; then
+            printf "\033[1;32m[$host] Deploy Complete\033[0m\n"
+        else
+            printf "\033[1;31m[$host] Deploy Failed!!!\033[0m\n"
+        fi
+    done
+
 
 update-sops:
     find secrets -name '*.yaml' -exec sops updatekeys --yes {} \;

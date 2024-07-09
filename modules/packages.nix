@@ -31,7 +31,7 @@
     pciutils
     usbutils
 
-    nix-output-monitor
+    nh
     gnumake
     stow
     kitty.terminfo
