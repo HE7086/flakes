@@ -24,6 +24,7 @@
     tmux
     jq
     unstable.yazi
+    direnv
 
     lm_sensors
     ethtool
