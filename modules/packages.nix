@@ -25,6 +25,7 @@
     jq
     unstable.yazi
     direnv
+    zoxide
 
     lm_sensors
     ethtool
