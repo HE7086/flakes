@@ -14,8 +14,10 @@
       PasswordAuthentication = false;
     };
     extraConfig = ''
-      HostKeyAlgorithms ssh-ed25519
-      PubkeyAcceptedAlgorithms ssh-ed25519
+      HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-ed25519
+      PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-ed25519
+      HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+      TrustedUserCAKeys /etc/ssh/ca.pub
     '';
   };
 }
