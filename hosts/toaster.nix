@@ -3,6 +3,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/sda")
     ../modules/swap.nix
+    ../modules/ssh-host-key.nix
   ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "virtio_scsi" "usbhid" ];
 
