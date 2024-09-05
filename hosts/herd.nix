@@ -6,7 +6,7 @@
     # ../modules/ddns.nix
     ../modules/swap.nix
     # ../modules/rathole.nix
-    ../modules/docker.nix
+    # ../modules/docker.nix
     ../modules/nginx.nix
     ../modules/arch-repo.nix
   ];
