@@ -14,6 +14,7 @@
     # ../modules/docker.nix
     # ../modules/nginx.nix
     ../modules/sftp.nix
+    ../modules/suwayomi.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
