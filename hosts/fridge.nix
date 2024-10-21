@@ -7,7 +7,6 @@
     ../modules/samba.nix
     ../modules/avahi.nix
     ../modules/swap.nix
-    # ../modules/rathole.nix
     ../modules/hosts.nix
     ../modules/ddns.nix
     # ../modules/firewall-local.nix

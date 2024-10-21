@@ -5,7 +5,6 @@
     ../modules/ssh-host-key.nix
     # ../modules/ddns.nix
     ../modules/swap.nix
-    # ../modules/rathole.nix
     # ../modules/docker.nix
     ../modules/nginx.nix
     ../modules/arch-repo.nix
