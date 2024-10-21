@@ -5,10 +5,10 @@
     settings = {
       server = {
         port = 7375;
-        localSourcePath = "/share/Data/Manga";
         extensionRepos = [
           "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json"
         ];
+        flareSolverrEnabled = true;
       };
     };
     openFirewall = true;
