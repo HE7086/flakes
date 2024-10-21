@@ -2,7 +2,6 @@
   services.suwayomi-server = {
     enable = true;
     package = pkgs.unstable.suwayomi-server;
-    dataDir = "/share/Data/suwayomi-server";
     settings = {
       server = {
         port = 7375;
