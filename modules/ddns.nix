@@ -1,6 +1,7 @@
 { config, ... }: {
   sops.secrets."cloudflare/token/ddns" = {
     sopsFile = ../secrets/secrets.yaml;
+    restartUnits = [ "cloudflare-dyndns.service" ];
   };
 
   services.cloudflare-dyndns = {
