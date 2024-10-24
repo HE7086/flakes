@@ -9,7 +9,6 @@
     ../modules/swap.nix
     ../modules/hosts.nix
     ../modules/ddns.nix
-    # ../modules/firewall-local.nix
     # ../modules/docker.nix
     # ../modules/nginx.nix
     ../modules/sftp.nix

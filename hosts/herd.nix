@@ -3,7 +3,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
     ../modules/ssh-host-key.nix
-    # ../modules/ddns.nix
     ../modules/swap.nix
     # ../modules/docker.nix
     ../modules/nginx.nix
