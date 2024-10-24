@@ -20,6 +20,8 @@
     usb = {};
     webhook = {};
     zeroconf = {};
+
+    input_button = {};
   };
 
 }
