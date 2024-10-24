@@ -14,7 +14,6 @@
     # ../modules/nginx.nix
     ../modules/sftp.nix
     ../modules/suwayomi.nix
-    ../modules/flaresolverr.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];

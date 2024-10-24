@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+  imports = [
+    ./flaresolverr.nix
+  ];
   services.suwayomi-server = {
     enable = true;
     package = pkgs.unstable.suwayomi-server;
