@@ -6,7 +6,10 @@
   services.cloudflare-dyndns = {
     enable = true;
     apiTokenFile = config.sops.secrets."cloudflare/token/ddns".path;
-    domains = [ "${config.networking.hostName}.${config.networking.domain}" ];
+    domains = [
+      "${config.networking.hostName}.${config.networking.domain}"
+      "*.${config.networking.hostName}.${config.networking.domain}"
+    ];
     proxied = false;
     ipv4 = true;
     ipv6 = true;
