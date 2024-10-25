@@ -19,5 +19,10 @@
       HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
       TrustedUserCAKeys /etc/ssh/ca.pub
     '';
+    knownHosts."heyi7086.com" = {
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICETRx1nrSVwLdwod4KaDIZYVf6La97GjbwMSza6/Put";
+      hostNames = [ "*.heyi7086.com" ];
+      certAuthority = true;
+    };
   };
 }
