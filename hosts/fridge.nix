@@ -13,6 +13,7 @@
     # ../modules/nginx.nix
     ../modules/sftp.nix
     ../modules/suwayomi.nix
+    ../modules/wol.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -61,11 +62,6 @@
     };
   };
 
-  # services.rathole = {
-  #   enable = true;
-  #   role = "client";
-  # };
-  # services.fwupd.enable = true;
   networking.firewall.enable = false;
   environment.systemPackages = [ pkgs.megacmd ];
 }

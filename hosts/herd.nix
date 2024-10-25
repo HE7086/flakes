@@ -38,9 +38,4 @@
   networking.firewall = {
     enable = true;
   };
-
-  # services.rathole = {
-  #   enable = true;
-  #   role = "server";
-  # };
 }
