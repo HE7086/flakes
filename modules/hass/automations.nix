@@ -1,8 +1,5 @@
 {
   services.home-assistant.config = {
-    "automation manual" = [
-      {
-      }
-    ];
+    "automation manual" = [ ];
   };
 }

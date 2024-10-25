@@ -20,6 +20,13 @@
         ];
       };
       "automation ui" = "!include automations.yaml";
+      google_assistant = {
+        project_id = "home-wol-47963";
+        service_account = "!include SERVICE_ACCOUNT.JSON";
+        report_state = true;
+        exposed_domains = [];
+        entity_config = {};
+      };
     };
   };
   systemd.tmpfiles.rules = [
