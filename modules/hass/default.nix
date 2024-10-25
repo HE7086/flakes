@@ -1,8 +1,10 @@
-{
+{ config, ... }: {
   imports = [
     ../nginx.nix
     ./default_config.nix
     ./test.nix
+    ./automations.nix
+    ./secrets.nix
   ];
 
   services.home-assistant = {
@@ -17,9 +19,12 @@
           "::1"
         ];
       };
-      automation = "!include automations.yaml";
+      "automation ui" = "!include automations.yaml";
     };
   };
+  systemd.tmpfiles.rules = [
+    "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"
+  ];
 
   services.nginx.recommendedProxySettings = true;
   services.nginx.virtualHosts."hass.heyi7086.com" = {
@@ -32,12 +37,5 @@
       proxyWebsockets = true;
       proxyPass = "http://127.0.0.1:8123";
     };
-  };
-
-  sops.secrets."hass_secrets" = {
-    owner = "hass";
-    sopsFile = ../../secrets/hass.yaml;
-    path = "/var/lib/hass/secrets.yaml";
-    restartUnits = [ "home-assistant.service" ];
   };
 }
