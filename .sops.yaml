@@ -26,3 +26,8 @@ creation_rules:
     - age:
       - *he
       - *toaster
+  - path_regex: ^secrets/hass\.(yaml|json)$
+    key_groups:
+    - age:
+      - *he
+      - *herd

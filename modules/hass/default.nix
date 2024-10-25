@@ -33,4 +33,11 @@
       proxyPass = "http://127.0.0.1:8123";
     };
   };
+
+  sops.secrets."hass_secrets" = {
+    owner = "hass";
+    sopsFile = ../../secrets/hass.yaml;
+    path = "/var/lib/hass/secrets.yaml";
+    restartUnits = [ "home-assistant.service" ];
+  };
 }
