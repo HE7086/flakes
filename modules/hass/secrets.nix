@@ -24,4 +24,10 @@
     sopsFile = ../../secrets/hass.yaml;
     path = "/var/lib/hass/id_ed25519-cert.pub";
   };
+  sops.secrets."hass_secrets/SERVICE_ACCOUNT.JSON" = {
+    owner = "hass";
+    mode = "0400";
+    sopsFile = ../../secrets/hass.yaml;
+    path = "/var/lib/hass/SERVICE_ACCOUNT.JSON";
+  };
 }
