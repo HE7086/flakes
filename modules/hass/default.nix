@@ -2,9 +2,9 @@
   imports = [
     ../nginx.nix
     ./default_config.nix
-    ./test.nix
-    ./automations.nix
     ./secrets.nix
+    ./google_assistant.nix
+    ./wol.nix
   ];
 
   services.home-assistant = {
@@ -20,24 +20,6 @@
         ];
       };
       "automation ui" = "!include automations.yaml";
-      google_assistant = {
-        project_id = "home-wol-47963";
-        service_account = "!include SERVICE_ACCOUNT.JSON";
-        report_state = true;
-        exposed_domains = [
-          "button"
-          "event"
-          "group"
-          "input_boolean"
-          "input_button"
-          "input_select"
-          "scene"
-          "script"
-          "select"
-          "switch"
-        ];
-        entity_config = {};
-      };
     };
   };
   systemd.tmpfiles.rules = [

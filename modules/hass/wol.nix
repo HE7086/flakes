@@ -3,12 +3,12 @@
     "automation manual" = [
       {
         alias = "Wake On Lan";
-        description = "";
+        description = "Vault";
         trigger = [
           {
             platform = "state";
             entity_id = [
-              "input_boolean.wol"
+              "input_boolean.wol_vault"
             ];
             from = "off";
             to = "on";
@@ -27,8 +27,8 @@
     ];
 
     input_boolean = {
-      wol = {
-        name = "WOL";
+      wol_vault = {
+        name = "WOL-Vault";
         icon = "mdi:desktop-classic";
       };
     };

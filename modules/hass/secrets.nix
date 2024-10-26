@@ -1,5 +1,5 @@
 {
-  sops.secrets."hass_secrets/vault-mac" = {
+  sops.secrets."hass_secrets/data" = {
     owner = "hass";
     mode = "0400";
     sopsFile = ../../secrets/hass.yaml;
