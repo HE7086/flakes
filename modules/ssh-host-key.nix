@@ -6,10 +6,5 @@
       owner = "root";
       path = "/etc/ssh/ssh_host_ed25519_key-cert.pub";
     };
-    "ca.pub" = {
-      sopsFile = ../secrets/secrets.yaml;
-      owner = "root";
-      path = "/etc/ssh/ca.pub";
-    };
   };
 }

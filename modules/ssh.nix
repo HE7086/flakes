@@ -27,4 +27,9 @@
       certAuthority = true;
     };
   };
+  sops.secrets."ca.pub" = {
+    sopsFile = ../secrets/secrets.yaml;
+    owner = "root";
+    path = "/etc/ssh/ca.pub";
+  };
 }
