@@ -1,4 +1,5 @@
-{ ... }: {
+{ pkgs, ... }: {
+  programs.ssh.package = pkgs.unstable.openssh;
   services.openssh = {
     enable = true;
     hostKeys = [{ type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }];
@@ -6,8 +7,9 @@
       Ciphers = [ "aes256-gcm@openssh.com" ];
       KbdInteractiveAuthentication = false;
       KexAlgorithms = [
+        "mlkem768x25519-sha256"
+        "sntrup761x25519-sha512"
         "sntrup761x25519-sha512@openssh.com"
-        "curve25519-sha256@libssh.org"
       ];
       Macs = [ "hmac-sha2-512-etm@openssh.com" ];
       PermitRootLogin = "prohibit-password";
