@@ -21,6 +21,21 @@
             metadata = {};
             data = {};
           }
+          # google assistant does not recognize unary buttons
+          # emulate a button by auto turning off
+          {
+            delay = {
+              hours = 0;
+              minutes = 0;
+              seconds = 1;
+              milliseconds = 0;
+            };
+          }
+          {
+            service = "input_boolean.turn_off";
+            target = { entity_id = "input_boolean.wol_vault"; };
+            data = {};
+          }
         ];
         mode = "single";
       }
