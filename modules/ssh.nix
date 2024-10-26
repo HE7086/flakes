@@ -22,7 +22,7 @@
       TrustedUserCAKeys /etc/ssh/ca.pub
     '';
     knownHosts."heyi7086.com" = {
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICETRx1nrSVwLdwod4KaDIZYVf6La97GjbwMSza6/Put";
+      publicKeyFile = "/etc/ssh/ca.pub";
       hostNames = [ "*.heyi7086.com" ];
       certAuthority = true;
     };
