@@ -7,7 +7,10 @@
   ];
 
   nixpkgs = {
-    overlays = [ outputs.overlays.unstable ];
+    overlays = [
+      outputs.overlays.unstable
+      outputs.overlays.master
+    ];
     config = {
       allowUnfree = true;
     };

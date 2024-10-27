@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  programs.ssh.package = pkgs.unstable.openssh;
+  # programs.ssh.package = pkgs.master.openssh;
   services.openssh = {
     enable = true;
     hostKeys = [{ type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }];
@@ -7,8 +7,8 @@
       Ciphers = [ "aes256-gcm@openssh.com" ];
       KbdInteractiveAuthentication = false;
       KexAlgorithms = [
-        "mlkem768x25519-sha256"
-        "sntrup761x25519-sha512"
+        # "mlkem768x25519-sha256"
+        # "sntrup761x25519-sha512"
         "sntrup761x25519-sha512@openssh.com"
       ];
       Macs = [ "hmac-sha2-512-etm@openssh.com" ];
@@ -22,8 +22,11 @@
       TrustedUserCAKeys /etc/ssh/ca.pub
     '';
     knownHosts."heyi7086.com" = {
-      publicKeyFile = "/etc/ssh/ca.pub";
-      hostNames = [ "*.heyi7086.com" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICETRx1nrSVwLdwod4KaDIZYVf6La97GjbwMSza6/Put";
+      hostNames = [
+        "*.heyi7086.com"
+        "he7086.asuscomm.com"
+      ];
       certAuthority = true;
     };
   };
@@ -31,5 +34,6 @@
     sopsFile = ../secrets/secrets.yaml;
     owner = "root";
     path = "/etc/ssh/ca.pub";
+    restartUnits = [ "sshd.service" ];
   };
 }

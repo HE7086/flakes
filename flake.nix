@@ -1,9 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
-    nur.url = "github:nix-community/NUR";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
+    nur.url = "github:nix-community/NUR";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,8 +34,9 @@
   outputs =
     { self
     , nixpkgs
-    , nur
     , nixpkgs-unstable
+    , nixpkgs-master
+    , nur
     , sops-nix
     , disko
     , flake-utils
