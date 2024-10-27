@@ -1,18 +1,17 @@
-{ pkgs, config, modulesPath, ... }: {
+{ config, modulesPath, pkgs, self, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
     (import ../modules/filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
-    ../modules/ssh-host-key.nix
-    ../modules/samba.nix
-    ../modules/avahi.nix
-    ../modules/swap.nix
-    ../modules/ddns.nix
-    # ../modules/docker.nix
-    # ../modules/nginx.nix
-    ../modules/sftp.nix
-    ../modules/suwayomi.nix
-    ../modules/wol.nix
+    self.nixosModules.suwayomi
+    self.nixosModules.ddns
+    self.nixosModules.samba
+    self.nixosModules.avahi
+  ];
+
+  environment.systemPackages = [
+    pkgs.megacmd
+    pkgs.wol
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -24,8 +23,6 @@
 
   powerManagement.cpuFreqGovernor = "performance";
   hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
-
-  time.timeZone = "Europe/Berlin";
 
   networking = {
     hostName = "fridge";
@@ -62,5 +59,4 @@
   };
 
   networking.firewall.enable = false;
-  environment.systemPackages = [ pkgs.megacmd ];
 }

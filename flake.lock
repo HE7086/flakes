@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1729942962,
-        "narHash": "sha256-xzt7tb4YUw6VZXSCGw4sukirJSfYsIcFyvmhK5KMiKw=",
+        "lastModified": 1730045523,
+        "narHash": "sha256-W5Avk1THhZALXITHGazKfZbIZ5+Bc4nSYvAYHUn96EU=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "58cd832497f9c87cb4889744b86aba4284fd0474",
+        "rev": "89e458a3bb3693e769bfb2b2447c3fe72092d498",
         "type": "github"
       },
       "original": {
@@ -59,39 +59,7 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1730010820,
-        "narHash": "sha256-uX5r+oRHFAJ3IGzrDY2ev/mKrW5LjyxR5dW59gt+1MU=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "46c4646393975cac5343fa60819c43f6be8b260f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "release-24.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1730010559,
-        "narHash": "sha256-j/trwruYNKz5PhGLAyYjWyJtgiiHgHtiOswgqO5zDlU=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "2f7b214e558446b12b287822a0f610e28aa0f866",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-unstable": {
+    "nixos-unstable": {
       "locked": {
         "lastModified": 1729880355,
         "narHash": "sha256-RP+OQ6koQQLX5nw0NmcDrzvGL8HDLnyXt/jHhL1jwjM=",
@@ -107,18 +75,19 @@
         "type": "github"
       }
     },
-    "nur": {
+    "nixpkgs": {
       "locked": {
-        "lastModified": 1730002419,
-        "narHash": "sha256-/zP14gDha3b/RRCl3T8SfZbY+4647G52bb+ODWv9U0U=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "b183dd494dc3138db500a64cdda1c3c91ac7d607",
+        "lastModified": 1730066105,
+        "narHash": "sha256-Amh10U62W2wUdJ+5B5uZlqOmz+McBEBgou11Q0ki+WI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ef498e16f8a10e92d559e1f6e01412444acefaff",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
+        "owner": "NixOS",
+        "ref": "release-24.05",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -127,10 +96,8 @@
         "disko": "disko",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "nixos-unstable": "nixos-unstable",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-master": "nixpkgs-master",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "nur": "nur",
         "sops-nix": "sops-nix"
       }
     },

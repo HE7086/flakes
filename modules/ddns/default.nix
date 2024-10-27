@@ -1,6 +1,6 @@
-{ config, ... }: {
+{ config, rootPath, ... }: {
   sops.secrets."cloudflare/token/ddns" = {
-    sopsFile = ../secrets/secrets.yaml;
+    sopsFile = rootPath + /secrets/secrets.yaml;
     restartUnits = [ "cloudflare-dyndns.service" ];
   };
 

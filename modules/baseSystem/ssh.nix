@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, rootPath, ... }: {
   # programs.ssh.package = pkgs.master.openssh;
   services.openssh = {
     enable = true;
@@ -31,7 +31,7 @@
     };
   };
   sops.secrets."ca.pub" = {
-    sopsFile = ../secrets/secrets.yaml;
+    sopsFile = rootPath + /secrets/secrets.yaml;
     owner = "root";
     path = "/etc/ssh/ca.pub";
     restartUnits = [ "sshd.service" ];

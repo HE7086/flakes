@@ -1,6 +1,5 @@
 { config, ... }: {
   imports = [
-    ../nginx.nix
     ./default_config.nix
     ./secrets.nix
     ./google_assistant.nix
@@ -10,7 +9,7 @@
   services.home-assistant = {
     enable = true;
     openFirewall = false;
-    extraComponents = [];
+    extraComponents = [ ];
     config = {
       http = {
         use_x_forwarded_for = true;
@@ -26,7 +25,6 @@
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"
   ];
 
-  services.nginx.recommendedProxySettings = true;
   services.nginx.virtualHosts."hass.heyi7086.com" = {
     forceSSL = true;
     enableACME = true;
@@ -34,8 +32,9 @@
       proxy_buffering off;
     '';
     locations."/" = {
-      proxyWebsockets = true;
       proxyPass = "http://127.0.0.1:8123";
+      proxyWebsockets = true;
+      recommendedProxySettings = true;
     };
   };
 }

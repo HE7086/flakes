@@ -1,11 +1,9 @@
-{ modulesPath, ... }: {
+{ modulesPath, self, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
-    ../modules/ssh-host-key.nix
-    ../modules/swap.nix
-    ../modules/arch-repo.nix
-    ../modules/hass
+    self.nixosModules.archRepo
+    self.nixosModules.hass
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];

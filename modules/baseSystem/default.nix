@@ -1,20 +1,18 @@
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{ config, inputs, lib, pkgs, self, ... }: {
   imports = [
-    ./sops.nix
-    ./ssh.nix
-    ./user.nix
     ./packages.nix
+    ./sops.nix
+    ./ssh-host-key.nix
+    ./ssh.nix
+    ./swap.nix
+    ./user.nix
   ];
 
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.unstable
-      outputs.overlays.master
-    ];
-    config = {
-      allowUnfree = true;
-    };
-  };
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+    self.overlays.unstable
+    # self.overlays.master
+  ];
 
   nix = {
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
@@ -31,10 +29,11 @@
     "net.ipv4.ip_forward" = 1;
     "net.core.default_qdisc" = "fq";
   };
+  boot.tmp.cleanOnBoot = true;
 
   system.stateVersion = "24.05";
+  time.timeZone = "Europe/Berlin";
 
-  boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
   services.logind.extraConfig = "RuntimeDirectorySize=50%";
 

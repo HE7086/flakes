@@ -15,6 +15,6 @@
       "select"
       "switch"
     ];
-    entity_config = {};
+    entity_config = { };
   };
 }

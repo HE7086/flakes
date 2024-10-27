@@ -14,12 +14,12 @@
             to = "on";
           }
         ];
-        condition = [];
+        condition = [ ];
         action = [
           {
             service = "shell_command.wol_command";
-            metadata = {};
-            data = {};
+            metadata = { };
+            data = { };
           }
           # google assistant does not recognize unary buttons
           # emulate a button by auto turning off
@@ -34,7 +34,7 @@
           {
             service = "input_boolean.turn_off";
             target = { entity_id = "input_boolean.wol_vault"; };
-            data = {};
+            data = { };
           }
         ];
         mode = "single";
