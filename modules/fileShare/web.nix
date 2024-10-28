@@ -1,17 +1,18 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   services.nginx.virtualHosts = {
-    "repo.heyi7086.com" = {
+    "share.${config.networking.hostName}.heyi7086.com" = {
       forceSSL = true;
       enableACME = true;
-      root = "/var/www/repo";
+      root = "/share/Public";
       locations."/".extraConfig = ''
         fancyindex on;
         fancyindex_exact_size off;
+        fancyindex_show_dotfiles on;
       '';
     };
   };
   services.nginx.additionalModules = [ pkgs.nginxModules.fancyindex ];
   systemd.tmpfiles.rules = [
-    "d /var/www/repo 755 root root"
+    "d /share/Public 755 1000 100"
   ];
 }

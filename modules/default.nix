@@ -10,25 +10,28 @@
       ./common/nginx.nix
     ];
   };
-  avahi = { ... }: {
-    imports = [
-      ./avahi
-    ];
-  };
   ddns = { ... }: {
     imports = [
       ./ddns
+    ];
+  };
+  fileShare.local = { ... }: {
+    imports = [
+      ./fileShare/avahi.nix
+      ./fileShare/samba.nix
+    ];
+  };
+  fileShare.remote = { ... }: {
+    imports = [
+      ./fileShare/rsyncd.nix
+      ./fileShare/web.nix
+      ./common/nginx.nix
     ];
   };
   hass = { ... }: {
     imports = [
       ./hass
       ./common/nginx.nix
-    ];
-  };
-  samba = { ... }: {
-    imports = [
-      ./samba
     ];
   };
   suwayomi = { ... }: {

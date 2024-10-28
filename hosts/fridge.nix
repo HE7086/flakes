@@ -3,10 +3,10 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
     (import ../modules/filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
-    self.nixosModules.suwayomi
     self.nixosModules.ddns
-    self.nixosModules.samba
-    self.nixosModules.avahi
+    self.nixosModules.fileShare.local
+    self.nixosModules.fileShare.remote
+    self.nixosModules.suwayomi
   ];
 
   environment.systemPackages = [
