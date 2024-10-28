@@ -17,9 +17,22 @@
   nix = {
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+    channel.enable = false;
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 14d";
+      dates = "weekly";
+    };
     settings = {
-      experimental-features = "nix-command flakes";
+      experimental-features = [
+        "nix-command"
+        "flakes"
+        "auto-allocate-uids"
+        "cgroups"
+      ];
       auto-optimise-store = true;
+      auto-allocate-uids = true;
+      use-cgroups = true;
     };
   };
 
@@ -34,12 +47,11 @@
   system.stateVersion = "24.05";
   time.timeZone = "Europe/Berlin";
 
-  zramSwap.enable = true;
-  services.logind.extraConfig = "RuntimeDirectorySize=50%";
-
   programs.zsh.enable = true;
   environment.shells = [ pkgs.zsh ];
   environment.binsh = "${pkgs.dash}/bin/dash";
+  programs.command-not-found.enable = false;
 
   services.dbus.implementation = "broker";
+  services.logind.extraConfig = "RuntimeDirectorySize=50%";
 }

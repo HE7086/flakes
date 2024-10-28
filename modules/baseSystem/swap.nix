@@ -1,4 +1,5 @@
 {
+  zramSwap.enable = true;
   swapDevices = [
     {
       device = "/var/lib/swapfile";
