@@ -33,6 +33,7 @@
       auto-optimise-store = true;
       auto-allocate-uids = true;
       use-cgroups = true;
+      use-xdg-base-directories = true;
     };
   };
 
