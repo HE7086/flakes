@@ -7,10 +7,10 @@
     self.nixosModules.fileShare.local
     self.nixosModules.fileShare.remote
     self.nixosModules.suwayomi
+    self.nixosModules.download
   ];
 
   environment.systemPackages = [
-    pkgs.megacmd
     pkgs.wol
   ];
 

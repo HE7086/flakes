@@ -9,7 +9,7 @@ in
     he = {
       isNormalUser = true;
       home = "/home/he";
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "shared-storage" ];
       uid = 1000;
       openssh.authorizedKeys.keys = keys;
     };
@@ -31,4 +31,10 @@ in
       # };
     };
   };
+
+  users.users.shared-storage = {
+    isSystemUser = true;
+    group = "shared-storage";
+  };
+  users.groups.shared-storage = { };
 }

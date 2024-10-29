@@ -39,5 +39,10 @@
       ./suwayomi
     ];
   };
+  download = { ... }: {
+    imports = [
+      ./download
+    ];
+  };
   test = { ... }: { imports = [ ]; };
 }
