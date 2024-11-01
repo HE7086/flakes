@@ -37,7 +37,6 @@
     , disko
     , flake-utils
     , home-manager
-    # , dotfiles
     , ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem
@@ -63,34 +62,10 @@
         };
         formatter = pkgs.nixpkgs-fmt;
       }) // {
-      overlays.unstable = final: _prev: {
-        unstable = import inputs.nixos-unstable {
-          system = final.system;
-          config.allowUnfree = true;
-        };
-      };
       nixosModules = import ./modules;
-      nixosConfigurations =
-        let
-          baseSystem = { modules ? [ ], system ? "x86_64-linux" }:
-            nixpkgs.lib.nixosSystem {
-              inherit system;
-              specialArgs = {
-                inherit inputs self;
-                rootPath = ./.;
-              };
-              modules = [
-                sops-nix.nixosModules.sops
-                disko.nixosModules.disko
-                home-manager.nixosModules.home-manager
-                self.nixosModules.default
-              ] ++ modules;
-            };
-        in
-        {
-          herd = baseSystem { modules = [ ./hosts/herd.nix ]; };
-          fridge = baseSystem { modules = [ ./hosts/fridge.nix ]; };
-          toaster = baseSystem { modules = [ ./hosts/toaster.nix ]; system = "aarch64-linux"; };
-        };
+      nixosConfigurations = import ./hosts {
+        inherit inputs self;
+        rootPath = ./.;
+      };
     };
 }

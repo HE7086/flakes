@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, self, ... }: {
+{ pkgs, ... }: {
   imports = [
     ./packages.nix
     ./sops.nix
@@ -6,36 +6,8 @@
     ./ssh.nix
     ./swap.nix
     ./user.nix
+    ./nix.nix
   ];
-
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    self.overlays.unstable
-    # self.overlays.master
-  ];
-
-  nix = {
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-    channel.enable = false;
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 14d";
-      dates = "weekly";
-    };
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "auto-allocate-uids"
-        "cgroups"
-      ];
-      auto-optimise-store = true;
-      auto-allocate-uids = true;
-      use-cgroups = true;
-      use-xdg-base-directories = true;
-    };
-  };
 
   boot.kernelModules = [ "tcp_bbr" ];
   boot.kernel.sysctl = {

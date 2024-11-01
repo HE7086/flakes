@@ -18,7 +18,7 @@ in
 
   nix.settings.trusted-users = [ "he" ];
   security.sudo.wheelNeedsPassword = false;
-  services.getty.autologinUser = "he";
+  services.getty.autologinUser = "root";
 
   home-manager.users.he = { ... }: {
     home = {
