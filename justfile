@@ -1,7 +1,7 @@
 alias d := deploy
 alias bd := build-deploy
 
-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
+deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
     #!/bin/bash
     set -euo pipefail
     for host in {{HOSTS}}; do
@@ -20,7 +20,7 @@ deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
         fi
     done
 
-build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
+build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
     #!/bin/bash
     set -euo pipefail
     for host in {{HOSTS}}; do
@@ -38,7 +38,7 @@ build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
         fi
     done
 
-deploy-config HOSTS=`ls ./hosts | sed 's/\.nix$//' | xargs`:
+deploy-config HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
     #!/bin/bash
     set -euo pipefail
     FLAKE_PATH=$(nix flake metadata --json | jq -r '.path')
@@ -63,7 +63,9 @@ get-age:
     nix shell 'nixpkgs#ssh-to-age' -c ssh-to-age </etc/ssh/ssh_host_ed25519_key.pub
 
 repl:
-    nix --extra-experimental-features 'repl-flake' repl '.#nixosConfigurations'
+    # nix --extra-experimental-features 'repl-flake' repl '.#nixosConfigurations'
+    # :p fridge.config.nix.settings
+    nix repl '.#nixosConfigurations'
 
 update:
     nix flake update && git add flake.lock && git commit -m 'flake update'
