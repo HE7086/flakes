@@ -1,4 +1,8 @@
-{ config, ... }: {
+{ config, lib, ... }:
+let
+  cfg = config.services.fileShare.local;
+in
+lib.mkIf cfg.enable {
   services.samba = {
     enable = true;
     securityType = "user";

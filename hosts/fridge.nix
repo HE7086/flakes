@@ -4,8 +4,7 @@
     (import ../modules/filesystems/btrfs-efi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
     (import ../modules/filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
     self.nixosModules.ddns
-    self.nixosModules.fileShare.local
-    self.nixosModules.fileShare.remote
+    self.nixosModules.fileShare
     self.nixosModules.suwayomi
     self.nixosModules.download
   ];
@@ -59,4 +58,12 @@
   };
 
   networking.firewall.enable = false;
+
+  services.fileShare = {
+    local.enable = true;
+    remote = {
+      enable = true;
+      rsyncd = true;
+    };
+  };
 }

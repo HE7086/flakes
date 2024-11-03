@@ -25,6 +25,7 @@
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"
   ];
 
+  services.nginx.enable = true;
   services.nginx.virtualHosts."hass.heyi7086.com" = {
     forceSSL = true;
     enableACME = true;

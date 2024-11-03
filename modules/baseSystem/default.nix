@@ -7,6 +7,10 @@
     ./swap.nix
     ./user.nix
     ./nix.nix
+
+    # disabled by default
+    ./docker.nix
+    ./nginx.nix
   ];
 
   boot.kernelModules = [ "tcp_bbr" ];

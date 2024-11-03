@@ -2,7 +2,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
-    self.nixosModules.archRepo
+    self.nixosModules.fileShare
     self.nixosModules.hass
   ];
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
@@ -36,4 +36,13 @@
   networking.firewall = {
     enable = true;
   };
+
+  services.fileShare.remote = {
+    enable = true;
+    dir = "/var/www/repo";
+    virtualHost = "repo.heyi7086.com";
+    user = "root";
+    group = "root";
+  };
+
 }

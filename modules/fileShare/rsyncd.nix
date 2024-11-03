@@ -1,4 +1,8 @@
-{
+{ config, lib, ... }:
+let
+  cfg = config.services.fileShare.remote;
+in
+lib.mkIf (cfg.enable && cfg.rsyncd) {
   services.rsyncd = {
     enable = true;
     settings = {
@@ -9,7 +13,7 @@
       };
       public = {
         comment = "rsyncd public share";
-        path = "/share/Public";
+        path = cfg.dir;
         "read only" = "yes";
       };
     };

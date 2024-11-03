@@ -1,8 +1,6 @@
-{ pkgs, ... }: {
-  services.nginx = {
-    enable = true;
-    package = pkgs.nginxQuic;
-  };
+{ config, lib, pkgs, ... }:
+lib.mkIf config.services.nginx.enable {
+  services.nginx.package = pkgs.nginxQuic;
   services.nginx.recommendedOptimisation = true;
   services.nginx.recommendedTlsSettings = true;
 

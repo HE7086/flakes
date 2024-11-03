@@ -1,9 +1,14 @@
-{ config, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  cfg = config.services.fileShare.remote;
+in
+lib.mkIf cfg.enable {
+  services.nginx.enable = true;
   services.nginx.virtualHosts = {
-    "share.${config.networking.hostName}.heyi7086.com" = {
+    "${cfg.virtualHost}" = {
       forceSSL = true;
       enableACME = true;
-      root = "/share/Public";
+      root = cfg.dir;
       locations."/".extraConfig = ''
         fancyindex on;
         fancyindex_exact_size off;
@@ -12,7 +17,7 @@
     };
   };
   services.nginx.additionalModules = [ pkgs.nginxModules.fancyindex ];
-  systemd.tmpfiles.rules = [
-    "d /share/Public 755 1000 100"
+  systemd.tmpfiles.rules = lib.mkIf cfg.createDir [
+    "d ${cfg.dir} ${cfg.mode} ${cfg.user} ${cfg.group}"
   ];
 }

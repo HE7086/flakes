@@ -1,6 +1,6 @@
-{
+{ config, lib, ... }:
+lib.mkIf config.virtualisation.docker.enable {
   virtualisation.docker = {
-    enable = true;
     storageDriver = "btrfs";
     rootless = {
       enable = true;
