@@ -4,14 +4,14 @@
       ./baseSystem
     ];
   };
-  archRepo = { ... }: {
-    imports = [
-      ./archRepo
-    ];
-  };
   ddns = { ... }: {
     imports = [
       ./ddns
+    ];
+  };
+  download = { ... }: {
+    imports = [
+      ./download
     ];
   };
   fileShare = { ... }: {
@@ -27,11 +27,6 @@
   suwayomi = { ... }: {
     imports = [
       ./suwayomi
-    ];
-  };
-  download = { ... }: {
-    imports = [
-      ./download
     ];
   };
   test = { ... }: { imports = [ ]; };

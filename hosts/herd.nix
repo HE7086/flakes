@@ -43,6 +43,7 @@
     virtualHost = "repo.heyi7086.com";
     user = "root";
     group = "root";
+    rsyncd = true;
   };
 
 }

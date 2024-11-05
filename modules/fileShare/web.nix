@@ -13,6 +13,7 @@ lib.mkIf cfg.enable {
         fancyindex on;
         fancyindex_exact_size off;
         fancyindex_show_dotfiles on;
+        fancyindex_hide_parent_dir on;
       '';
     };
   };
