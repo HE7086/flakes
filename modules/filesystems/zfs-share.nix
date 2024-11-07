@@ -1,7 +1,7 @@
 diskDevice: {
-  disko.devices.disk.disk1 = {
-    type = "disk";
+  disko.devices.disk."${diskDevice}" = {
     device = diskDevice;
+    type = "disk";
     content = {
       type = "gpt";
       partitions = {
