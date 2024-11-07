@@ -10,7 +10,7 @@ let
         inputs.sops-nix.nixosModules.sops
         inputs.disko.nixosModules.disko
         inputs.home-manager.nixosModules.home-manager
-        self.nixosModules.default
+        self.nixosModules.baseSystem
       ] ++ modules;
       pkgs = import inputs.nixpkgs {
         inherit system;

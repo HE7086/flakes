@@ -1,5 +1,5 @@
 {
-  default = { ... }: {
+  baseSystem = { ... }: {
     imports = [
       ./baseSystem
     ];

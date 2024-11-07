@@ -1,8 +1,8 @@
 { config, modulesPath, pkgs, self, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    (import ../modules/filesystems/btrfs-uefi-gpt-disk.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
-    (import ../modules/filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
+    (import ./filesystems/btrfs-uefi-gpt-root.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
+    (import ./filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
     self.nixosModules.ddns
     self.nixosModules.fileShare
     self.nixosModules.suwayomi

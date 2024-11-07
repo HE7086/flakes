@@ -1,7 +1,7 @@
 { modulesPath, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    (import ../modules/filesystems/btrfs-uefi-gpt-disk.nix "/dev/sda")
+    (import ./filesystems/btrfs-uefi-gpt-root.nix "/dev/sda")
   ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "virtio_scsi" "usbhid" ];
 

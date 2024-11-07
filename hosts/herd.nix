@@ -1,7 +1,7 @@
 { modulesPath, self, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    (import ../modules/filesystems/btrfs-bios-gpt-disk.nix "/dev/sda")
+    (import ./filesystems/btrfs-bios-gpt-root.nix "/dev/sda")
     self.nixosModules.fileShare
     self.nixosModules.hass
   ];
@@ -33,9 +33,7 @@
     useNetworkd = true;
   };
   networking.nftables.enable = true;
-  networking.firewall = {
-    enable = true;
-  };
+  networking.firewall.enable = true;
 
   services.fileShare.remote = {
     enable = true;
