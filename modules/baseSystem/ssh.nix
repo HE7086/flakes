@@ -1,8 +1,14 @@
-{ pkgs, rootPath, ... }: {
+{ pkgs, rootPath, ... }:
+{
   # programs.ssh.package = pkgs.master.openssh;
   services.openssh = {
     enable = true;
-    hostKeys = [{ type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }];
+    hostKeys = [
+      {
+        type = "ed25519";
+        path = "/etc/ssh/ssh_host_ed25519_key";
+      }
+    ];
     settings = {
       Ciphers = [ "aes256-gcm@openssh.com" ];
       KbdInteractiveAuthentication = false;

@@ -7,9 +7,7 @@
         trigger = [
           {
             platform = "state";
-            entity_id = [
-              "input_boolean.wol_vault"
-            ];
+            entity_id = [ "input_boolean.wol_vault" ];
             from = "off";
             to = "on";
           }
@@ -33,7 +31,9 @@
           }
           {
             service = "input_boolean.turn_off";
-            target = { entity_id = "input_boolean.wol_vault"; };
+            target = {
+              entity_id = "input_boolean.wol_vault";
+            };
             data = { };
           }
         ];

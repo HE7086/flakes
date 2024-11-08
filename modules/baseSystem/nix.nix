@@ -1,4 +1,10 @@
-{ config, inputs, lib, ... }: {
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
+{
   nix = {
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
@@ -21,4 +27,4 @@
       use-xdg-base-directories = true;
     };
   };
-}  
+}

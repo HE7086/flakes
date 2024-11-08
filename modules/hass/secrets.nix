@@ -1,4 +1,5 @@
-{ rootPath, ... }: {
+{ rootPath, ... }:
+{
   sops.secrets."hass_secrets/data" = {
     owner = "hass";
     mode = "0400";

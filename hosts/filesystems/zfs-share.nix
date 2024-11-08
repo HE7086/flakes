@@ -42,7 +42,10 @@ diskDevice: {
   fileSystems."/share" = {
     device = "share/shared";
     fsType = "zfs";
-    options = [ "noatime" "norelatime" ];
+    options = [
+      "noatime"
+      "norelatime"
+    ];
   };
 
   services.zfs.autoScrub.enable = true;

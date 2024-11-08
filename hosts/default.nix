@@ -1,6 +1,15 @@
-{ inputs, rootPath, self, ... }:
+{
+  inputs,
+  rootPath,
+  self,
+  ...
+}:
 let
-  baseSystem = { modules ? [ ], system ? "x86_64-linux" }:
+  baseSystem =
+    {
+      modules ? [ ],
+      system ? "x86_64-linux",
+    }:
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
@@ -29,5 +38,8 @@ in
 {
   herd = baseSystem { modules = [ ./herd.nix ]; };
   fridge = baseSystem { modules = [ ./fridge.nix ]; };
-  toaster = baseSystem { modules = [ ./toaster.nix ]; system = "aarch64-linux"; };
+  toaster = baseSystem {
+    modules = [ ./toaster.nix ];
+    system = "aarch64-linux";
+  };
 }

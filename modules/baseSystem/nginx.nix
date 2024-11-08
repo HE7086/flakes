@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkIf config.services.nginx.enable {
   services.nginx.package = pkgs.nginxQuic;
   services.nginx.recommendedOptimisation = true;
@@ -8,5 +13,8 @@ lib.mkIf config.services.nginx.enable {
     acceptTerms = true;
     defaults.email = "me@heyi7086.com";
   };
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 }

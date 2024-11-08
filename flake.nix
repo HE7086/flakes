@@ -30,17 +30,18 @@
   };
 
   outputs =
-    { self
-    , nixpkgs
-    , nixos-unstable
-    , sops-nix
-    , disko
-    , flake-utils
-    , home-manager
-    , ...
+    {
+      self,
+      nixpkgs,
+      nixos-unstable,
+      sops-nix,
+      disko,
+      flake-utils,
+      home-manager,
+      ...
     }@inputs:
-    flake-utils.lib.eachDefaultSystem
-      (system:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
       in
@@ -60,9 +61,11 @@
             ssh-to-age
           ];
         };
-        formatter = pkgs.nixpkgs-fmt;
-      }) // {
-      nixosModules = import ./modules;
+        formatter = pkgs.nixfmt-rfc-style;
+      }
+    )
+    // {
+      nixosModules = import ./modules { inherit inputs; };
       nixosConfigurations = import ./hosts {
         inherit inputs self;
         rootPath = ./.;

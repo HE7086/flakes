@@ -1,4 +1,5 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
   imports = [
     ./web.nix
     ./rsyncd.nix

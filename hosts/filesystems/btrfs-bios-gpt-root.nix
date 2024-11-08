@@ -20,15 +20,24 @@ diskDevice: {
                 mountpoint = "/";
               };
               "@home" = {
-                mountOptions = [ "noatime" "compress=zstd" ];
+                mountOptions = [
+                  "noatime"
+                  "compress=zstd"
+                ];
                 mountpoint = "/home";
               };
               "@var_log" = {
-                mountOptions = [ "noatime" "compress=zstd" ];
+                mountOptions = [
+                  "noatime"
+                  "compress=zstd"
+                ];
                 mountpoint = "/var/log";
               };
               "@nix" = {
-                mountOptions = [ "noatime" "compress=zstd" ];
+                mountOptions = [
+                  "noatime"
+                  "compress=zstd"
+                ];
                 mountpoint = "/nix";
               };
             };

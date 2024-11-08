@@ -9,7 +9,10 @@ in
     he = {
       isNormalUser = true;
       home = "/home/he";
-      extraGroups = [ "wheel" "shared-storage" ];
+      extraGroups = [
+        "wheel"
+        "shared-storage"
+      ];
       uid = 1000;
       openssh.authorizedKeys.keys = keys;
     };
@@ -20,17 +23,19 @@ in
   security.sudo.wheelNeedsPassword = false;
   services.getty.autologinUser = "root";
 
-  home-manager.users.he = { ... }: {
-    home = {
-      stateVersion = config.system.stateVersion;
-      # file.dotfiles = {
-      #   source = inputs.dotfiles.outPath;
-      #   onChange = ''
-      #     make -C /home/he/dotfiles all Submodules
-      #   '';
-      # };
+  home-manager.users.he =
+    { ... }:
+    {
+      home = {
+        stateVersion = config.system.stateVersion;
+        # file.dotfiles = {
+        #   source = inputs.dotfiles.outPath;
+        #   onChange = ''
+        #     make -C /home/he/dotfiles all Submodules
+        #   '';
+        # };
+      };
     };
-  };
 
   users.users.shared-storage = {
     isSystemUser = true;
