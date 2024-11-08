@@ -1,3 +1,4 @@
+alias c := check
 alias d := deploy
 alias bd := build-deploy
 
@@ -66,6 +67,9 @@ repl:
     # nix --extra-experimental-features 'repl-flake' repl '.#nixosConfigurations'
     # :p fridge.config.nix.settings
     nix repl '.#nixosConfigurations'
+
+check:
+    git amend && nix flake check
 
 update:
     nix flake update && git add flake.lock && git commit -m 'flake update'

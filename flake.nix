@@ -30,16 +30,8 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixos-unstable,
-      sops-nix,
-      disko,
-      flake-utils,
-      home-manager,
-      ...
-    }@inputs:
+    { ... }@inputs:
+    with inputs;
     flake-utils.lib.eachDefaultSystem (
       system:
       let

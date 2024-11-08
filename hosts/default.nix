@@ -4,29 +4,30 @@
   self,
   ...
 }:
+with inputs;
 let
   baseSystem =
     {
       modules ? [ ],
       system ? "x86_64-linux",
     }:
-    inputs.nixpkgs.lib.nixosSystem {
+    nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit inputs rootPath self;
       };
       modules = [
-        inputs.sops-nix.nixosModules.sops
-        inputs.disko.nixosModules.disko
-        inputs.home-manager.nixosModules.home-manager
+        sops-nix.nixosModules.sops
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager
         self.nixosModules.baseSystem
       ] ++ modules;
-      pkgs = import inputs.nixpkgs {
+      pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
         overlays = [
           (final: _prev: {
-            unstable = import inputs.nixos-unstable {
+            unstable = import nixos-unstable {
               system = final.system;
               config.allowUnfree = true;
             };
