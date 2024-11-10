@@ -30,7 +30,7 @@
   };
 
   outputs =
-    { ... }@inputs:
+    inputs:
     with inputs;
     flake-utils.lib.eachDefaultSystem (
       system:
