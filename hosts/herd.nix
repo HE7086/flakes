@@ -19,7 +19,7 @@
     matchConfig.Name = "ens3";
     networkConfig.DHCP = "ipv4";
     address = [ "2a01:4f8:c0c:1be5::1/64" ];
-    routes = [ { routeConfig.Gateway = "fe80::1"; } ];
+    routes = [ { Gateway = "fe80::1"; } ];
     dns = [
       "1.1.1.1"
       "1.0.0.1"
