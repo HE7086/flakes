@@ -22,7 +22,7 @@
   };
   boot.tmp.cleanOnBoot = true;
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
   time.timeZone = "Europe/Berlin";
 
   programs.zsh.enable = true;
