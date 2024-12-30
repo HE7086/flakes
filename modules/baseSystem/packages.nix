@@ -39,6 +39,7 @@
     gnumake
     stow
     kitty.terminfo
+    unstable.ghostty.terminfo
 
     gcc
   ];
