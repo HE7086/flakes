@@ -5,6 +5,7 @@
     ./secrets.nix
     ./google_assistant.nix
     ./wol.nix
+    ./xiaomi.nix
   ];
 
   services.home-assistant = {
