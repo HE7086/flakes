@@ -17,6 +17,10 @@
       "smartthings"
     ];
     config = {
+      homeassistant = {
+        external_url = "https://hass.heyi7086.com";
+        internal_url = "http://192.168.1.2:8123";
+      };
       http = {
         use_x_forwarded_for = true;
         trusted_proxies = [
