@@ -17,8 +17,6 @@
     self.nixosModules.hass
   ];
 
-  environment.systemPackages = [ pkgs.wol ];
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
