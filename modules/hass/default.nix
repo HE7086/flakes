@@ -11,7 +11,9 @@
   services.home-assistant = {
     enable = true;
     openFirewall = false;
-    extraComponents = [ ];
+    extraComponents = [
+      "tuya"
+    ];
     config = {
       http = {
         use_x_forwarded_for = true;
