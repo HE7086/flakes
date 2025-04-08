@@ -14,6 +14,7 @@
     openFirewall = false;
     extraComponents = [
       "tuya"
+      "smartthings"
     ];
     config = {
       http = {
