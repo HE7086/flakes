@@ -5,7 +5,8 @@
     ./secrets.nix
     ./google_assistant.nix
     ./wol.nix
-    ./xiaomi.nix
+    ./customComponents/xiaomi_home.nix
+    ./customComponents/midea_ac.nix
   ];
 
   services.home-assistant = {

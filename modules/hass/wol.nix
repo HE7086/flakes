@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = [ pkgs.wol ];
   services.home-assistant.config = {
     "automation manual" = [
