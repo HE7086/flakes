@@ -4,7 +4,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     (import ./filesystems/btrfs-bios-gpt-root.nix "/dev/sda")
     self.nixosModules.fileShare
-    self.nixosModules.hass
   ];
   boot.initrd.availableKernelModules = [
     "ata_piix"

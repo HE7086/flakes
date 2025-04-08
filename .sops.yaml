@@ -30,4 +30,4 @@ creation_rules:
     key_groups:
     - age:
       - *he
-      - *herd
+      - *fridge

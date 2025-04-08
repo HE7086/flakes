@@ -14,6 +14,7 @@
     self.nixosModules.fileShare
     self.nixosModules.suwayomi
     self.nixosModules.download
+    self.nixosModules.hass
   ];
 
   environment.systemPackages = [ pkgs.wol ];
