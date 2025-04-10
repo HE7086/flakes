@@ -13,6 +13,7 @@
     enable = true;
     openFirewall = false;
     extraComponents = [
+      "isal"
       "tuya"
       "smartthings"
     ];

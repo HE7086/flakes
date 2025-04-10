@@ -41,7 +41,7 @@
   networking = {
     hostName = "fridge";
     domain = "heyi7086.com";
-    search = [ "he7086.home.arpa" ];
+    search = [ "heyi7086.home.arpa" ];
     hostId = "83d9da0a";
     useDHCP = true;
 
@@ -88,5 +88,5 @@
       rsyncd = true;
     };
   };
-  services.avahi.domainName = "he7086.home.arpa";
+  services.avahi.domainName = "heyi7086.home.arpa";
 }
