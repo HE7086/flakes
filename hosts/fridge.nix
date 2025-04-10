@@ -64,21 +64,15 @@
   };
   systemd.network.networks = {
     "10-enp" = {
-      matchConfig = {
-        Name = "enp*";
-      };
+      matchConfig.Name = "enp*";
       bridge = [ "br0" ];
       DHCP = "no";
     };
     "10-br0" = {
-      matchConfig = {
-        Name = "br0";
-      };
-      DHCP = "ipv6";
-      ipv6AcceptRAConfig = {
-        Token = "::2";
-      };
+      matchConfig.Name = "br0";
       address = [ "192.168.1.2/24" ];
+      DHCP = "ipv6";
+      ipv6AcceptRAConfig.Token = "::2";
     };
   };
 
@@ -89,5 +83,4 @@
       rsyncd = true;
     };
   };
-  services.avahi.browseDomains = [ "heyi7086.home.arpa" ];
 }
