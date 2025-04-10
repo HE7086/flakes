@@ -43,43 +43,44 @@
     domain = "heyi7086.com";
     search = [ "heyi7086.home.arpa" ];
     hostId = "83d9da0a";
-    useDHCP = true;
-
-    defaultGateway = "192.168.1.1";
+    useDHCP = false;
+    useNetworkd = true;
+    firewall.enable = false;
     nameservers = [
       "1.1.1.1"
       "8.8.8.8"
       "2606:4700:4700::1111"
       "2001:4860:4860::8888"
     ];
-    interfaces = {
-      enp1s0.useDHCP = false;
-      enp2s0.useDHCP = false;
-      enp3s0.useDHCP = false;
-      enp4s0.useDHCP = false;
-      br0 = {
-        useDHCP = true;
-        ipv4.addresses = [
-          {
-            address = "192.168.1.2";
-            prefixLength = 24;
-          }
-        ];
+  };
+  systemd.network.netdevs = {
+    "10-br0" = {
+      netdevConfig = {
+        Kind = "bridge";
+        Name = "br0";
       };
-    };
-
-    bridges.br0 = {
-      interfaces = [
-        "enp1s0"
-        "enp2s0"
-        "enp3s0"
-        "enp4s0"
-      ];
-      rstp = true;
+      bridgeConfig.STP = true;
     };
   };
-
-  networking.firewall.enable = false;
+  systemd.network.networks = {
+    "10-enp" = {
+      matchConfig = {
+        Name = "enp*";
+      };
+      bridge = [ "br0" ];
+      DHCP = "no";
+    };
+    "10-br0" = {
+      matchConfig = {
+        Name = "br0";
+      };
+      DHCP = "ipv6";
+      ipv6AcceptRAConfig = {
+        Token = "::2";
+      };
+      address = [ "192.168.1.2/24" ];
+    };
+  };
 
   services.fileShare = {
     local.enable = true;
