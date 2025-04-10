@@ -88,5 +88,5 @@
       rsyncd = true;
     };
   };
-  services.avahi.domainName = "heyi7086.home.arpa";
+  services.avahi.browseDomains = [ "heyi7086.home.arpa" ];
 }
