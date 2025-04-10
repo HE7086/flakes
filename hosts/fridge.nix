@@ -71,6 +71,7 @@
     "10-br0" = {
       matchConfig.Name = "br0";
       address = [ "192.168.1.2/24" ];
+      gateway = [ "192.168.1.1" ];
       DHCP = "ipv6";
       ipv6AcceptRAConfig.Token = "::2";
     };
