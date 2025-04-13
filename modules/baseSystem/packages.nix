@@ -27,6 +27,7 @@
     unstable.yazi
     direnv
     zoxide
+    netcat-openbsd
 
     lm_sensors
     ethtool
