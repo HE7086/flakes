@@ -36,3 +36,7 @@ creation_rules:
     - age:
       - *he
       - *herd
+  - path_regex: ^tofu/secrets\.(yaml|json)$
+    key_groups:
+    - age:
+      - *he
