@@ -22,18 +22,36 @@
     # postShutdown = "";
 
     peers = [
-      { # home
+      {
+        # home
         publicKey = "Ao46pdDwpGZRXu4XveQZaRtsf57SYIoT/BnpnJJlcEo=";
         allowedIPs = [
-          "10.1.2.0/24"
+          "10.1.2.1/32"
           "2a01:4f8:c0c:1be5::2:1/128"
         ];
       }
-      { # mobile
+      {
+        # fridge
+        publicKey = "Ry1T28Xmn9GnoSEOWjJqsw1gb9Moy59imbgjaPMOmCg=";
+        allowedIPs = [
+          "10.1.2.2/32"
+          "2a01:4f8:c0c:1be5::2:2/128"
+        ];
+      }
+      {
+        # vault
+        publicKey = "ZXhfJ6rfqMhFa/X7aNcjnb5T5WPG4TqfuqecGp1VN3Q=";
+        allowedIPs = [
+          "10.1.2.3/32"
+          "2a01:4f8:c0c:1be5::2:3/128"
+        ];
+      }
+      {
+        # mobile
         publicKey = "xORMnqdh6UjxP2WQ+cOwza6ZFv7QZra49IRv0BrEcjo=";
         allowedIPs = [
-          "10.1.3.0/24"
-          "2a01:4f8:c0c:1be5::3:0/112"
+          "10.1.3.1/32"
+          "2a01:4f8:c0c:1be5::3:1/128"
         ];
       }
     ];
