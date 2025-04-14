@@ -31,3 +31,8 @@ creation_rules:
     - age:
       - *he
       - *fridge
+  - path_regex: ^secrets/wireguard\.(yaml|json)$
+    key_groups:
+    - age:
+      - *he
+      - *herd
