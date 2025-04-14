@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   modulesPath,
   pkgs,
   self,
@@ -8,14 +9,17 @@
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    (import ./filesystems/btrfs-uefi-gpt-root.nix "/dev/disk/by-id/nvme-eui.0024cf014c003c56")
-    (import ./filesystems/zfs-share.nix "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93")
+    ./filesystems/btrfs-uefi-gpt-root.nix
+    ./filesystems/zfs-share.nix
     self.nixosModules.ddns
     self.nixosModules.fileShare
     self.nixosModules.suwayomi
     self.nixosModules.download
     self.nixosModules.hass
   ];
+
+  disko.devices.disk.root.device = lib.mkForce "/dev/disk/by-id/nvme-eui.0024cf014c003c56";
+  disko.devices.disk.share.device = lib.mkForce "/dev/disk/by-id/nvme-CT4000P3PSSD8_2328E6EEDF93";
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"

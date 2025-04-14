@@ -1,9 +1,10 @@
-{ modulesPath, ... }:
+{ lib, modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    (import ./filesystems/btrfs-uefi-gpt-root.nix "/dev/sda")
+    ./filesystems/btrfs-uefi-gpt-root.nix
   ];
+  disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "virtio_pci"

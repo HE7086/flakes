@@ -1,11 +1,12 @@
-{ modulesPath, self, ... }:
+{ lib, modulesPath, self, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    (import ./filesystems/btrfs-bios-gpt-root.nix "/dev/sda")
+    ./filesystems/btrfs-bios-gpt-root.nix
     self.nixosModules.fileShare
     self.nixosModules.wireguard
   ];
+  disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [
     "ata_piix"
     "uhci_hcd"

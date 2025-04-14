@@ -1,6 +1,6 @@
-diskDevice: {
-  disko.devices.disk."${diskDevice}" = {
-    device = diskDevice;
+{
+  disko.devices.disk.root = {
+    device = "/dev/sda";
     type = "disk";
     content = {
       type = "gpt";
