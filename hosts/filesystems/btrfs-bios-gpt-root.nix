@@ -16,7 +16,10 @@
             extraArgs = [ "-f" ];
             subvolumes = {
               "@root" = {
-                mountOptions = [ "noatime" ];
+                mountOptions = [
+                  "noatime"
+                  "compress=zstd"
+                ];
                 mountpoint = "/";
               };
               "@home" = {
