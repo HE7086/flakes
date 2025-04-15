@@ -1,7 +1,13 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   boot.loader.systemd-boot.netbootxyz.enable = config.boot.loader.systemd-boot.enable;
-} //
-  lib.mkIf config.boot.loader.grub.enable {
+}
+// lib.mkIf config.boot.loader.grub.enable {
   boot.loader.grub = {
     extraFiles = {
       "netboot.xyz.iso" = pkgs.fetchurl {
@@ -12,4 +18,3 @@
     # extraEntries = {};
   };
 }
-

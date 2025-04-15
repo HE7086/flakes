@@ -1,4 +1,9 @@
-{ lib, modulesPath, self, ... }:
+{
+  lib,
+  modulesPath,
+  self,
+  ...
+}:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")

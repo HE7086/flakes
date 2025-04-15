@@ -1,7 +1,7 @@
 { rootPath, ... }:
 {
   sops.secrets."server/private" = {
-    sopsFile = rootPath + /secrets/wireguard.yaml;
+    sopsFile = rootPath + /secrets/awakening.yaml;
     restartUnits = [ "wireguard-wg0.service" ];
   };
 }

@@ -1,10 +1,17 @@
-{ lib, modulesPath, self, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  rootPath,
+  self,
+  ...
+}:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./filesystems/btrfs-bios-gpt-root.nix
     self.nixosModules.fileShare
-    self.nixosModules.wireguard
+    self.nixosModules.awakening
     self.nixosModules.netbootxyz
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
@@ -48,4 +55,5 @@
     rsyncd = true;
   };
 
+  services.awakening.server.enable = true;
 }

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "home",
+    "key" : "Ao46pdDwpGZRXu4XveQZaRtsf57SYIoT/BnpnJJlcEo=",
+    "section": "2",
+    "token" : "1"
+  },
+  {
+    "id": "fridge",
+    "key" : "Ry1T28Xmn9GnoSEOWjJqsw1gb9Moy59imbgjaPMOmCg=",
+    "section": "2",
+    "token" : "2"
+  },
+  {
+    "id": "vault",
+    "key" : "ZXhfJ6rfqMhFa/X7aNcjnb5T5WPG4TqfuqecGp1VN3Q=",
+    "section": "2",
+    "token" : "3"
+  },
+  {
+    "id": "mobile",
+    "key" : "xORMnqdh6UjxP2WQ+cOwza6ZFv7QZra49IRv0BrEcjo=",
+    "section": "2",
+    "token" : "1"
+  }
+]
