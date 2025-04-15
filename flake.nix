@@ -50,6 +50,7 @@
             jq
             mkpasswd
             ssh-to-age
+            opentofu
           ];
         };
         formatter = pkgs.nixfmt-rfc-style;
