@@ -5,6 +5,7 @@
     ./filesystems/btrfs-bios-gpt-root.nix
     self.nixosModules.fileShare
     self.nixosModules.wireguard
+    self.nixosModules.netbootxyz
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [

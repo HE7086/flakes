@@ -1,8 +1,9 @@
-{ lib, modulesPath, ... }:
+{ lib, modulesPath, self, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./filesystems/btrfs-uefi-gpt-root.nix
+    self.nixosModules.netbootxyz
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [

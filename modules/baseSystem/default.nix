@@ -21,9 +21,6 @@
   };
   boot.tmp.cleanOnBoot = true;
 
-  # does not work on bios system
-  boot.loader.systemd-boot.netbootxyz.enable = true;
-
   system.stateVersion = "24.11";
   time.timeZone = "Europe/Berlin";
 
