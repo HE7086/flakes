@@ -1,8 +1,6 @@
 {
-  config,
   lib,
   modulesPath,
-  rootPath,
   self,
   ...
 }:

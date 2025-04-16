@@ -17,6 +17,7 @@
     self.nixosModules.download
     self.nixosModules.hass
     self.nixosModules.netbootxyz
+    self.nixosModules.awakening
   ];
 
   disko.devices.disk.root.device = lib.mkForce "/dev/disk/by-id/nvme-eui.0024cf014c003c56";
@@ -89,4 +90,5 @@
       rsyncd = true;
     };
   };
+  services.awakening.client.enable = true;
 }
