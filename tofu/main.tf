@@ -9,6 +9,9 @@ terraform {
     sops = {
       source = "carlpett/sops"
     }
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+    }
   }
   encryption {
     # export TF_ENCRYPTION=...
@@ -16,11 +19,11 @@ terraform {
       keys = key_provider.pbkdf2.default
     }
     state {
-      method = method.aes_gcm.default
+      method   = method.aes_gcm.default
       enforced = true
     }
     plan {
-      method = method.aes_gcm.default
+      method   = method.aes_gcm.default
       enforced = true
     }
   }
@@ -33,16 +36,4 @@ data "sops_file" "secrets" {
 
 locals {
   secrets = yamldecode(data.sops_file.secrets.raw)
-}
-
-provider "hcloud" {
-  token = local.secrets.hetzner.token
-}
-
-provider "oci" {
-  tenancy_ocid = local.secrets.oci.tenancy
-  user_ocid    = local.secrets.oci.user
-  private_key  = local.secrets.oci.private_key
-  fingerprint  = local.secrets.oci.fingerprint
-  region       = local.secrets.oci.region
 }

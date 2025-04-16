@@ -1,3 +1,7 @@
+provider "hcloud" {
+  token = local.secrets.hetzner.token
+}
+
 locals {
   nodes = {
     herd = {
