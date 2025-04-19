@@ -70,6 +70,7 @@ in
             "fd00:4845:7086::/64"
             "::/0"
           ];
+          persistentKeepalive = 30;
         }
       ];
     };
