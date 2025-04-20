@@ -15,7 +15,7 @@
     bat
     aria2
     fd
-    fzf
+    unstable.fzf
     ripgrep
     mtr
     inxi
