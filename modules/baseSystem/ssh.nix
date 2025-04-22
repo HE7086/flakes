@@ -12,11 +12,7 @@
     settings = {
       Ciphers = [ "aes256-gcm@openssh.com" ];
       KbdInteractiveAuthentication = false;
-      KexAlgorithms = [
-        "mlkem768x25519-sha256"
-        "sntrup761x25519-sha512"
-        "sntrup761x25519-sha512@openssh.com"
-      ];
+      KexAlgorithms = [ "mlkem768x25519-sha256" ];
       Macs = [ "hmac-sha2-512-etm@openssh.com" ];
       PermitRootLogin = "prohibit-password";
       PasswordAuthentication = false;
