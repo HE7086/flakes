@@ -35,7 +35,7 @@ resource "hcloud_server" "server" {
   }
 
   lifecycle {
-    ignore_changes = [ image ]
+    ignore_changes = [image]
   }
 }
 

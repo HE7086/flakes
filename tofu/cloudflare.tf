@@ -8,12 +8,12 @@ locals {
       A = {
         herd = module.hcloud["herd"].ipv4
         # fridge = #ddns
-        toaster = "130.61.106.117"
+        toaster = module.oci.ipv4
       }
       AAAA = {
         herd = module.hcloud["herd"].ipv6
         # fridge = #ddns
-        toaster = "2603:c020:8007:f222:194:a7be:c02e:2d34"
+        toaster = module.oci.ipv6
       }
       CNAME = {
         blog        = "he7086.github.io"
@@ -37,9 +37,9 @@ locals {
 }
 
 module "cloudflare" {
-  source = "./modules/cloudflare"
-  for_each = local.zones
-  zone = each.key
-  records = each.value
+  source     = "./modules/cloudflare"
+  for_each   = local.zones
+  zone       = each.key
+  records    = each.value
   account_id = local.secrets.cloudflare.account_id
 }
