@@ -34,45 +34,12 @@ locals {
       }
     }
   }
-  zones_flattened = tomap({
-    for record in flatten([
-      for zone, zone_data in local.zones : [
-        for type, type_data in zone_data : [
-          for name, content in type_data : {
-            zone    = zone
-            type    = type
-            name    = name
-            content = content
-          }
-        ]
-      ]
-    ]) : "${record.zone}_${record.type}_${record.name}" => record
-  })
-
 }
 
-# TODO: use resource when server issue fixed
-# resource "cloudflare_account" "main" {
-#   name = "he7086"
-#   type = "standard"
-# }
-
-resource "cloudflare_zone" "zones" {
+module "cloudflare" {
+  source = "./modules/cloudflare"
   for_each = local.zones
-
-  account = {
-    id = local.secrets.cloudflare.account_id
-  }
-  name = each.key
-}
-
-resource "cloudflare_dns_record" "dns_records" {
-  for_each = local.zones_flattened
-
-  zone_id = cloudflare_zone.zones[each.value.zone].id
-  name    = each.value.name
-  type    = each.value.type
-  content = each.value.content
-  proxied = false
-  ttl     = 1
+  zone = each.key
+  records = each.value
+  account_id = local.secrets.cloudflare.account_id
 }
