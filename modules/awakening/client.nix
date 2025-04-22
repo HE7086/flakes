@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.services.awakening.client;
@@ -49,14 +49,14 @@ in
       privateKeyFile = cfg.privateKeyFile;
 
       postSetup = ''
-        ip -6 rule add from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
-        ip -6 route add default via ${cfg.ip6.gateway} dev ${cfg.interface} table ${cfg.routeTable}
-        ip -6 route add ${cfg.ip6.gateway}/128 dev ${cfg.interface}
+        ${pkgs.iproute2}/bin/ip -6 rule add from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
+        ${pkgs.iproute2}/bin/ip -6 route add default via ${cfg.ip6.gateway} dev ${cfg.interface} table ${cfg.routeTable}
+        ${pkgs.iproute2}/bin/ip -6 route add ${cfg.ip6.gateway}/128 dev ${cfg.interface}
       '';
       preShutdown = ''
-        ip -6 rule del from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
-        ip -6 route flush table ${cfg.routeTable}
-        ip -6 route del ${cfg.ip6.gateway}/128 dev ${cfg.interface}
+        ${pkgs.iproute2}/bin/ip -6 rule del from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
+        ${pkgs.iproute2}/bin/ip -6 route flush table ${cfg.routeTable}
+        ${pkgs.iproute2}/bin/ip -6 route del ${cfg.ip6.gateway}/128 dev ${cfg.interface}
       '';
 
       allowedIPsAsRoutes = false;
