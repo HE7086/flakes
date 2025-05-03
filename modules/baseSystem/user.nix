@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 let
-  keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgQ10239M1Ehw6nmY7mFxGyqfpCkfSHAjZzSZZZ7NLA" ];
+  keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgQ10239M1Ehw6nmY7mFxGyqfpCkfSHAjZzSZZZ7NLA"
+    "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMh7sI+KpYEYuLy9L4dD9CGXTNyITfZkr8o8zbeq1czjAAAABHNzaDo="
+  ];
 in
 {
   users.mutableUsers = false;
