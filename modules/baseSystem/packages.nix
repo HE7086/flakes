@@ -34,6 +34,7 @@
     smartmontools
     pciutils
     usbutils
+    bind
 
     nix-output-monitor
     nh
