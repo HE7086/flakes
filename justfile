@@ -19,7 +19,7 @@ deploy-to HOST FLAKE:
         printf "\033[1;31m[{{HOST}} Deploy Failed!!!\033[0m\n"
     fi
 
-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
+deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' | xargs`:
     #!/bin/bash
     set -euo pipefail
     for host in {{HOSTS}}; do
@@ -38,7 +38,7 @@ deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
         fi
     done
 
-build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
+build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' | xargs`:
     #!/bin/bash
     set -euo pipefail
     for host in {{HOSTS}}; do
@@ -56,7 +56,7 @@ build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
         fi
     done
 
-deploy-config HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -v 'default' | xargs`:
+deploy-config HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' | xargs`:
     #!/bin/bash
     set -euo pipefail
     FLAKE_PATH=$(nix flake metadata --json | jq -r '.path')
