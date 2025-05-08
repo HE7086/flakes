@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   domain = "dash.heyi7086.com";
 in
@@ -18,6 +18,15 @@ in
       };
     };
   };
+  services.loki = {
+    enable = true;
+    configFile = (pkgs.formats.yaml {}).generate "loki-config.yaml" {
+      server = {
+        http_listen_port = 3100;
+      };
+    };
+  };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
