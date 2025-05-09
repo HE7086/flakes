@@ -88,7 +88,7 @@
     local.enable = true;
     remote = {
       enable = true;
-      rsyncd = true;
+      rsyncd = false;
     };
   };
   services.awakening.client.enable = true;

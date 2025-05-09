@@ -52,7 +52,7 @@
     virtualHost = "repo.heyi7086.com";
     user = "root";
     group = "root";
-    rsyncd = true;
+    rsyncd = false;
   };
 
   services.awakening.server.enable = true;
