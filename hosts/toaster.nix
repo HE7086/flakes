@@ -9,6 +9,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./filesystems/btrfs-uefi-gpt-root.nix
     self.nixosModules.netbootxyz
+    self.nixosModules.monitoring
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [

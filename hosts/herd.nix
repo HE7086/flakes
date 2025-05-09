@@ -12,6 +12,7 @@
     self.nixosModules.awakening
     self.nixosModules.netbootxyz
     self.nixosModules.dash
+    self.nixosModules.monitoring
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [

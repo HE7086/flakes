@@ -18,6 +18,7 @@
     self.nixosModules.hass
     self.nixosModules.netbootxyz
     self.nixosModules.awakening
+    self.nixosModules.monitoring
   ];
 
   disko.devices.disk.root.device = lib.mkForce "/dev/disk/by-id/nvme-eui.0024cf014c003c56";
