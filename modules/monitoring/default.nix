@@ -28,7 +28,16 @@
       }
     }
 
-    prometheus.exporter.unix "${config.networking.hostName}" { }
+    prometheus.exporter.unix "${config.networking.hostName}" {
+      enable_collectors = [ "cpu", "loadavg", "meminfo" ]
+      disable_collectors = [
+        "arp", "bcache", "bonding", "boottime", "btrfs", "conntrack", "cpufreq", "diskstats", "dmi", "edac",
+        "entropy", "exec", "fibrechannel", "filfd", "filesystem", "hwmon", "infiniband", "ipvs", "mdadm",
+        "netclass", "netdev", "netisr", "netstat", "nfs", "nfsd", "nvme", "os", "powersupplyclass", "pressure",
+        "rapl", "schedstat", "sockstat", "softnet", "stat", "tapestats", "textfile", "thermal_zone", "thermal",
+        "time", "timex", "udp_queues", "uname", "vmstat", "xfs", "zfs",
+      ]
+    }
     prometheus.scrape "${config.networking.hostName}" {
       targets = prometheus.exporter.unix.${config.networking.hostName}.targets
       forward_to = [prometheus.remote_write.default.receiver]
