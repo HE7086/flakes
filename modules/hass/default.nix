@@ -34,6 +34,25 @@
         ];
       };
       "automation ui" = "!include automations.yaml";
+      logger = {
+        filters = {
+          "homeassistant.loader" = [
+            "ModuleNotFoundError"
+            "No module named"
+            "UnknownHandler"
+          ];
+          "homeassistant.setup" = [
+            "ModuleNotFoundError"
+            "No module named"
+            "UnknownHandler"
+          ];
+          "homeassistant.data_entry_flow" = [
+            "ModuleNotFoundError"
+            "No module named"
+            "UnknownHandler"
+          ];
+        };
+      };
     };
   };
   systemd.tmpfiles.rules = [
