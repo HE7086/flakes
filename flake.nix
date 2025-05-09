@@ -20,6 +20,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-extra-modules = {
+      url = "github:oddlama/nixos-extra-modules";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # dotfiles = {
     #   url = "https://github.com/HE7086/dotfiles";
     #   flake = false;

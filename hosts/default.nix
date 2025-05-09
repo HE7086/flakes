@@ -6,22 +6,19 @@
 }:
 with inputs;
 let
-  baseSystem =
-    {
-      modules ? [ ],
-      system ? "x86_64-linux",
-    }:
-    nixpkgs.lib.nixosSystem {
+  baseSystem = { module, system }:
+    nixpkgs.lib.nixosSystem rec {
       inherit system;
       specialArgs = {
         inherit inputs rootPath self;
+        inherit (pkgs) lib;
       };
       modules = [
         sops-nix.nixosModules.sops
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         self.nixosModules.baseSystem
-      ] ++ modules;
+      ] ++ module;
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
@@ -32,15 +29,13 @@ let
               config.allowUnfree = true;
             };
           })
+          nixos-extra-modules.overlays.default
         ];
       };
     };
 in
 {
-  herd = baseSystem { modules = [ ./herd.nix ]; };
-  fridge = baseSystem { modules = [ ./fridge.nix ]; };
-  toaster = baseSystem {
-    modules = [ ./toaster.nix ];
-    system = "aarch64-linux";
-  };
+  herd = baseSystem { module = [ ./herd.nix ]; system = "x86_64-linux"; };
+  fridge = baseSystem { module = [ ./fridge.nix ]; system = "x86_64-linux"; };
+  toaster = baseSystem { module = [ ./toaster.nix ]; system = "aarch64-linux"; };
 }

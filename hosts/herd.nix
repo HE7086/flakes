@@ -9,7 +9,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./filesystems/btrfs-bios-gpt-root.nix
     self.nixosModules.fileShare
-    self.nixosModules.awakening
+    self.nixosModules.heon
     self.nixosModules.netbootxyz
     self.nixosModules.dash
     self.nixosModules.monitoring
@@ -55,5 +55,5 @@
     rsyncd = false;
   };
 
-  services.awakening.server.enable = true;
+  services.heon.server.enable = true;
 }

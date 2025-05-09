@@ -1,23 +1,23 @@
 { config, lib, ... }:
 with lib;
 let
-  cfg = config.services.awakening.server;
+  cfg = config.services.heon.server;
 in
 {
   imports = [ ./secrets.nix ];
-  options.services.awakening.server = {
-    enable = mkEnableOption "awakening network server";
+  options.services.heon.server = {
+    enable = mkEnableOption "heon network server";
     port = mkOption {
       type = types.port;
       default = 51820;
     };
     interface = mkOption {
       type = types.str;
-      default = "wg0";
+      default = "he0";
     };
     privateKeyFile = mkOption {
       type = types.path;
-      default = config.sops.secrets."awakening/private".path;
+      default = config.sops.secrets."heon/private".path;
     };
     ip4 = {
       internal = mkOption {
@@ -27,10 +27,6 @@ in
       external = mkOption {
         type = types.str;
         default = "91.107.230.166/32";
-      };
-      pool = mkOption {
-        type = types.str;
-        default = "10.1";
       };
     };
     ip6 = {
@@ -42,16 +38,6 @@ in
         type = types.str;
         default = "2a01:4f8:c0c:1be5::1/64";
       };
-      pool = {
-        internal = mkOption {
-          type = types.str;
-          default = "fd00:4845:7086";
-        };
-        external = mkOption {
-          type = types.str;
-          default = "2a01:4f8:c0c:1be5";
-        };
-      };
     };
     clients = mkOption {
       type = types.listOf (
@@ -59,20 +45,24 @@ in
           options = {
             id = mkOption { type = types.str; };
             key = mkOption { type = types.str; };
-            section = mkOption { type = types.str; };
-            token = mkOption { type = types.str; };
+            section = mkOption { type = types.int; };
+            token = mkOption { type = types.int; };
           };
         }
       );
-      default = builtins.fromJSON (builtins.readFile ./awakening.json);
+      default = builtins.fromJSON (builtins.readFile ./heon.json);
     };
   };
-  config = mkIf cfg.enable {
+  config =
+    let
+      snat_cidr = net.cidr.make 112 (net.cidr.host (3*65536) cfg.ip6.external);
+    in
+    mkIf cfg.enable {
     networking.nftables.ruleset = ''
       table ip6 wireguard {
         chain postrouting {
           type nat hook postrouting priority srcnat; policy accept;
-          oifname "${cfg.interface}" ip6 daddr ${cfg.ip6.pool.external}::3:0/112 ip6 saddr != ${cfg.ip6.internal} snat ip6 to ${cfg.ip6.internal}
+          oifname "${cfg.interface}" ip6 daddr ${snat_cidr} ip6 saddr != ${cfg.ip6.internal} snat ip6 to ${cfg.ip6.internal}
         }
       }
     '';
@@ -92,13 +82,13 @@ in
 
       privateKeyFile = cfg.privateKeyFile;
 
-      peers = map (client: {
-        name = client.id;
-        publicKey = client.key;
+      peers = map (client: with client; {
+        name = id;
+        publicKey = key;
         allowedIPs = [
-          "${cfg.ip4.pool}.${client.section}.${client.token}/32"
-          "${cfg.ip6.pool.internal}::${client.section}:${client.token}/128"
-          "${cfg.ip6.pool.external}::${client.section}:${client.token}/128"
+          (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfg.ip4.internal))
+          (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.internal))
+          (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
         ];
       }) cfg.clients;
     };

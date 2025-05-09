@@ -1,7 +1,7 @@
 { config, rootPath, ... }:
 {
-  sops.secrets."awakening/private" = {
+  sops.secrets."heon/private" = {
     sopsFile = rootPath + /secrets/${config.networking.hostName}.yaml;
-    restartUnits = [ "wireguard-wg0.service" ];
+    restartUnits = [ "wireguard-he0.service" ];
   };
 }

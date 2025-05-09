@@ -17,7 +17,7 @@
     self.nixosModules.download
     self.nixosModules.hass
     self.nixosModules.netbootxyz
-    self.nixosModules.awakening
+    self.nixosModules.heon
     self.nixosModules.monitoring
   ];
 
@@ -91,5 +91,5 @@
       rsyncd = false;
     };
   };
-  services.awakening.client.enable = true;
+  services.heon.client.enable = true;
 }
