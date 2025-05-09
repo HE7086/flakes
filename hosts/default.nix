@@ -6,7 +6,8 @@
 }:
 with inputs;
 let
-  baseSystem = { module, system }:
+  baseSystem =
+    { module, system }:
     nixpkgs.lib.nixosSystem rec {
       inherit system;
       specialArgs = {
@@ -35,7 +36,16 @@ let
     };
 in
 {
-  herd = baseSystem { module = [ ./herd.nix ]; system = "x86_64-linux"; };
-  fridge = baseSystem { module = [ ./fridge.nix ]; system = "x86_64-linux"; };
-  toaster = baseSystem { module = [ ./toaster.nix ]; system = "aarch64-linux"; };
+  herd = baseSystem {
+    module = [ ./herd.nix ];
+    system = "x86_64-linux";
+  };
+  fridge = baseSystem {
+    module = [ ./fridge.nix ];
+    system = "x86_64-linux";
+  };
+  toaster = baseSystem {
+    module = [ ./toaster.nix ];
+    system = "aarch64-linux";
+  };
 }

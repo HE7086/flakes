@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   services.prometheus = {
     enable = true;
     webExternalUrl = "https://prometheus.heyi7086.com";

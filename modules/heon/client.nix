@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.services.heon.client;
@@ -52,40 +57,40 @@ in
       gateway = net.cidr.host 1 cfg.ip6.internal;
     in
     mkIf cfg.enable {
-    networking.wireguard.interfaces."${cfg.interface}" = {
-      ips = [
-        cfg.ip4.internal
-        cfg.ip6.internal
-        cfg.ip6.external
-      ];
+      networking.wireguard.interfaces."${cfg.interface}" = {
+        ips = [
+          cfg.ip4.internal
+          cfg.ip6.internal
+          cfg.ip6.external
+        ];
 
-      privateKeyFile = cfg.privateKeyFile;
+        privateKeyFile = cfg.privateKeyFile;
 
-      postSetup = ''
-        ${pkgs.iproute2}/bin/ip -6 rule add from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
-        ${pkgs.iproute2}/bin/ip -6 route add default via ${gateway} dev ${cfg.interface} table ${cfg.routeTable}
-        ${pkgs.iproute2}/bin/ip -6 route add ${gateway}/128 dev ${cfg.interface}
-      '';
-      preShutdown = ''
-        ${pkgs.iproute2}/bin/ip -6 rule del from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
-        ${pkgs.iproute2}/bin/ip -6 route flush table ${cfg.routeTable}
-        ${pkgs.iproute2}/bin/ip -6 route del ${gateway}/128 dev ${cfg.interface}
-      '';
+        postSetup = ''
+          ${pkgs.iproute2}/bin/ip -6 rule add from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
+          ${pkgs.iproute2}/bin/ip -6 route add default via ${gateway} dev ${cfg.interface} table ${cfg.routeTable}
+          ${pkgs.iproute2}/bin/ip -6 route add ${gateway}/128 dev ${cfg.interface}
+        '';
+        preShutdown = ''
+          ${pkgs.iproute2}/bin/ip -6 rule del from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
+          ${pkgs.iproute2}/bin/ip -6 route flush table ${cfg.routeTable}
+          ${pkgs.iproute2}/bin/ip -6 route del ${gateway}/128 dev ${cfg.interface}
+        '';
 
-      allowedIPsAsRoutes = false;
-      peers = [
-        {
-          name = cfg.peer_name;
-          publicKey = cfg.publicKey;
-          endpoint = cfg.endpoint;
-          allowedIPs = [
-            (toString (net.cidr.canonicalize cfg.ip4.internal))
-            (toString (net.cidr.canonicalize cfg.ip6.internal))
-            "::/0"
-          ];
-          persistentKeepalive = 30;
-        }
-      ];
+        allowedIPsAsRoutes = false;
+        peers = [
+          {
+            name = cfg.peer_name;
+            publicKey = cfg.publicKey;
+            endpoint = cfg.endpoint;
+            allowedIPs = [
+              (toString (net.cidr.canonicalize cfg.ip4.internal))
+              (toString (net.cidr.canonicalize cfg.ip6.internal))
+              "::/0"
+            ];
+            persistentKeepalive = 30;
+          }
+        ];
+      };
     };
-  };
 }

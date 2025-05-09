@@ -20,7 +20,9 @@ in
     enableACME = true;
 
     locations."/" = {
-      proxyPass = with config.services.grafana.settings.server; "http://${http_addr}:${toString http_port}";
+      proxyPass =
+        with config.services.grafana.settings.server;
+        "http://${http_addr}:${toString http_port}";
       proxyWebsockets = true;
       recommendedProxySettings = true;
     };

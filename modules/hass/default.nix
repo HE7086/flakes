@@ -17,10 +17,11 @@
       "tuya"
       "smartthings"
     ];
-    extraPackages = python3pkgs: with python3pkgs; [
-      pychromecast
-      google-nest-sdm
-    ];
+    extraPackages =
+      python3pkgs: with python3pkgs; [
+        pychromecast
+        google-nest-sdm
+      ];
     config = {
       homeassistant = {
         external_url = "https://hass.heyi7086.com";
