@@ -2,6 +2,8 @@ alias c := check
 alias d := deploy
 alias bd := build-deploy
 
+hosts := `nix flake show --json 2>/dev/null | jq -r '.nixosConfigurations | keys[]' | xargs`
+
 deploy-to HOST FLAKE:
     #!/bin/bash
     set -euo pipefail
@@ -19,7 +21,7 @@ deploy-to HOST FLAKE:
         printf "\033[1;31m[{{HOST}} Deploy Failed!!!\033[0m\n"
     fi
 
-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' | xargs`:
+deploy HOSTS=hosts:
     #!/bin/bash
     set -euo pipefail
     for host in {{HOSTS}}; do
@@ -38,7 +40,7 @@ deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' |
         fi
     done
 
-build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' | xargs`:
+build-deploy HOSTS=hosts:
     #!/bin/bash
     set -euo pipefail
     for host in {{HOSTS}}; do
@@ -56,7 +58,7 @@ build-deploy HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesyste
         fi
     done
 
-deploy-config HOSTS=`ls ./hosts | sed 's/\.nix$//' | grep -Ev '(default|filesystems)' | xargs`:
+deploy-config HOSTS=hosts:
     #!/bin/bash
     set -euo pipefail
     FLAKE_PATH=$(nix flake metadata --json | jq -r '.path')
