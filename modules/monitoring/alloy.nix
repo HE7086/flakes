@@ -42,13 +42,13 @@ with lib;
           }
 
           prometheus.exporter.unix "${config.networking.hostName}" {
-            enable_collectors = [ "cpu", "loadavg", "meminfo" ]
+            enable_collectors = [ "cpu", "loadavg", "meminfo", "vmstat" ]
             disable_collectors = [
               "arp", "bcache", "bonding", "boottime", "btrfs", "conntrack", "cpufreq", "diskstats", "dmi", "edac",
               "entropy", "exec", "fibrechannel", "filfd", "filesystem", "hwmon", "infiniband", "ipvs", "mdadm",
               "netclass", "netdev", "netisr", "netstat", "nfs", "nfsd", "nvme", "os", "powersupplyclass", "pressure",
               "rapl", "schedstat", "sockstat", "softnet", "stat", "tapestats", "textfile", "thermal_zone", "thermal",
-              "time", "timex", "udp_queues", "uname", "vmstat", "xfs", "zfs",
+              "time", "timex", "udp_queues", "uname", "xfs", "zfs",
             ]
           }
           prometheus.scrape "${config.networking.hostName}" {
