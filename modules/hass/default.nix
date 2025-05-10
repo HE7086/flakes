@@ -37,12 +37,22 @@
       "automation ui" = "!include automations.yaml";
       logger = {
         filters = {
+          "homeassistant" = [
+            "ModuleNotFoundError"
+            "No module named"
+            "UnknownHandler"
+          ];
           "homeassistant.loader" = [
             "ModuleNotFoundError"
             "No module named"
             "UnknownHandler"
           ];
           "homeassistant.setup" = [
+            "ModuleNotFoundError"
+            "No module named"
+            "UnknownHandler"
+          ];
+          "homeassistant.config_entries" = [
             "ModuleNotFoundError"
             "No module named"
             "UnknownHandler"
