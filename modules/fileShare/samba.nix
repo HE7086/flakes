@@ -8,7 +8,7 @@ lib.mkIf cfg.enable {
     openFirewall = true;
     settings = {
       global = {
-        workgroup = "heyi7086.lan";
+        workgroup = "heyi7086.home.arpa";
         "server string" = "${config.networking.hostName}-samba";
         "netbios name" = "${config.networking.hostName}";
         security = "user";
