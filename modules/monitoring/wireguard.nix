@@ -3,6 +3,7 @@
   services.prometheus.exporters.wireguard = lib.mkIf config.networking.wireguard.enable {
     enable = true;
     withRemoteIp = true;
+    singleSubnetPerField = true;
   };
   services.alloy.extraConfigs = with config.services.prometheus.exporters.wireguard; [
     ''
