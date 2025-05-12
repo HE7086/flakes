@@ -41,6 +41,7 @@
             "ModuleNotFoundError"
             "No module named"
             "UnknownHandler"
+            "Error doing job: Task exception was never retrieved"
           ];
           "homeassistant.loader" = [
             "ModuleNotFoundError"
