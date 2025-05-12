@@ -9,7 +9,6 @@ let
   cfg = config.services.heon.client;
 in
 {
-  imports = [ ./secrets.nix ];
   options.services.heon.client = {
     enable = mkEnableOption "heon network client";
     interface = mkOption {

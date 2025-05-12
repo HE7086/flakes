@@ -4,7 +4,6 @@ let
   cfg = config.services.heon.server;
 in
 {
-  imports = [ ./secrets.nix ];
   options.services.heon.server = {
     enable = mkEnableOption "heon network server";
     port = mkOption {
