@@ -31,7 +31,7 @@ creation_rules:
     - age:
       - *he
       - *fridge
-  - path_regex: ^secrets/awakening\.(yaml|json)$
+  - path_regex: ^secrets/heon\.(yaml|json)$
     key_groups:
     - age:
       - *he
