@@ -57,6 +57,7 @@ in
       snat_cidr = net.cidr.make 112 (net.cidr.host (3 * 65536) cfg.ip6.external);
     in
     mkIf cfg.enable {
+      networking.firewall.trustedInterfaces = [ cfg.interface ];
       networking.nftables.ruleset = ''
         table ip6 wireguard {
           chain postrouting {

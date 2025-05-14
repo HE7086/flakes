@@ -23,18 +23,15 @@
   ];
   boot.initrd.kernelModules = [ "nvme" ];
 
+  # use heon server
+  services.resolved.enable = false;
+
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens3";
     networkConfig.DHCP = "ipv4";
     address = [ "2a01:4f8:c0c:1be5::1/64" ];
     routes = [ { Gateway = "fe80::1"; } ];
-    dns = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-    ];
     linkConfig.RequiredForOnline = "routable";
   };
   networking = {

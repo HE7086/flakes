@@ -45,19 +45,15 @@ in
       type = types.str;
       default = "herd.heyi7086.com:51820";
     };
-    peer_name = mkOption {
-      type = types.str;
-      default = "herd";
-    };
-
   };
   config =
     let
       gateway = net.cidr.host 1 cfg.ip6.internal;
     in
     mkIf cfg.enable {
-      networking.wireguard.interfaces."${cfg.interface}" = {
-        ips = [
+      networking.firewall.trustedInterfaces = [ cfg.interface ];
+      networking.wg-quick.interfaces."${cfg.interface}" = {
+        address = [
           cfg.ip4.internal
           cfg.ip6.internal
           cfg.ip6.external
@@ -65,21 +61,24 @@ in
 
         privateKeyFile = cfg.privateKeyFile;
 
-        postSetup = ''
+        postUp = ''
           ${pkgs.iproute2}/bin/ip -6 rule add from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
           ${pkgs.iproute2}/bin/ip -6 route add default via ${gateway} dev ${cfg.interface} table ${cfg.routeTable}
           ${pkgs.iproute2}/bin/ip -6 route add ${gateway}/128 dev ${cfg.interface}
         '';
-        preShutdown = ''
+        preDown = ''
           ${pkgs.iproute2}/bin/ip -6 rule del from ${cfg.ip6.external} lookup ${cfg.routeTable} priority 100
           ${pkgs.iproute2}/bin/ip -6 route flush table ${cfg.routeTable}
           ${pkgs.iproute2}/bin/ip -6 route del ${gateway}/128 dev ${cfg.interface}
         '';
 
-        allowedIPsAsRoutes = false;
+        table = "off";
+        dns = [
+          (toString (net.cidr.host 1 (net.cidr.canonicalize cfg.ip6.internal)))
+        ];
+
         peers = [
           {
-            name = cfg.peer_name;
             publicKey = cfg.publicKey;
             endpoint = cfg.endpoint;
             allowedIPs = [
