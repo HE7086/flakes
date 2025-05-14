@@ -53,12 +53,6 @@
     useDHCP = false;
     useNetworkd = true;
     firewall.enable = false;
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-    ];
   };
   systemd.network.netdevs = {
     "10-br0" = {
@@ -79,6 +73,7 @@
       matchConfig.Name = "br0";
       address = [ "192.168.1.2/24" ];
       gateway = [ "192.168.1.1" ];
+      dns = [ "192.168.1.1" ];
       DHCP = "ipv6";
       ipv6AcceptRAConfig.Token = "::2";
     };
