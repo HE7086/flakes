@@ -86,5 +86,9 @@
       rsyncd = false;
     };
   };
-  services.heon.client.enable = true;
+  services.heon.client = {
+    enable = true;
+    section = 2;
+    token = 2;
+  };
 }
