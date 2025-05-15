@@ -80,17 +80,18 @@ in
           ${pkgs.iproute2}/bin/ip -6 rule add from ${ip6_ext} lookup ${cfg.routeTable} priority 100
           ${pkgs.iproute2}/bin/ip -6 route add default via ${gateway} dev ${cfg.interface} table ${cfg.routeTable}
           ${pkgs.iproute2}/bin/ip -6 route add ${gateway}/128 dev ${cfg.interface}
+          ${pkgs.systemd}/bin/resolvectl dns ${cfg.interface} ${gateway}
+          ${pkgs.systemd}/bin/resolvectl domain ${cfg.interface} ~l ~r
         '';
         preDown = ''
           ${pkgs.iproute2}/bin/ip -6 rule del from ${ip6_ext} lookup ${cfg.routeTable} priority 100
           ${pkgs.iproute2}/bin/ip -6 route flush table ${cfg.routeTable}
           ${pkgs.iproute2}/bin/ip -6 route del ${gateway}/128 dev ${cfg.interface}
+          ${pkgs.systemd}/bin/resolvectl revert ${cfg.interface}
         '';
 
         table = "off";
-        dns = [
-          (toString (net.cidr.host 1 (net.cidr.canonicalize cfg.ip6.internal)))
-        ];
+        # dns = [ gateway ];
 
         peers = [
           {
