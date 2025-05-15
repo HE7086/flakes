@@ -18,7 +18,7 @@ lib.mkIf config.services.heon.server.enable {
         ];
 
         local-data = map (s: "'${s}'") [
-          "herd.l. IN A 10.1.1.1"
+          "herd.l. IN A 10.1.0.1"
           "herd.l. IN AAAA fd00:4845:7086::1"
           "herd.r. IN AAAA 2a01:4f8:c0c:1be5::1"
           "fridge.l. IN A 10.1.2.2"
@@ -27,10 +27,13 @@ lib.mkIf config.services.heon.server.enable {
           "vault.l. IN A 10.1.2.3"
           "vault.l. IN AAAA fd00:4845:7086::2:3"
           "vault.r. IN AAAA 2a01:4f8:c0c:1be5::2:3"
+          "toaster.l. IN A 10.1.1.2"
+          "toaster.l. IN AAAA fd00:4845:7086::1:2"
+          "toaster.r. IN AAAA 2a01:4f8:c0c:1be5::1:2"
         ];
 
         local-data-ptr = map (s: "'${s}'") [
-          "10.1.1.1 herd.l"
+          "10.1.0.1 herd.l"
           "fd00:4845:7086::1 herd.l"
           "2a01:4f8:c0c:1be5::1 herd.r"
           "10.1.2.2 fridge.l"
@@ -39,6 +42,9 @@ lib.mkIf config.services.heon.server.enable {
           "10.1.2.3 vault.l"
           "fd00:4845:7086::2:3 vault.l"
           "2a01:4f8:c0c:1be5::2:3 vault.r"
+          "10.1.1.2 toaster.l"
+          "fd00:4845:7086::1:2 toaster.l"
+          "2a01:4f8:c0c:1be5::1:2 toaster.r"
         ];
 
         local-zone = [

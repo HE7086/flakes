@@ -26,7 +26,7 @@ in
     ip4 = {
       internal = mkOption {
         type = types.str;
-        default = "10.1.1.1/16";
+        default = "10.1.0.1/16";
       };
       external = mkOption {
         type = types.str;
