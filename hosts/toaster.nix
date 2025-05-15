@@ -10,6 +10,7 @@
     ./filesystems/btrfs-uefi-gpt-root.nix
     self.nixosModules.netbootxyz
     self.nixosModules.monitoring
+    self.nixosModules.heon
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
   boot.initrd.availableKernelModules = [
@@ -26,5 +27,12 @@
     hostName = "toaster";
     domain = "heyi7086.com";
     useDHCP = true;
+  };
+
+  services.heon.client = {
+    enable = true;
+    section = 1;
+    token = 2;
+    publicKey = "jotrh61rV9hW1/5H+rzxWZNjzFZkIfFJOupmflA5jHQ=";
   };
 }

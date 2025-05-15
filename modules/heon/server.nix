@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  self,
+  ...
+}:
 with lib;
 let
   cfg = config.services.heon.server;
@@ -49,7 +54,21 @@ in
           };
         }
       );
-      default = builtins.fromJSON (builtins.readFile ./heon.json);
+      default =
+        (mapAttrsToList
+          (k: v: {
+            id = k;
+            key = v.config.services.heon.client.publicKey;
+            section = v.config.services.heon.client.section;
+            token = v.config.services.heon.client.token;
+          })
+          (
+            filterAttrs (
+              _: v: (builtins.hasAttr "heon" v.config.services) && v.config.services.heon.client.enable
+            ) self.nixosConfigurations
+          )
+        )
+        ++ builtins.fromJSON (builtins.readFile ./clients.json);
     };
   };
   config =

@@ -17,7 +17,6 @@ lib.mkIf config.services.heon.server.enable {
           "fd00:4845:7086::/64 allow"
         ];
 
-
         local-data = map (s: "'${s}'") [
           "herd.l. IN A 10.1.1.1"
           "herd.l. IN AAAA fd00:4845:7086::1"
@@ -47,7 +46,10 @@ lib.mkIf config.services.heon.server.enable {
           "6.8.0.7.5.4.8.4.0.0.d.f.ip6.arpa. nodefault"
         ];
 
-        private-domain = [ "l." "r." ];
+        private-domain = [
+          "l."
+          "r."
+        ];
 
         hide-identity = true;
         hide-version = true;
@@ -58,14 +60,16 @@ lib.mkIf config.services.heon.server.enable {
         prefetch = true;
       };
 
-      forward-zone = [{
-        name = ".";
-        forward-addr = [
-          "1.1.1.1@853#cloudflare-dns.com"
-          "1.0.0.1@853#cloudflare-dns.com"
-        ];
-        forward-tls-upstream = true;
-      }];
+      forward-zone = [
+        {
+          name = ".";
+          forward-addr = [
+            "1.1.1.1@853#cloudflare-dns.com"
+            "1.0.0.1@853#cloudflare-dns.com"
+          ];
+          forward-tls-upstream = true;
+        }
+      ];
     };
   };
 }

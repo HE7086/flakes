@@ -19,6 +19,10 @@ in
       type = types.path;
       default = config.sops.secrets."heon/private".path;
     };
+    publicKey = mkOption {
+      type = types.str;
+      default = null;
+    };
     ip4.internal = mkOption {
       type = types.net.cidrv4;
       default = "10.1.0.0/16";
@@ -37,7 +41,7 @@ in
       type = types.str;
       default = "7086";
     };
-    publicKey = mkOption {
+    peer_publicKey = mkOption {
       type = types.str;
       default = "5tBj2GFA6GTqvPyy883y4bmDH0at3QJ/QIhCi4Gd6FQ=";
     };
@@ -90,7 +94,7 @@ in
 
         peers = [
           {
-            publicKey = cfg.publicKey;
+            publicKey = cfg.peer_publicKey;
             endpoint = cfg.endpoint;
             allowedIPs = [
               (toString cfg.ip4.internal)
