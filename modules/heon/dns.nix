@@ -1,81 +1,95 @@
 { config, lib, ... }:
-lib.mkIf config.services.heon.server.enable {
-  services.unbound = {
-    enable = true;
-    settings = {
-      server = {
-        interface = [
-          "0.0.0.0"
-          "::"
-        ];
-
-        access-control = [
-          "127.0.0.0/8 allow"
-          "::1/128 allow"
-
-          "10.1.0.0/16 allow"
-          "fd00:4845:7086::/64 allow"
-        ];
-
-        local-data = map (s: "'${s}'") [
-          "herd.l. IN A 10.1.0.1"
-          "herd.l. IN AAAA fd00:4845:7086::1"
-          "herd.r. IN AAAA 2a01:4f8:c0c:1be5::1"
-          "fridge.l. IN A 10.1.2.2"
-          "fridge.l. IN AAAA fd00:4845:7086::2:2"
-          "fridge.r. IN AAAA 2a01:4f8:c0c:1be5::2:2"
-          "vault.l. IN A 10.1.2.3"
-          "vault.l. IN AAAA fd00:4845:7086::2:3"
-          "vault.r. IN AAAA 2a01:4f8:c0c:1be5::2:3"
-          "toaster.l. IN A 10.1.1.2"
-          "toaster.l. IN AAAA fd00:4845:7086::1:2"
-          "toaster.r. IN AAAA 2a01:4f8:c0c:1be5::1:2"
-        ];
-
-        local-data-ptr = map (s: "'${s}'") [
-          "10.1.0.1 herd.l"
-          "fd00:4845:7086::1 herd.l"
-          "2a01:4f8:c0c:1be5::1 herd.r"
-          "10.1.2.2 fridge.l"
-          "fd00:4845:7086::2:2 fridge.l"
-          "2a01:4f8:c0c:1be5::2:2 fridge.r"
-          "10.1.2.3 vault.l"
-          "fd00:4845:7086::2:3 vault.l"
-          "2a01:4f8:c0c:1be5::2:3 vault.r"
-          "10.1.1.2 toaster.l"
-          "fd00:4845:7086::1:2 toaster.l"
-          "2a01:4f8:c0c:1be5::1:2 toaster.r"
-        ];
-
-        local-zone = [
-          "1.10.in-addr.arpa. nodefault"
-          "6.8.0.7.5.4.8.4.0.0.d.f.ip6.arpa. nodefault"
-        ];
-
-        private-domain = [
-          "l."
-          "r."
-        ];
-
-        hide-identity = true;
-        hide-version = true;
-
-        harden-glue = true;
-        harden-dnssec-stripped = true;
-
-        prefetch = true;
-      };
-
-      forward-zone = [
-        {
-          name = ".";
-          forward-addr = [
-            "1.1.1.1@853#cloudflare-dns.com"
-            "1.0.0.1@853#cloudflare-dns.com"
+with lib;
+let
+  cfg = config.services.heon.server;
+in
+lib.mkIf cfg.enable {
+  services.unbound =
+    let
+      hostName = config.networking.hostName;
+      clients = config.networking.wireguard.interfaces.${cfg.interface}.peers;
+      ip4_int = map (c: {
+        host = c.name;
+        addr = net.cidr.ip (elemAt c.allowedIPs 0);
+      }) clients;
+      ip6_int = map (c: {
+        host = c.name;
+        addr = net.cidr.ip (elemAt c.allowedIPs 1);
+      }) clients;
+      ip6_ext = map (c: {
+        host = c.name;
+        addr = net.cidr.ip (elemAt c.allowedIPs 2);
+      }) clients;
+    in
+    {
+      enable = true;
+      settings = {
+        server = {
+          interface = [
+            "0.0.0.0"
+            "::"
           ];
-          forward-tls-upstream = true;
-        }
-      ];
+
+          access-control = [
+            "127.0.0.0/8 allow"
+            "::1/128 allow"
+
+            "${net.cidr.canonicalize cfg.ip4.internal} allow"
+            "${net.cidr.canonicalize cfg.ip6.internal} allow"
+          ];
+
+          local-data =
+            map (s: "'${s}'") (
+              [
+                "${hostName}.l. IN A ${net.cidr.ip cfg.ip4.internal}"
+                "${hostName}.l. IN AAAA ${net.cidr.ip cfg.ip6.internal}"
+                "${hostName}.r. IN AAAA ${net.cidr.ip cfg.ip6.external}"
+              ]
+              ++ (map (c: "${c.host}.l. IN A ${c.addr}") ip4_int)
+              ++ (map (c: "${c.host}.l. IN AAAA ${c.addr}") ip6_int)
+              ++ (map (c: "${c.host}.r. IN AAAA ${c.addr}") ip6_ext)
+            );
+
+          local-data-ptr = map (s: "'${s}'") (
+            [
+              "${net.cidr.ip cfg.ip4.internal} ${hostName}.l"
+              "${net.cidr.ip cfg.ip6.internal} ${hostName}.l"
+              "${net.cidr.ip cfg.ip6.external} ${hostName}.r"
+            ]
+            ++ (map (c: "${c.addr} ${c.host}.l") ip4_int)
+            ++ (map (c: "${c.addr} ${c.host}.l") ip6_int)
+            ++ (map (c: "${c.addr} ${c.host}.r") ip6_ext)
+          );
+
+          local-zone = [
+            "1.10.in-addr.arpa. nodefault"
+            "6.8.0.7.5.4.8.4.0.0.d.f.ip6.arpa. nodefault"
+          ];
+
+          private-domain = [
+            "l."
+            "r."
+          ];
+
+          hide-identity = true;
+          hide-version = true;
+
+          harden-glue = true;
+          harden-dnssec-stripped = true;
+
+          prefetch = true;
+        };
+
+        forward-zone = [
+          {
+            name = ".";
+            forward-addr = [
+              "1.1.1.1@853#cloudflare-dns.com"
+              "1.0.0.1@853#cloudflare-dns.com"
+            ];
+            forward-tls-upstream = true;
+          }
+        ];
+      };
     };
-  };
 }
