@@ -24,8 +24,6 @@
   boot.initrd.kernelModules = [ "nvme" ];
 
   # use heon server
-  services.resolved.enable = false;
-
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens3";
@@ -39,6 +37,7 @@
     domain = "heyi7086.com";
     useDHCP = false;
     useNetworkd = true;
+    nameservers = [ "127.0.0.1" ];
   };
   networking.nftables.enable = true;
   networking.firewall.enable = true;
