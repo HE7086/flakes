@@ -60,7 +60,7 @@
         Kind = "bridge";
         Name = "br0";
       };
-      bridgeConfig.STP = true;
+      # bridgeConfig.STP = true;
     };
   };
   systemd.network.networks = {
