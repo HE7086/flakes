@@ -28,6 +28,9 @@ lib.mkIf cfg.enable {
           interface = [
             "127.0.0.1"
             "::1"
+
+            "${net.cidr.ip cfg.ip4.internal}"
+            "${net.cidr.ip cfg.ip6.internal}"
           ];
 
           access-control = [
