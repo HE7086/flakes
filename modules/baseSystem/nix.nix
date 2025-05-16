@@ -20,6 +20,7 @@
         "flakes"
         "auto-allocate-uids"
         "cgroups"
+        "pipe-operators"
       ];
       auto-optimise-store = true;
       auto-allocate-uids = true;
