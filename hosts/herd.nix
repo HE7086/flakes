@@ -23,21 +23,24 @@
   ];
   boot.initrd.kernelModules = [ "nvme" ];
 
-  # use heon server
-  systemd.network.enable = true;
-  systemd.network.networks."10-wan" = {
-    matchConfig.Name = "ens3";
-    networkConfig.DHCP = "ipv4";
-    address = [ "2a01:4f8:c0c:1be5::1/64" ];
-    routes = [ { Gateway = "fe80::1"; } ];
-    linkConfig.RequiredForOnline = "routable";
-  };
   networking = {
     hostName = "herd";
     domain = "heyi7086.com";
     useDHCP = false;
     useNetworkd = true;
     nameservers = [ "127.0.0.1" ];
+    interfaces.ens3 = {
+      useDHCP = true;
+      ipv6.addresses = [{
+        address = "2a01:4f8:c0c:1be5::1";
+        prefixLength = 64;
+      }];
+      ipv6.routes = [{
+        address = "::";
+        prefixLength = 0;
+        via = "fe80::1";
+      }];
+    };
   };
   networking.nftables.enable = true;
   networking.firewall.enable = true;

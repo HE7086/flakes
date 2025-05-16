@@ -26,12 +26,8 @@
   networking = {
     hostName = "toaster";
     domain = "heyi7086.com";
+    useDHCP = true;
     useNetworkd = true;
-  };
-
-  systemd.network.networks."enp0s6" = {
-    matchConfig.Name = "enp0s6";
-    DHCP = "yes";
   };
 
   services.heon.client = {
