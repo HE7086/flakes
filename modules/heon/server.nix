@@ -19,6 +19,10 @@ in
       type = types.str;
       default = "he0";
     };
+    externalInterface = mkOption {
+      type = types.str;
+      default = "ens3";
+    };
     privateKeyFile = mkOption {
       type = types.path;
       default = config.sops.secrets."heon/private".path;
@@ -76,7 +80,14 @@ in
       snat_cidr = net.cidr.make 112 (net.cidr.host (3 * 65536) cfg.ip6.external);
     in
     mkIf cfg.enable {
+      boot.kernel.sysctl = {
+        "net.ipv6.conf.default.forwarding" = 1;
+        "net.ipv4.conf.default.forwarding" = 1;
+        "net.ipv4.conf.all.forwarding" = 1;
+        "net.ipv6.conf.all.forwarding" = 1;
+      };
       networking.firewall.trustedInterfaces = [ cfg.interface ];
+      networking.firewall.allowedUDPPorts = [ cfg.port ];
       networking.nftables.ruleset = ''
         table ip6 wireguard {
           chain postrouting {
@@ -85,22 +96,13 @@ in
           }
         }
       '';
-      boot.kernel.sysctl = {
-        "net.ipv6.conf.default.forwarding" = 1;
-        "net.ipv4.conf.default.forwarding" = 1;
-        "net.ipv4.conf.all.forwarding" = 1;
-        "net.ipv6.conf.all.forwarding" = 1;
-      };
-      networking.firewall.allowedUDPPorts = [ cfg.port ];
       networking.wireguard.interfaces."${cfg.interface}" = {
         listenPort = cfg.port;
         ips = [
           cfg.ip4.internal
           cfg.ip6.internal
         ];
-
         privateKeyFile = cfg.privateKeyFile;
-
         peers = map (
           client: with client; {
             name = id;
@@ -112,6 +114,14 @@ in
             ];
           }
         ) cfg.clients;
+      };
+
+      networking.nat = {
+        enable = true;
+        externalInterface = cfg.externalInterface;
+        externalIP = net.cidr.ip cfg.ip4.external;
+        internalInterfaces = [ cfg.interface ];
+        internalIPs = [ cfg.ip4.internal ];
       };
     };
 }
