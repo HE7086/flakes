@@ -67,8 +67,8 @@ in
     in
     mkIf cfg.enable {
       networking.firewall.trustedInterfaces = [ cfg.interface ];
-      networking.wg-quick.interfaces."${cfg.interface}" = {
-        address = [
+      networking.wireguard.interfaces."${cfg.interface}" = {
+        ips = [
           ip4_int
           ip6_int
           ip6_ext
@@ -76,21 +76,22 @@ in
 
         privateKeyFile = cfg.privateKeyFile;
 
-        postUp = ''
+        postSetup = ''
           ${pkgs.iproute2}/bin/ip -6 rule add from ${ip6_ext} lookup ${cfg.routeTable} priority 100
           ${pkgs.iproute2}/bin/ip -6 route add default via ${gateway} dev ${cfg.interface} table ${cfg.routeTable}
           ${pkgs.iproute2}/bin/ip -6 route add ${gateway}/128 dev ${cfg.interface}
           ${pkgs.systemd}/bin/resolvectl dns ${cfg.interface} ${gateway}
           ${pkgs.systemd}/bin/resolvectl domain ${cfg.interface} ~l ~r
         '';
-        preDown = ''
+        preShutdown = ''
           ${pkgs.iproute2}/bin/ip -6 rule del from ${ip6_ext} lookup ${cfg.routeTable} priority 100
           ${pkgs.iproute2}/bin/ip -6 route flush table ${cfg.routeTable}
           ${pkgs.iproute2}/bin/ip -6 route del ${gateway}/128 dev ${cfg.interface}
           ${pkgs.systemd}/bin/resolvectl revert ${cfg.interface}
         '';
 
-        table = "off";
+        allowedIPsAsRoutes = false;
+        # table = "off";
         # dns = [ gateway ];
 
         peers = [
