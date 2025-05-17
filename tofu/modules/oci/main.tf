@@ -2,6 +2,14 @@ variable tenancy {
   type = string
 }
 
+variable vnic {
+  type = string
+}
+
+variable availability_domain {
+  type = string
+}
+
 terraform {
   required_providers {
     oci = {
@@ -20,12 +28,6 @@ resource "oci_core_dhcp_options" "toaster" {
     ]
     server_type = "VcnLocalPlusInternet"
     type        = "DomainNameServer"
-  }
-  options {
-    search_domain_names = [
-      "vcn04221650.oraclevcn.com"
-    ]
-    type = "SearchDomain"
   }
 }
 
@@ -75,8 +77,6 @@ resource "oci_core_security_list" "toaster" {
     protocol         = "all"
     stateless        = "false"
   }
-  freeform_tags = {
-  }
   ingress_security_rules {
     protocol    = "6"
     source      = "0.0.0.0/0"
@@ -85,6 +85,36 @@ resource "oci_core_security_list" "toaster" {
     tcp_options {
       max = "22"
       min = "22"
+    }
+  }
+  ingress_security_rules {
+    protocol    = "6"
+    source      = "::/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+    tcp_options {
+      max = "22"
+      min = "22"
+    }
+  }
+  ingress_security_rules {
+    protocol    = "17"
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+    udp_options {
+      max = "51820"
+      min = "51820"
+    }
+  }
+  ingress_security_rules {
+    protocol    = "17"
+    source      = "::/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+    udp_options {
+      max = "51820"
+      min = "51820"
     }
   }
   ingress_security_rules {
@@ -99,6 +129,16 @@ resource "oci_core_security_list" "toaster" {
   }
   ingress_security_rules {
     icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol    = "1"
+    source      = "::/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+  ingress_security_rules {
+    icmp_options {
       code = "-1"
       type = "3"
     }
@@ -107,63 +147,11 @@ resource "oci_core_security_list" "toaster" {
     source_type = "CIDR_BLOCK"
     stateless   = "false"
   }
-  ingress_security_rules {
-    description = "http"
-    protocol    = "6"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
-  ingress_security_rules {
-    description = "https"
-    protocol    = "6"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-    tcp_options {
-      max = "443"
-      min = "443"
-    }
-  }
-  ingress_security_rules {
-    protocol    = "6"
-    source      = "::/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
-  }
-  ingress_security_rules {
-    protocol    = "6"
-    source      = "::/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
-  ingress_security_rules {
-    protocol    = "6"
-    source      = "::/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-    tcp_options {
-      max = "443"
-      min = "443"
-    }
-  }
 }
 
 resource "oci_core_private_ip" "toaster" {
   hostname_label = "toaster"
-  ip_address     = "10.0.0.216"
+  ip_address     = "10.0.0.114"
   lifetime       = "EPHEMERAL"
   subnet_id      = oci_core_subnet.toaster.id
   vnic_id        = data.oci_core_vnic.toaster.id
@@ -178,13 +166,13 @@ resource "oci_core_instance" "toaster" {
   availability_config {
     recovery_action = "RESTORE_INSTANCE"
   }
-  availability_domain = "MohS:EU-FRANKFURT-1-AD-1"
+  availability_domain = var.availability_domain
   compartment_id      = var.tenancy
   create_vnic_details {
     assign_public_ip       = "true"
-    display_name           = "toaster"
+    display_name           = "vnic-toaster"
     hostname_label         = "toaster"
-    private_ip             = "10.0.0.216"
+    private_ip             = "10.0.0.114"
     skip_source_dest_check = "false"
     subnet_id              = oci_core_subnet.toaster.id
   }
@@ -212,7 +200,7 @@ resource "oci_core_instance" "toaster" {
 }
 
 data "oci_core_vnic" "toaster" {
-  vnic_id = "ocid1.vnic.oc1.eu-frankfurt-1.abtheljrn6a4m4e5ciq6dtwstfd7pllt7klyacfdwwbrrml6apds4f7i3ofq"
+  vnic_id = var.vnic
 }
 
 output "ipv4" {
