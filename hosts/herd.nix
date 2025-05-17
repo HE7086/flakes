@@ -31,15 +31,19 @@
     nameservers = [ "127.0.0.1" ];
     interfaces.ens3 = {
       useDHCP = true;
-      ipv6.addresses = [{
-        address = "2a01:4f8:c0c:1be5::1";
-        prefixLength = 64;
-      }];
-      ipv6.routes = [{
-        address = "::";
-        prefixLength = 0;
-        via = "fe80::1";
-      }];
+      ipv6.addresses = [
+        {
+          address = "2a01:4f8:c0c:1be5::1";
+          prefixLength = 64;
+        }
+      ];
+      ipv6.routes = [
+        {
+          address = "::";
+          prefixLength = 0;
+          via = "fe80::1";
+        }
+      ];
     };
   };
   networking.nftables.enable = true;

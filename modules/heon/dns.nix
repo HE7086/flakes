@@ -12,29 +12,33 @@ let
     in
     if net.ip.isv6 cidr then
       let
-        reversed =
-          concatStringsSep "."
-          <| reverseList
-          <| take (prefix / 4)
-          <| stringToCharacters
-          <| concatStrings
-          <| map (fixedWidthString 4 "0") (
-            if !strings.hasInfix "::" ip then
-              splitString ":" ip
-            else
-              let
-                parts = splitString "::" ip;
-                prefix = filter isString <| splitString ":" <| head parts;
-                suffix = filter isString <| splitString ":" <| last parts;
-                num = 8 - (length prefix) - (length suffix);
-              in
-              prefix ++ (replicate num "") ++ suffix
-          );
+        reversed = concatStringsSep "." (
+          reverseList (
+            take (prefix / 4) (
+              stringToCharacters (
+                concatStrings (
+                  map (fixedWidthString 4 "0") (
+                    if !strings.hasInfix "::" ip then
+                      splitString ":" ip
+                    else
+                      let
+                        parts = splitString "::" ip;
+                        prefix = filter isString (splitString ":" (head parts));
+                        suffix = filter isString (splitString ":" (last parts));
+                        num = 8 - (length prefix) - (length suffix);
+                      in
+                      prefix ++ (replicate num "") ++ suffix
+                  )
+                )
+              )
+            )
+          )
+        );
       in
       "${reversed}.ip6.arpa"
     else
       let
-        reversed = strings.concatStringsSep "." <| reverseList <| take (prefix / 8) <| splitString "." ip;
+        reversed = strings.concatStringsSep "." (reverseList (take (prefix / 8) (splitString "." ip)));
       in
       "${reversed}.in-addr.arpa";
 
