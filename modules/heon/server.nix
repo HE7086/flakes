@@ -143,7 +143,7 @@ in
         table ip6 wireguard {
           chain postrouting {
             type nat hook postrouting priority srcnat; policy accept;
-            oifname "${cfg.interface}" ip6 daddr ${snat_cidr} snat ip6 to ${cfg.ip6.internal}
+            oifname "${cfg.interface}" ip6 daddr ${snat_cidr} ip6 saddr != ${cfg.ip6.internal} snat ip6 to ${cfg.ip6.internal}
           }
         }
       '';

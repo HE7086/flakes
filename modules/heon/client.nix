@@ -62,6 +62,19 @@ in
       type = types.int;
       default = 0;
     };
+    clients = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            id = mkOption { type = types.str; };
+            key = mkOption { type = types.str; };
+            section = mkOption { type = types.int; };
+            token = mkOption { type = types.int; };
+          };
+        }
+      );
+      default = builtins.fromJSON (builtins.readFile ./clients.json);
+    };
     members = mkOption {
       type = types.listOf (
         types.submodule {
@@ -137,6 +150,10 @@ in
             publicKey = cfg.server_publicKey;
             endpoint = cfg.server_endpoint;
             allowedIPs = [
+              # (net.cidr.make 24 (net.cidr.host (0 * 256) cfg.ip4.internal))
+              # (net.cidr.make 24 (net.cidr.host (3 * 256) cfg.ip4.internal))
+              # (net.cidr.make 112 (net.cidr.host (0 * 65536) cfg.ip6.internal))
+              # (net.cidr.make 112 (net.cidr.host (3 * 65536) cfg.ip6.internal))
               (toString cfg.ip4.internal)
               (toString cfg.ip6.internal)
               "::/0"
@@ -152,7 +169,18 @@ in
             (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
             (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.external))
           ];
-        }) cfg.members;
+        }) cfg.members
+        ++ (map (
+        client: with client; {
+          name = id;
+          publicKey = key;
+          allowedIPs = [
+            (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfg.ip4.internal))
+            (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.internal))
+            (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
+          ];
+        }
+      ) cfg.clients);
       };
     };
 }
