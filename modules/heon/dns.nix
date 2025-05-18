@@ -12,33 +12,38 @@ let
     in
     if net.ip.isv6 cidr then
       let
-        reversed = concatStringsSep "." (
-          reverseList (
-            take (prefix / 4) (
-              stringToCharacters (
-                concatStrings (
-                  map (fixedWidthString 4 "0") (
-                    if !strings.hasInfix "::" ip then
-                      splitString ":" ip
-                    else
-                      let
-                        parts = splitString "::" ip;
-                        prefix = filter isString (splitString ":" (head parts));
-                        suffix = filter isString (splitString ":" (last parts));
-                        num = 8 - (length prefix) - (length suffix);
-                      in
-                      prefix ++ (replicate num "") ++ suffix
-                  )
-                )
-              )
+        reversed =
+          pipe
+            (
+              if !strings.hasInfix "::" ip then
+                splitString ":" ip
+              else
+                let
+                  parts = splitString "::" ip;
+                  prefix = filter isString (splitString ":" (head parts));
+                  suffix = filter isString (splitString ":" (last parts));
+                  num = 8 - (length prefix) - (length suffix);
+                in
+                prefix ++ (replicate num "") ++ suffix
             )
-          )
-        );
+            [
+              (map (fixedWidthString 4 "0"))
+              concatStrings
+              stringToCharacters
+              (take (prefix / 4))
+              reverseList
+              (concatStringsSep ".")
+            ];
       in
       "${reversed}.ip6.arpa"
     else
       let
-        reversed = strings.concatStringsSep "." (reverseList (take (prefix / 8) (splitString "." ip)));
+        reversed = pipe ip [
+          (splitString ".")
+          (take (prefix / 8))
+          reverseList
+          (strings.concatStringsSep ".")
+        ];
       in
       "${reversed}.in-addr.arpa";
 
