@@ -118,32 +118,14 @@ resource "oci_core_security_list" "toaster" {
     }
   }
   ingress_security_rules {
-    icmp_options {
-      code = "4"
-      type = "3"
-    }
     protocol    = "1"
     source      = "0.0.0.0/0"
     source_type = "CIDR_BLOCK"
     stateless   = "false"
   }
   ingress_security_rules {
-    icmp_options {
-      code = "4"
-      type = "3"
-    }
-    protocol    = "1"
+    protocol    = "58"
     source      = "::/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-  }
-  ingress_security_rules {
-    icmp_options {
-      code = "-1"
-      type = "3"
-    }
-    protocol    = "1"
-    source      = "10.0.0.0/16"
     source_type = "CIDR_BLOCK"
     stateless   = "false"
   }
