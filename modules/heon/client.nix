@@ -115,6 +115,12 @@ in
       ip6_ext = net.cidr.make 128 (net.cidr.host (cfg.section * 65536 + cfg.token) cfg.ip6.external);
     in
     mkIf cfg.enable {
+      boot.kernel.sysctl = {
+        "net.ipv6.conf.default.forwarding" = 1;
+        "net.ipv4.conf.default.forwarding" = 1;
+        "net.ipv4.conf.all.forwarding" = 1;
+        "net.ipv6.conf.all.forwarding" = 1;
+      };
       networking.firewall.trustedInterfaces = [ cfg.interface ];
       networking.firewall.allowedUDPPorts = [ cfg.port ];
       networking.wireguard.interfaces."${cfg.interface}" = {
