@@ -58,21 +58,40 @@ in
           };
         }
       );
-      default =
-        (mapAttrsToList
-          (k: v: {
+      default = builtins.fromJSON (builtins.readFile ./clients.json);
+    };
+    members = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            id = mkOption { type = types.str; };
+            key = mkOption { type = types.str; };
+            section = mkOption { type = types.int; };
+            token = mkOption { type = types.int; };
+
+            endpoint = mkOption { type = types.str; };
+          };
+        }
+      );
+      default = (mapAttrsToList
+          (k: v:
+          let
+            vcfg = v.config.services.heon.client;
+          in
+          {
             id = k;
-            key = v.config.services.heon.client.publicKey;
-            section = v.config.services.heon.client.section;
-            token = v.config.services.heon.client.token;
+            key = vcfg.publicKey;
+            section = vcfg.section;
+            token = vcfg.token;
+
+            endpoint = "${v.config.networking.hostName}.${v.config.networking.domain}:${toString vcfg.port}";
           })
           (
             filterAttrs (
               _: v: (hasAttr "heon" v.config.services) && v.config.services.heon.client.enable
             ) self.nixosConfigurations
           )
-        )
-        ++ builtins.fromJSON (builtins.readFile ./clients.json);
+        );
     };
   };
   config = mkIf cfg.enable {
@@ -91,7 +110,7 @@ in
         cfg.ip6.internal
       ];
       privateKeyFile = cfg.privateKeyFile;
-      peers = map (
+      peers = (map (
         client: with client; {
           name = id;
           publicKey = key;
@@ -101,7 +120,19 @@ in
             (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
           ];
         }
-      ) cfg.clients;
+      ) cfg.clients)
+      ++ (map (
+        member: with member; {
+          name = id;
+          publicKey = key;
+          endpoint = endpoint;
+          allowedIPs = [
+            (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
+            (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
+            (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.external))
+          ];
+        }
+      ) cfg.members);
     };
 
     networking.nftables.ruleset =

@@ -52,19 +52,26 @@ mkIf cfg.enable {
   services.unbound =
     let
       hostName = config.networking.hostName;
-      clients = config.networking.wireguard.interfaces.${cfg.interface}.peers;
+      ips = map (client: with client; {
+        name = client.id;
+        ip = [
+          (net.cidr.host (section * 256 + token) cfg.ip4.internal)
+          (net.cidr.host (section * 65536 + token) cfg.ip6.internal)
+          (net.cidr.host (section * 65536 + token) cfg.ip6.external)
+        ];
+      }) (cfg.clients ++ cfg.members);
       ip4_int = map (c: {
         host = c.name;
-        addr = net.cidr.ip (elemAt c.allowedIPs 0);
-      }) clients;
+        addr = elemAt c.ip 0;
+      }) ips;
       ip6_int = map (c: {
         host = c.name;
-        addr = net.cidr.ip (elemAt c.allowedIPs 1);
-      }) clients;
+        addr = elemAt c.ip 1;
+      }) ips;
       ip6_ext = map (c: {
         host = c.name;
-        addr = net.cidr.ip (elemAt c.allowedIPs 2);
-      }) clients;
+        addr = elemAt c.ip 2;
+      }) ips;
     in
     {
       enable = true;

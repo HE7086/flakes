@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }:
 with lib;
@@ -45,11 +46,11 @@ in
       type = types.str;
       default = "7086";
     };
-    peer_publicKey = mkOption {
+    server_publicKey = mkOption {
       type = types.str;
       default = "5tBj2GFA6GTqvPyy883y4bmDH0at3QJ/QIhCi4Gd6FQ=";
     };
-    endpoint = mkOption {
+    server_endpoint = mkOption {
       type = types.str;
       default = "herd.heyi7086.com:51820";
     };
@@ -60,6 +61,37 @@ in
     token = mkOption {
       type = types.int;
       default = 0;
+    };
+    members = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            id = mkOption { type = types.str; };
+            key = mkOption { type = types.str; };
+            section = mkOption { type = types.int; };
+            token = mkOption { type = types.int; };
+
+            endpoint = mkOption { type = types.str; };
+          };
+        }
+      );
+      default =
+        pipe self.nixosConfigurations [
+          (filterAttrs (k: _: k != config.networking.hostName))
+          (filterAttrs (_: v: v.config.services.heon.client.enable))
+          (filterAttrs (_: v: hasAttr "heon" v.config.services))
+          (mapAttrsToList
+            (k: v: let
+              vcfg = v.config.services.heon.client;
+            in {
+              id = k;
+              key = vcfg.publicKey;
+              section = vcfg.section;
+              token = vcfg.token;
+              endpoint = "${v.config.networking.hostName}.${v.config.networking.domain}:${toString vcfg.port}";
+            })
+          )
+        ];
     };
   };
   config =
@@ -102,8 +134,8 @@ in
 
         peers = [
           {
-            publicKey = cfg.peer_publicKey;
-            endpoint = cfg.endpoint;
+            publicKey = cfg.server_publicKey;
+            endpoint = cfg.server_endpoint;
             allowedIPs = [
               (toString cfg.ip4.internal)
               (toString cfg.ip6.internal)
@@ -111,7 +143,16 @@ in
             ];
             persistentKeepalive = 30;
           }
-        ];
+        ] ++ map (member: with member; {
+          name = id;
+          publicKey = key;
+          endpoint = endpoint;
+          allowedIPs = [
+            (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
+            (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
+            (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.external))
+          ];
+        }) cfg.members;
       };
     };
 }
