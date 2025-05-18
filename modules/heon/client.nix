@@ -11,6 +11,10 @@ in
 {
   options.services.heon.client = {
     enable = mkEnableOption "heon network client";
+    port = mkOption {
+      type = types.port;
+      default = 51820;
+    };
     interface = mkOption {
       type = types.str;
       default = "he0";
@@ -67,7 +71,9 @@ in
     in
     mkIf cfg.enable {
       networking.firewall.trustedInterfaces = [ cfg.interface ];
+      networking.firewall.allowedUDPPorts = [ cfg.port ];
       networking.wireguard.interfaces."${cfg.interface}" = {
+        listenPort = cfg.port;
         ips = [
           ip4_int
           ip6_int
