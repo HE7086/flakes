@@ -15,7 +15,7 @@ let
         reversed =
           pipe
             (
-              if !strings.hasInfix "::" ip then
+              if !hasInfix "::" ip then
                 splitString ":" ip
               else
                 let
@@ -42,7 +42,7 @@ let
           (splitString ".")
           (take (prefix / 8))
           reverseList
-          (strings.concatStringsSep ".")
+          (concatStringsSep ".")
         ];
       in
       "${reversed}.in-addr.arpa";
