@@ -1,7 +1,8 @@
 { config, lib, ... }:
 with lib;
 let
-  cfg = config.services.heon.server;
+  cfgs = config.services.heon.server;
+  cfg = config.services.heon;
 
   # assume prefix is a multiple of 8/4 (ipv4/ipv6)
   reverseDNSFromCidr =
@@ -48,7 +49,7 @@ let
       "${reversed}.in-addr.arpa";
 
 in
-mkIf cfg.enable {
+mkIf cfgs.enable {
   services.unbound =
     let
       hostName = config.networking.hostName;
@@ -56,9 +57,9 @@ mkIf cfg.enable {
         client: with client; {
           name = client.id;
           ip = [
-            (net.cidr.host (section * 256 + token) cfg.ip4.internal)
-            (net.cidr.host (section * 65536 + token) cfg.ip6.internal)
-            (net.cidr.host (section * 65536 + token) cfg.ip6.external)
+            (net.cidr.host (section * 256 + token) cfgs.ip4.internal)
+            (net.cidr.host (section * 65536 + token) cfgs.ip6.internal)
+            (net.cidr.host (section * 65536 + token) cfgs.ip6.external)
           ];
         }
       ) (cfg.clients ++ cfg.members);
@@ -83,23 +84,23 @@ mkIf cfg.enable {
             "127.0.0.1"
             "::1"
 
-            "${net.cidr.ip cfg.ip4.internal}"
-            "${net.cidr.ip cfg.ip6.internal}"
+            "${net.cidr.ip cfgs.ip4.internal}"
+            "${net.cidr.ip cfgs.ip6.internal}"
           ];
 
           access-control = [
             "127.0.0.0/8 allow"
             "::1/128 allow"
 
-            "${net.cidr.canonicalize cfg.ip4.internal} allow"
-            "${net.cidr.canonicalize cfg.ip6.internal} allow"
+            "${net.cidr.canonicalize cfgs.ip4.internal} allow"
+            "${net.cidr.canonicalize cfgs.ip6.internal} allow"
           ];
 
           local-data = map (s: "'${s}'") (
             [
-              "${hostName}.l. IN A ${net.cidr.ip cfg.ip4.internal}"
-              "${hostName}.l. IN AAAA ${net.cidr.ip cfg.ip6.internal}"
-              "${hostName}.r. IN AAAA ${net.cidr.ip cfg.ip6.external}"
+              "${hostName}.l. IN A ${net.cidr.ip cfgs.ip4.internal}"
+              "${hostName}.l. IN AAAA ${net.cidr.ip cfgs.ip6.internal}"
+              "${hostName}.r. IN AAAA ${net.cidr.ip cfgs.ip6.external}"
             ]
             ++ (map (c: "${c.host}.l. IN A ${c.addr}") ip4_int)
             ++ (map (c: "${c.host}.l. IN AAAA ${c.addr}") ip6_int)
@@ -108,9 +109,9 @@ mkIf cfg.enable {
 
           local-data-ptr = map (s: "'${s}'") (
             [
-              "${net.cidr.ip cfg.ip4.internal} ${hostName}.l"
-              "${net.cidr.ip cfg.ip6.internal} ${hostName}.l"
-              "${net.cidr.ip cfg.ip6.external} ${hostName}.r"
+              "${net.cidr.ip cfgs.ip4.internal} ${hostName}.l"
+              "${net.cidr.ip cfgs.ip6.internal} ${hostName}.l"
+              "${net.cidr.ip cfgs.ip6.external} ${hostName}.r"
             ]
             ++ (map (c: "${c.addr} ${c.host}.l") ip4_int)
             ++ (map (c: "${c.addr} ${c.host}.l") ip6_int)
@@ -118,8 +119,8 @@ mkIf cfg.enable {
           );
 
           local-zone = [
-            "${reverseDNSFromCidr cfg.ip4.internal}. nodefault"
-            "${reverseDNSFromCidr cfg.ip6.internal}. nodefault"
+            "${reverseDNSFromCidr cfgs.ip4.internal}. nodefault"
+            "${reverseDNSFromCidr cfgs.ip6.internal}. nodefault"
           ];
 
           private-domain = [
