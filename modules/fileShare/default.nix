@@ -22,7 +22,7 @@
       };
       virtualHost = lib.mkOption {
         type = lib.types.singleLineStr;
-        default = "share.${config.networking.hostName}.heyi7086.com";
+        default = "share.${config.networking.fqdn}";
       };
       mode = lib.mkOption {
         type = lib.types.singleLineStr;

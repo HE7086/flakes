@@ -47,7 +47,7 @@ in
             key = vcfg.publicKey;
             section = vcfg.section;
             token = vcfg.token;
-            endpoint = "${v.config.networking.hostName}.${v.config.networking.domain}:${toString vcfg.port}";
+            endpoint = "${v.config.networking.fqdn}:${toString vcfg.port}";
           }
         ))
       ];
