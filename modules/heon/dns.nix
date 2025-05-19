@@ -52,14 +52,16 @@ mkIf cfg.enable {
   services.unbound =
     let
       hostName = config.networking.hostName;
-      ips = map (client: with client; {
-        name = client.id;
-        ip = [
-          (net.cidr.host (section * 256 + token) cfg.ip4.internal)
-          (net.cidr.host (section * 65536 + token) cfg.ip6.internal)
-          (net.cidr.host (section * 65536 + token) cfg.ip6.external)
-        ];
-      }) (cfg.clients ++ cfg.members);
+      ips = map (
+        client: with client; {
+          name = client.id;
+          ip = [
+            (net.cidr.host (section * 256 + token) cfg.ip4.internal)
+            (net.cidr.host (section * 65536 + token) cfg.ip6.internal)
+            (net.cidr.host (section * 65536 + token) cfg.ip6.external)
+          ];
+        }
+      ) (cfg.clients ++ cfg.members);
       ip4_int = map (c: {
         host = c.name;
         addr = elemAt c.ip 0;
