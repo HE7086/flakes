@@ -24,13 +24,8 @@ let
         inherit system;
         config.allowUnfree = true;
         overlays = [
-          (final: _prev: {
-            unstable = import nixos-unstable {
-              system = final.system;
-              config.allowUnfree = true;
-            };
-          })
-          nixos-extra-modules.overlays.default
+          self.overlays.net
+          self.overlays.unstable
         ];
       };
     };
