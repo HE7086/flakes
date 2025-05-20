@@ -76,7 +76,7 @@ in
 
         postSetup = ''
           ${ip} -6 route add ${ip6_forward} dev ${cfgc.interface}
-          ${ip} -6 rule add from ${ip6_ext} lookup ${cfgc.routeTable} priority 100
+          ${ip} -6 rule add from ${ip6_forward} lookup ${cfgc.routeTable} priority 100
           ${ip} -6 route add default via ${gateway} dev ${cfgc.interface} table ${cfgc.routeTable}
           ${ip} -6 route add ${gateway}/128 dev ${cfgc.interface}
           ${rc} dns ${cfgc.interface} ${gateway}
@@ -84,7 +84,7 @@ in
         '';
         preShutdown = ''
           ${ip} -6 route del ${ip6_forward} dev ${cfgc.interface}
-          ${ip} -6 rule del from ${ip6_ext} lookup ${cfgc.routeTable} priority 100
+          ${ip} -6 rule del from ${ip6_forward} lookup ${cfgc.routeTable} priority 100
           ${ip} -6 route flush table ${cfgc.routeTable}
           ${ip} -6 route del ${gateway}/128 dev ${cfgc.interface}
           ${rc} revert ${cfgc.interface}
