@@ -28,31 +28,9 @@ in
       type = types.str;
       default = null;
     };
-    ip4.internal = mkOption {
-      type = types.net.cidrv4;
-      default = "10.1.0.0/16";
-    };
-    ip6 = {
-      internal = mkOption {
-        type = types.net.cidrv6;
-        default = "fd00:4845:7086::/64";
-      };
-      external = mkOption {
-        type = types.net.cidrv6;
-        default = "2a01:4f8:c0c:1be5::/64";
-      };
-    };
     routeTable = mkOption {
       type = types.str;
       default = "7086";
-    };
-    server_publicKey = mkOption {
-      type = types.str;
-      default = "5tBj2GFA6GTqvPyy883y4bmDH0at3QJ/QIhCi4Gd6FQ=";
-    };
-    server_endpoint = mkOption {
-      type = types.str;
-      default = "herd.heyi7086.com:51820";
     };
     section = mkOption {
       type = types.int;
@@ -62,13 +40,17 @@ in
       type = types.int;
       default = 0;
     };
+    externalInterface = mkOption {
+      type = types.str;
+      default = "ens3";
+    };
   };
   config =
     let
-      gateway = net.cidr.host 1 cfgc.ip6.internal;
-      ip4_int = net.cidr.hostCidr (cfgc.section * 256 + cfgc.token) cfgc.ip4.internal;
-      ip6_int = net.cidr.hostCidr (cfgc.section * 65536 + cfgc.token) cfgc.ip6.internal;
-      ip6_ext = net.cidr.make 128 (net.cidr.host (cfgc.section * 65536 + cfgc.token) cfgc.ip6.external);
+      gateway = net.cidr.host 1 cfg.ip6.internal;
+      ip4_int = net.cidr.hostCidr (cfgc.section * 256 + cfgc.token) cfg.ip4.internal;
+      ip6_int = net.cidr.hostCidr (cfgc.section * 65536 + cfgc.token) cfg.ip6.internal;
+      ip6_ext = net.cidr.make 128 (net.cidr.host (cfgc.section * 65536 + cfgc.token) cfg.ip6.external);
     in
     mkIf cfgc.enable {
       boot.kernel.sysctl = {
@@ -111,12 +93,12 @@ in
           [
             {
               name = "server";
-              publicKey = cfgc.server_publicKey;
-              endpoint = cfgc.server_endpoint;
+              publicKey = cfg.server.key;
+              endpoint = cfg.server.endpoint;
               allowedIPs = [
-                (toString cfgc.ip4.internal)
-                (toString cfgc.ip6.internal)
-                "::/0"
+                (toString cfg.ip4.internal)
+                (toString cfg.ip6.internal)
+                # "::/0"
               ];
               persistentKeepalive = 30;
             }
@@ -127,9 +109,8 @@ in
               publicKey = key;
               endpoint = endpoint;
               allowedIPs = [
-                (net.cidr.make 24 (net.cidr.host (section * 256) cfgc.ip4.internal))
-                (net.cidr.make 112 (net.cidr.host (section * 65536) cfgc.ip6.internal))
-                (net.cidr.make 128 (net.cidr.host (section * 65536) cfgc.ip6.external))
+                (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
+                (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
               ];
             }
           ) cfg.members
@@ -138,12 +119,11 @@ in
               name = id;
               publicKey = key;
               allowedIPs = [
-                (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfgc.ip4.internal))
-                (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfgc.ip6.internal))
-                (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfgc.ip6.external))
+                (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfg.ip4.internal))
+                (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.internal))
               ];
             }
-          ) cfg.clients);
+          ) (filter (client: client.section == cfgc.section) cfg.clients));
       };
     };
 }

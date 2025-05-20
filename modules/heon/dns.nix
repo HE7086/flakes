@@ -57,9 +57,9 @@ mkIf cfgs.enable {
         client: with client; {
           name = client.id;
           ip = [
-            (net.cidr.host (section * 256 + token) cfgs.ip4.internal)
-            (net.cidr.host (section * 65536 + token) cfgs.ip6.internal)
-            (net.cidr.host (section * 65536 + token) cfgs.ip6.external)
+            (net.cidr.host (section * 256 + token) cfg.ip4.internal)
+            (net.cidr.host (section * 65536 + token) cfg.ip6.internal)
+            (net.cidr.host (section * 65536 + token) cfg.ip6.external)
           ];
         }
       ) (cfg.clients ++ cfg.members);
@@ -84,34 +84,34 @@ mkIf cfgs.enable {
             "127.0.0.1"
             "::1"
 
-            "${net.cidr.ip cfgs.ip4.internal}"
-            "${net.cidr.ip cfgs.ip6.internal}"
+            "${net.cidr.host 1 cfg.ip4.internal}"
+            "${net.cidr.host 1 cfg.ip6.internal}"
           ];
 
           access-control = [
             "127.0.0.0/8 allow"
             "::1/128 allow"
 
-            "${net.cidr.canonicalize cfgs.ip4.internal} allow"
-            "${net.cidr.canonicalize cfgs.ip6.internal} allow"
+            "${net.cidr.canonicalize cfg.ip4.internal} allow"
+            "${net.cidr.canonicalize cfg.ip6.internal} allow"
           ];
 
           local-data = map (s: "'${s}'") (
             [
-              "${hostName}.l. IN A ${net.cidr.ip cfgs.ip4.internal}"
-              "${hostName}.l. IN AAAA ${net.cidr.ip cfgs.ip6.internal}"
-              "${hostName}.r. IN AAAA ${net.cidr.ip cfgs.ip6.external}"
+              "${hostName}.l. IN A    ${net.cidr.host 1 cfg.ip4.internal}"
+              "${hostName}.l. IN AAAA ${net.cidr.host 1 cfg.ip6.internal}"
+              "${hostName}.r. IN AAAA ${net.cidr.host 1 cfg.ip6.external}"
             ]
-            ++ (map (c: "${c.host}.l. IN A ${c.addr}") ip4_int)
+            ++ (map (c: "${c.host}.l. IN A    ${c.addr}") ip4_int)
             ++ (map (c: "${c.host}.l. IN AAAA ${c.addr}") ip6_int)
             ++ (map (c: "${c.host}.r. IN AAAA ${c.addr}") ip6_ext)
           );
 
           local-data-ptr = map (s: "'${s}'") (
             [
-              "${net.cidr.ip cfgs.ip4.internal} ${hostName}.l"
-              "${net.cidr.ip cfgs.ip6.internal} ${hostName}.l"
-              "${net.cidr.ip cfgs.ip6.external} ${hostName}.r"
+              "${net.cidr.host 1 cfg.ip4.internal} ${hostName}.l"
+              "${net.cidr.host 1 cfg.ip6.internal} ${hostName}.l"
+              "${net.cidr.host 1 cfg.ip6.external} ${hostName}.r"
             ]
             ++ (map (c: "${c.addr} ${c.host}.l") ip4_int)
             ++ (map (c: "${c.addr} ${c.host}.l") ip6_int)
@@ -119,8 +119,8 @@ mkIf cfgs.enable {
           );
 
           local-zone = [
-            "${reverseDNSFromCidr cfgs.ip4.internal}. nodefault"
-            "${reverseDNSFromCidr cfgs.ip6.internal}. nodefault"
+            "${reverseDNSFromCidr cfg.ip4.internal}. nodefault"
+            "${reverseDNSFromCidr cfg.ip6.internal}. nodefault"
           ];
 
           private-domain = [

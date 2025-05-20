@@ -10,6 +10,11 @@ let
       endpoint = mkOption { type = types.str; };
     };
   };
+  genIP = section: token: [
+    (net.cidr.host (section * 256 + token) cfgs.ip4.internal)
+    (net.cidr.host (section * 65536 + token) cfgs.ip6.internal)
+    (net.cidr.host (section * 65536 + token) cfgs.ip6.external)
+  ];
 in
 {
   imports = [
@@ -19,6 +24,26 @@ in
     ./secrets.nix
   ];
   options.services.heon = {
+    ip4 = {
+      external = mkOption {
+        type = types.net.cidrv4;
+        default = "91.107.230.166/32";
+      };
+      internal = mkOption {
+        type = types.net.cidrv4;
+        default = "10.1.0.0/16";
+      };
+    };
+    ip6 = {
+      internal = mkOption {
+        type = types.net.cidrv6;
+        default = "fd00:4845:7086::/64";
+      };
+      external = mkOption {
+        type = types.net.cidrv6;
+        default = "2a01:4f8:c0c:1be5::/64";
+      };
+    };
     clients = mkOption {
       type = types.listOf node;
       default = builtins.fromJSON (builtins.readFile ./clients.json);
@@ -28,6 +53,8 @@ in
       default = {
         id = "herd";
         key = "5tBj2GFA6GTqvPyy883y4bmDH0at3QJ/QIhCi4Gd6FQ=";
+        section = 0;
+        token = 1;
         endpoint = "herd.heyi7086.com:51820";
       };
     };

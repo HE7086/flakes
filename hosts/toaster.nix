@@ -32,8 +32,9 @@
 
   services.heon.client = {
     enable = true;
-    section = 1;
-    token = 2;
+    section = 3;
+    token = 1;
     publicKey = "jotrh61rV9hW1/5H+rzxWZNjzFZkIfFJOupmflA5jHQ=";
+    externalInterface = "enp0s6";
   };
 }

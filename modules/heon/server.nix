@@ -27,26 +27,6 @@ in
       type = types.path;
       default = config.sops.secrets."heon/private".path;
     };
-    ip4 = {
-      internal = mkOption {
-        type = types.str;
-        default = "10.1.0.1/16";
-      };
-      external = mkOption {
-        type = types.str;
-        default = "91.107.230.166/32";
-      };
-    };
-    ip6 = {
-      internal = mkOption {
-        type = types.str;
-        default = "fd00:4845:7086::1/64";
-      };
-      external = mkOption {
-        type = types.str;
-        default = "2a01:4f8:c0c:1be5::1/64";
-      };
-    };
   };
   config = mkIf cfgs.enable {
     boot.kernel.sysctl = {
@@ -60,8 +40,8 @@ in
     networking.wireguard.interfaces."${cfgs.interface}" = {
       listenPort = cfgs.port;
       ips = [
-        cfgs.ip4.internal
-        cfgs.ip6.internal
+        (net.cidr.hostCidr 1 cfg.ip4.internal)
+        (net.cidr.hostCidr 1 cfg.ip6.internal)
       ];
       privateKeyFile = cfgs.privateKeyFile;
       peers =
@@ -70,21 +50,25 @@ in
             name = id;
             publicKey = key;
             allowedIPs = [
-              (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfgs.ip4.internal))
-              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfgs.ip6.internal))
-              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfgs.ip6.external))
+              (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfg.ip4.internal))
+              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.internal))
+              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
             ];
           }
-        ) cfg.clients)
+        ) (filter
+            (c: !elem c.section (map (m: m.section) cfg.members))
+            cfg.clients
+          )
+        )
         ++ (map (
           member: with member; {
             name = id;
             publicKey = key;
             endpoint = endpoint;
             allowedIPs = [
-              (net.cidr.make 24 (net.cidr.host (section * 256) cfgs.ip4.internal))
-              (net.cidr.make 112 (net.cidr.host (section * 65536) cfgs.ip6.internal))
-              (net.cidr.make 128 (net.cidr.host (section * 65536) cfgs.ip6.external))
+              (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
+              (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
+              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
             ];
           }
         ) cfg.members);
@@ -92,22 +76,22 @@ in
 
     networking.nftables.ruleset =
       let
-        snat_cidr = net.cidr.make 112 (net.cidr.host (3 * 65536) cfgs.ip6.external);
+        snat_cidr = net.cidr.make 112 (net.cidr.host (1 * 65536) cfg.ip6.external);
       in
       ''
         table ip6 wireguard {
           chain postrouting {
             type nat hook postrouting priority srcnat; policy accept;
-            oifname "${cfgs.interface}" ip6 daddr ${snat_cidr} ip6 saddr != ${cfgs.ip6.internal} snat ip6 to ${cfgs.ip6.internal}
+            oifname "${cfgs.interface}" ip6 daddr ${snat_cidr} ip6 saddr != ${cfg.ip6.internal} snat ip6 to ${cfg.ip6.internal}
           }
         }
       '';
     networking.nat = {
       enable = true;
       externalInterface = cfgs.externalInterface;
-      externalIP = net.cidr.ip cfgs.ip4.external;
+      externalIP = net.cidr.ip cfg.ip4.external;
       internalInterfaces = [ cfgs.interface ];
-      internalIPs = [ cfgs.ip4.internal ];
+      internalIPs = [ cfg.ip4.internal ];
     };
   };
 }
