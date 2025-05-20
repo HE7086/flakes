@@ -68,8 +68,9 @@ in
             allowedIPs = [
               (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
               (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
-              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
+              (net.cidr.make 112 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
             ];
+            persistentKeepalive = 25;
           }
         ) cfg.members);
     };
