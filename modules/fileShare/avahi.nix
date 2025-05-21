@@ -5,7 +5,7 @@ in
 lib.mkIf cfg.enable {
   services.avahi.browseDomains = config.networking.search;
   services.avahi = {
-    enable = true;
+    # enable = true;
     ipv6 = true;
     nssmdns4 = true;
     nssmdns6 = true;

@@ -48,23 +48,14 @@
     hostId = "83d9da0a";
     useDHCP = false;
     useNetworkd = true;
-    firewall.enable = false;
+    bridges.br0.interfaces = [ "enp1s0" "enp2s0" "enp3s0" "enp4s0" ];
   };
-  systemd.network.netdevs = {
-    "10-br0" = {
-      netdevConfig = {
-        Kind = "bridge";
-        Name = "br0";
-      };
-      # bridgeConfig.STP = true;
-    };
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+    trustedInterfaces = [ "enp2s0" "enp3s0" "enp4s0" "br0" ];
   };
   systemd.network.networks = {
-    "10-enp" = {
-      matchConfig.Name = "enp*";
-      bridge = [ "br0" ];
-      DHCP = "no";
-    };
     "10-br0" = {
       matchConfig.Name = "br0";
       address = [ "192.168.1.2/24" ];

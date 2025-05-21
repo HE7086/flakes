@@ -14,6 +14,6 @@
         flareSolverrEnabled = true;
       };
     };
-    openFirewall = true;
+    # openFirewall = true;
   };
 }

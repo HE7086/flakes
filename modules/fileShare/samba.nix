@@ -5,7 +5,7 @@ in
 lib.mkIf cfg.enable {
   services.samba = {
     enable = true;
-    openFirewall = true;
+    # openFirewall = true;
     settings = {
       global = {
         workgroup = "WORKGROUP";
@@ -35,6 +35,6 @@ lib.mkIf cfg.enable {
 
   services.samba-wsdd = {
     enable = true;
-    openFirewall = true;
+    # openFirewall = true;
   };
 }

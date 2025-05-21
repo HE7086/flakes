@@ -3,7 +3,7 @@
   services.transmission = {
     enable = true;
     package = pkgs.transmission_4;
-    openRPCPort = true;
+    # openRPCPort = true;
     openFirewall = true;
     settings = {
       rpc-bind-address = "0.0.0.0";
