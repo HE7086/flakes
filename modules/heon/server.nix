@@ -35,8 +35,6 @@ in
       "net.ipv4.conf.all.forwarding" = 1;
       "net.ipv6.conf.all.forwarding" = 1;
     };
-    # networking.firewall.trustedInterfaces = [ cfgs.interface ];
-    networking.firewall.allowedUDPPorts = [ cfgs.port ];
     networking.wireguard.interfaces."${cfgs.interface}" = {
       listenPort = cfgs.port;
       ips = [
@@ -71,18 +69,22 @@ in
         ) cfg.members);
     };
 
-    networking.nftables.ruleset =
-      let
-        snat_cidr = net.cidr.make 112 (net.cidr.host (1 * 65536) cfg.ip6.external);
-      in
-      ''
-        table ip6 wireguard {
+    # networking.firewall.trustedInterfaces = [ cfgs.interface ];
+    networking.firewall.allowedUDPPorts = [ cfgs.port ];
+    networking.nftables.tables.wireguard = {
+      family = "ip6";
+      content =
+        let
+          snat_cidr = net.cidr.make 112 (net.cidr.host (1 * 65536) cfg.ip6.external);
+        in
+        ''
           chain postrouting {
             type nat hook postrouting priority srcnat; policy accept;
             oifname "${cfgs.interface}" ip6 daddr ${snat_cidr} ip6 saddr != ${cfg.ip6.internal} snat ip6 to ${cfg.ip6.internal}
           }
-        }
-      '';
+        '';
+    };
+
     networking.nat = {
       enable = true;
       externalInterface = cfgs.externalInterface;

@@ -59,8 +59,8 @@
   networking.nftables.tables = {
     nixos-fw.enable = false;
     # HACK: bypass NFTSet "Invalid table name nixos-fw"
-    filter = {
-      family = "inet";
+    filter = with config.networking.nftables.tables.nixos-fw; {
+      inherit family;
       content =
         ''
           set lan_prefix {
@@ -68,7 +68,7 @@
             flags interval
           }
         ''
-        + config.networking.nftables.tables.nixos-fw.content;
+        + content;
     };
   };
   networking.firewall.enable = true;
