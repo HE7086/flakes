@@ -28,6 +28,8 @@
     domain = "heyi7086.com";
     useDHCP = true;
     useNetworkd = true;
+    nftables.enable = true;
+    firewall.enable = true;
   };
 
   services.heon.client = {

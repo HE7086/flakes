@@ -55,11 +55,7 @@ in
               (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
             ];
           }
-        ) (filter
-            (c: !elem c.section (map (m: m.section) cfg.members))
-            cfg.clients
-          )
-        )
+        ) (filter (c: !elem c.section (map (m: m.section) cfg.members)) cfg.clients))
         ++ (map (
           member: with member; {
             name = id;

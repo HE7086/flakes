@@ -48,15 +48,35 @@
     hostId = "83d9da0a";
     useDHCP = false;
     useNetworkd = true;
-    bridges.br0.interfaces = [ "enp1s0" "enp2s0" "enp3s0" "enp4s0" ];
+    bridges.br0.interfaces = [
+      "enp1s0"
+      "enp2s0"
+      "enp3s0"
+      "enp4s0"
+    ];
   };
   networking.nftables.enable = true;
-  networking.firewall = {
-    enable = true;
-    trustedInterfaces = [ ];
-    allowedTCPPorts = [ 12345 ];
-    extraInputRules = "ip saddr 192.168.1.0/24 accept";
+  networking.nftables.tables = {
+    nixos-fw.enable = false;
+    # HACK: bypass NFTSet "Invalid table name nixos-fw"
+    filter = {
+      family = "inet";
+      content =
+        ''
+          set lan_prefix {
+            type ipv6_addr
+            flags interval
+          }
+        ''
+        + config.networking.nftables.tables.nixos-fw.content;
+    };
   };
+  networking.firewall.enable = true;
+  networking.firewall.extraInputRules = ''
+    ip6 saddr @lan_prefix accept
+    ip6 saddr fe80::/10 accept
+    ip saddr 192.168.1.0/24 accept
+  '';
   systemd.network.networks = {
     "10-br0" = {
       matchConfig.Name = "br0";
@@ -64,7 +84,12 @@
       gateway = [ "192.168.1.1" ];
       dns = [ "192.168.1.1" ];
       DHCP = "ipv6";
-      ipv6AcceptRAConfig.Token = "::2";
+      ipv6AcceptRAConfig = {
+        Token = "::2";
+        NFTSet = [
+          "prefix:inet:filter:lan_prefix"
+        ];
+      };
     };
   };
 

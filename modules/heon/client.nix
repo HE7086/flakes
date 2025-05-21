@@ -63,6 +63,10 @@ in
         "net.ipv6.conf.all.forwarding" = 1;
       };
       # networking.firewall.trustedInterfaces = [ cfgc.interface ];
+      networking.firewall.extraInputRules = ''
+        ip saddr ${cfg.ip4.internal} accept
+        ip6 saddr ${cfg.ip6.internal} accept
+      '';
       networking.firewall.allowedUDPPorts = [ cfgc.port ];
       networking.wireguard.interfaces."${cfgc.interface}" = {
         listenPort = cfgc.port;
