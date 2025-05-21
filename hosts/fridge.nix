@@ -53,7 +53,9 @@
   networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
-    trustedInterfaces = [ "enp2s0" "enp3s0" "enp4s0" "br0" ];
+    trustedInterfaces = [ ];
+    allowedTCPPorts = [ 12345 ];
+    extraInputRules = "ip saddr 192.168.1.0/24 accept";
   };
   systemd.network.networks = {
     "10-br0" = {

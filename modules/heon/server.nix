@@ -35,7 +35,7 @@ in
       "net.ipv4.conf.all.forwarding" = 1;
       "net.ipv6.conf.all.forwarding" = 1;
     };
-    networking.firewall.trustedInterfaces = [ cfgs.interface ];
+    # networking.firewall.trustedInterfaces = [ cfgs.interface ];
     networking.firewall.allowedUDPPorts = [ cfgs.port ];
     networking.wireguard.interfaces."${cfgs.interface}" = {
       listenPort = cfgs.port;

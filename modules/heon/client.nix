@@ -62,7 +62,7 @@ in
         "net.ipv4.conf.all.forwarding" = 1;
         "net.ipv6.conf.all.forwarding" = 1;
       };
-      networking.firewall.trustedInterfaces = [ cfgc.interface ];
+      # networking.firewall.trustedInterfaces = [ cfgc.interface ];
       networking.firewall.allowedUDPPorts = [ cfgc.port ];
       networking.wireguard.interfaces."${cfgc.interface}" = {
         listenPort = cfgc.port;
