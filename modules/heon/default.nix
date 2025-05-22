@@ -13,12 +13,14 @@ let
       section = mkOption { type = types.int; };
       token = mkOption { type = types.int; };
       endpoint = mkOption { type = types.str; };
+      ips = mkOption { type = types.listOf types.str; };
     };
   };
+  cfg = config.services.heon;
   genIP = section: token: [
-    (net.cidr.host (section * 256 + token) cfgs.ip4.internal)
-    (net.cidr.host (section * 65536 + token) cfgs.ip6.internal)
-    (net.cidr.host (section * 65536 + token) cfgs.ip6.external)
+    (net.cidr.hostCidr token (net.cidr.subnet 8 section cfg.ip4.internal))
+    (net.cidr.hostCidr token (net.cidr.subnet 16 section cfg.ip6.internal))
+    (net.cidr.hostCidr token (net.cidr.subnet 16 section cfg.ip6.external))
   ];
 in
 {
@@ -29,6 +31,14 @@ in
     ./secrets.nix
   ];
   options.services.heon = {
+    lib = {
+      genIP =
+        with types;
+        mkOption {
+          type = functionTo (functionTo (listOf str));
+          default = genIP;
+        };
+    };
     ip4 = {
       external = mkOption {
         type = types.net.cidrv4;
@@ -42,7 +52,7 @@ in
     ip6 = {
       internal = mkOption {
         type = types.net.cidrv6;
-        default = "fd00:4845:7086::/64";
+        default = "fd00:4845:7086::/48";
       };
       external = mkOption {
         type = types.net.cidrv6;
@@ -51,7 +61,21 @@ in
     };
     clients = mkOption {
       type = types.listOf node;
-      default = builtins.fromJSON (builtins.readFile ./clients.json);
+      default = map (
+        c: with c; {
+          inherit
+            id
+            key
+            section
+            token
+            endpoint
+            ;
+          ips = pipe (genIP section token) [
+            (map (net.cidr.ip))
+            (map (net.cidr.make 128))
+          ];
+        }
+      ) (builtins.fromJSON (builtins.readFile ./clients.json));
     };
     server = mkOption {
       type = node;
@@ -80,6 +104,7 @@ in
             section = vcfg.section;
             token = vcfg.token;
             endpoint = "${v.config.networking.fqdn}:${toString vcfg.port}";
+            ips = genIP vcfg.section vcfg.token;
           }
         ))
       ];

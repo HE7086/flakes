@@ -101,7 +101,7 @@ in
         peers =
           [
             {
-              name = "server";
+              name = cfg.server.id;
               publicKey = cfg.server.key;
               endpoint = cfg.server.endpoint;
               allowedIPs = [
@@ -117,10 +117,7 @@ in
               name = id;
               publicKey = key;
               endpoint = endpoint;
-              allowedIPs = [
-                (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
-                (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
-              ];
+              allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 ips);
               persistentKeepalive = 25;
             }
           ) cfg.members
@@ -128,11 +125,7 @@ in
             client: with client; {
               name = id;
               publicKey = key;
-              allowedIPs = [
-                (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfg.ip4.internal))
-                (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.internal))
-                (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
-              ];
+              allowedIPs = ips;
             }
           ) (filter (client: client.section == cfgc.section) cfg.clients));
       };

@@ -47,11 +47,7 @@ in
           client: with client; {
             name = id;
             publicKey = key;
-            allowedIPs = [
-              (net.cidr.make 32 (net.cidr.host (section * 256 + token) cfg.ip4.internal))
-              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.internal))
-              (net.cidr.make 128 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
-            ];
+            allowedIPs = ips;
           }
         ) (filter (c: !elem c.section (map (m: m.section) cfg.members)) cfg.clients))
         ++ (map (
@@ -59,11 +55,7 @@ in
             name = id;
             publicKey = key;
             endpoint = endpoint;
-            allowedIPs = [
-              (net.cidr.make 24 (net.cidr.host (section * 256) cfg.ip4.internal))
-              (net.cidr.make 112 (net.cidr.host (section * 65536) cfg.ip6.internal))
-              (net.cidr.make 112 (net.cidr.host (section * 65536 + token) cfg.ip6.external))
-            ];
+            allowedIPs = map (net.cidr.canonicalize) ips;
             persistentKeepalive = 25;
           }
         ) cfg.members);
@@ -79,7 +71,7 @@ in
       family = "ip6";
       content =
         let
-          snat_cidr = net.cidr.make 112 (net.cidr.host (1 * 65536) cfg.ip6.external);
+          snat_cidr = net.cidr.subnet 16 1 cfg.ip6.external;
         in
         ''
           chain postrouting {
