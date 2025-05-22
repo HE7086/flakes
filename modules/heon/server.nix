@@ -71,6 +71,10 @@ in
 
     # networking.firewall.trustedInterfaces = [ cfgs.interface ];
     networking.firewall.allowedUDPPorts = [ cfgs.port ];
+    networking.firewall.extraInputRules = ''
+      ip saddr ${cfg.ip4.internal} accept
+      ip6 saddr ${cfg.ip6.internal} accept
+    '';
     networking.nftables.tables.wireguard = {
       family = "ip6";
       content =
