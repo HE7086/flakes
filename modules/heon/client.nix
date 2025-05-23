@@ -96,7 +96,7 @@ in
           [
             {
               inherit (cfg.serverNode) name publicKey endpoint;
-              allowedIPs = (map (net.cidr.canonicalize) cfg.server.allowedIPs) ++ [ "::/0" ];
+              allowedIPs = (map (net.cidr.canonicalize) cfg.serverNode.allowedIPs) ++ [ "::/0" ];
               persistentKeepalive = 25;
             }
           ]
