@@ -34,18 +34,14 @@ in
       ips = cfg.serverNode.allowedIPs;
       privateKeyFile = cfgs.privateKeyFile;
       peers =
-        (map (
-          client: with client; {
-            inherit name publicKey allowedIPs;
-          }
-        ) (filter (c: !elem c.section (map (m: m.section) cfg.members)) cfg.clients))
-        ++ (map (
-          member: with member; {
-            inherit name publicKey endpoint;
-            allowedIPs = map (net.cidr.canonicalize) allowedIPs;
-            persistentKeepalive = 25;
-          }
-        ) cfg.members);
+        (map (client: {
+          inherit (client) name publicKey allowedIPs;
+        }) (filter (c: !elem c.section (map (m: m.section) cfg.members)) cfg.clients))
+        ++ (map (member: {
+          inherit (member) name publicKey endpoint;
+          allowedIPs = map (net.cidr.canonicalize) member.allowedIPs;
+          persistentKeepalive = 25;
+        }) cfg.members);
     };
 
     # networking.firewall.trustedInterfaces = [ cfgs.interface ];

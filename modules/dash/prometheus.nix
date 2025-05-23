@@ -11,7 +11,7 @@
     basicAuthFile = config.sops.secrets.nginx_auth.path;
 
     locations."/" = {
-      proxyPass = with config.services.prometheus; "http://localhost:${toString port}";
+      proxyPass = "http://localhost:${toString config.services.prometheus.port}";
       proxyWebsockets = true;
       recommendedProxySettings = true;
     };

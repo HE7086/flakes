@@ -64,8 +64,14 @@ in
         listenPort = cfgc.port;
         # TODO: simplify this
         ips = with net.cidr; [
-          ((host cfgc.token (subnet 8 cfgc.section cfg.ip4.internal)) + "/${toString (length cfg.ip4.internal)}")
-          ((host cfgc.token (subnet 16 cfgc.section cfg.ip6.internal)) + "/${toString (length cfg.ip6.internal)}")
+          (
+            (host cfgc.token (subnet 8 cfgc.section cfg.ip4.internal))
+            + "/${toString (length cfg.ip4.internal)}"
+          )
+          (
+            (host cfgc.token (subnet 16 cfgc.section cfg.ip6.internal))
+            + "/${toString (length cfg.ip6.internal)}"
+          )
           ((host cfgc.token (subnet 16 cfgc.section cfg.ip6.external)) + "/128")
         ];
         privateKeyFile = cfgc.privateKeyFile;
@@ -98,18 +104,14 @@ in
               persistentKeepalive = 25;
             }
           ]
-          ++ map (
-            member: with member; {
-              inherit name publicKey endpoint;
-              allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 allowedIPs);
-              persistentKeepalive = 25;
-            }
-          ) cfg.members
-          ++ (map (
-            client: with client; {
-              inherit name publicKey allowedIPs;
-            }
-          ) (filter (client: client.section == cfgc.section) cfg.clients));
+          ++ map (member: {
+            inherit (member) name publicKey endpoint;
+            allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 member.allowedIPs);
+            persistentKeepalive = 25;
+          }) cfg.members
+          ++ (map (client: {
+            inherit (client) name publicKey allowedIPs;
+          }) (filter (client: client.section == cfgc.section) cfg.clients));
       };
     };
 }

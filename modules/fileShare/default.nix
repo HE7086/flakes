@@ -1,4 +1,5 @@
 { config, lib, ... }:
+with lib;
 {
   imports = [
     ./web.nix
@@ -8,42 +9,42 @@
   ];
   options = {
     services.fileShare.remote = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
+      enable = mkOption {
+        type = types.bool;
         default = false;
       };
-      dir = lib.mkOption {
-        type = lib.types.singleLineStr;
+      dir = mkOption {
+        type = types.singleLineStr;
         default = "/share/Public";
       };
-      createDir = lib.mkOption {
-        type = lib.types.bool;
+      createDir = mkOption {
+        type = types.bool;
         default = true;
       };
-      virtualHost = lib.mkOption {
-        type = lib.types.singleLineStr;
+      virtualHost = mkOption {
+        type = types.singleLineStr;
         default = "share.${config.networking.fqdn}";
       };
-      mode = lib.mkOption {
-        type = lib.types.singleLineStr;
+      mode = mkOption {
+        type = types.singleLineStr;
         default = "755";
       };
-      user = lib.mkOption {
-        type = lib.types.singleLineStr;
+      user = mkOption {
+        type = types.singleLineStr;
         default = "1000";
       };
-      group = lib.mkOption {
-        type = lib.types.singleLineStr;
+      group = mkOption {
+        type = types.singleLineStr;
         default = "100";
       };
-      rsyncd = lib.mkOption {
-        type = lib.types.bool;
+      rsyncd = mkOption {
+        type = types.bool;
         default = false;
       };
     };
     services.fileShare.local = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
+      enable = mkOption {
+        type = types.bool;
         default = false;
       };
     };
