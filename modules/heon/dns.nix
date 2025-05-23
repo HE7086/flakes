@@ -54,13 +54,9 @@ mkIf cfgs.enable {
     let
       hostName = config.networking.hostName;
       ips = map (
-        client: with client; {
+        client: {
           name = client.id;
-          ip = [
-            (net.cidr.host (section * 256 + token) cfg.ip4.internal)
-            (net.cidr.host (section * 65536 + token) cfg.ip6.internal)
-            (net.cidr.host (section * 65536 + token) cfg.ip6.external)
-          ];
+          ip = map (net.cidr.ip) client.ips;
         }
       ) (cfg.clients ++ cfg.members);
       ip4_int = map (c: {
