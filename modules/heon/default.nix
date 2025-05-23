@@ -31,6 +31,10 @@ in
     ./secrets.nix
   ];
   options.services.heon = {
+    lib.genIP = mkOption {
+      type = with types; functionTo (functionTo (listOf str));
+      default = genIP;
+    };
     ip4 = {
       external = mkOption {
         type = types.net.cidrv4;

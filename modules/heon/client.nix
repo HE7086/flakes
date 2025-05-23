@@ -48,10 +48,7 @@ in
   config =
     let
       gateway = net.cidr.host 1 cfg.ip6.internal;
-      ip4_int = net.cidr.hostCidr (cfgc.section * 256 + cfgc.token) cfg.ip4.internal;
-      ip6_int = net.cidr.hostCidr (cfgc.section * 65536 + cfgc.token) cfg.ip6.internal;
-      ip6_ext = net.cidr.make 128 (net.cidr.host (cfgc.section * 65536 + cfgc.token) cfg.ip6.external);
-      ip6_forward = net.cidr.make 112 (net.cidr.host (cfgc.section * 65536) cfg.ip6.external);
+      ip6_forward = net.cidr.subnet 16 cfgc.section cfg.ip6.external;
       ip = "${pkgs.iproute2}/bin/ip";
       rc = "${pkgs.systemd}/bin/resolvectl";
     in
@@ -60,16 +57,17 @@ in
       networking.firewall.extraInputRules = ''
         ip saddr ${cfg.ip4.internal} accept
         ip6 saddr ${cfg.ip6.internal} accept
+        ip6 saddr ${cfg.ip6.external} accept
       '';
       networking.firewall.allowedUDPPorts = [ cfgc.port ];
       networking.wireguard.interfaces."${cfgc.interface}" = {
         listenPort = cfgc.port;
-        ips = [
-          ip4_int
-          ip6_int
-          ip6_ext
+        # TODO: simplify this
+        ips = with net.cidr; [
+          ((host cfgc.token (subnet 8 cfgc.section cfg.ip4.internal)) + "/${toString (length cfg.ip4.internal)}")
+          ((host cfgc.token (subnet 16 cfgc.section cfg.ip6.internal)) + "/${toString (length cfg.ip6.internal)}")
+          ((host cfgc.token (subnet 16 cfgc.section cfg.ip6.external)) + "/128")
         ];
-
         privateKeyFile = cfgc.privateKeyFile;
 
         postSetup = ''
