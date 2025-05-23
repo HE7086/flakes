@@ -56,12 +56,6 @@ in
       rc = "${pkgs.systemd}/bin/resolvectl";
     in
     mkIf cfgc.enable {
-      boot.kernel.sysctl = {
-        "net.ipv6.conf.default.forwarding" = 1;
-        "net.ipv4.conf.default.forwarding" = 1;
-        "net.ipv4.conf.all.forwarding" = 1;
-        "net.ipv6.conf.all.forwarding" = 1;
-      };
       # networking.firewall.trustedInterfaces = [ cfgc.interface ];
       networking.firewall.extraInputRules = ''
         ip saddr ${cfg.ip4.internal} accept

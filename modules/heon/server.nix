@@ -29,12 +29,6 @@ in
     };
   };
   config = mkIf cfgs.enable {
-    boot.kernel.sysctl = {
-      "net.ipv6.conf.default.forwarding" = 1;
-      "net.ipv4.conf.default.forwarding" = 1;
-      "net.ipv4.conf.all.forwarding" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
-    };
     networking.wireguard.interfaces."${cfgs.interface}" = {
       listenPort = cfgs.port;
       ips = cfg.serverNode.allowedIPs;
