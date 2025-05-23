@@ -8,12 +8,12 @@ with lib;
 let
   node = types.submodule {
     options = {
-      id = mkOption { type = types.str; };
-      key = mkOption { type = types.str; };
+      name = mkOption { type = types.str; };
+      publicKey = mkOption { type = types.str; };
       section = mkOption { type = types.int; };
       token = mkOption { type = types.int; };
       endpoint = mkOption { type = types.str; };
-      ips = mkOption { type = types.listOf types.str; };
+      allowedIPs = mkOption { type = types.listOf types.str; };
     };
   };
   cfg = config.services.heon;
@@ -31,14 +31,6 @@ in
     ./secrets.nix
   ];
   options.services.heon = {
-    lib = {
-      genIP =
-        with types;
-        mkOption {
-          type = functionTo (functionTo (listOf str));
-          default = genIP;
-        };
-    };
     ip4 = {
       external = mkOption {
         type = types.net.cidrv4;
@@ -64,27 +56,31 @@ in
       default = map (
         c: with c; {
           inherit
-            id
-            key
+            name
+            publicKey
             section
             token
             endpoint
             ;
-          ips = pipe (genIP section token) [
+          allowedIPs = pipe (genIP section token) [
             (map (net.cidr.ip))
             (map (net.cidr.make 128))
           ];
         }
       ) (builtins.fromJSON (builtins.readFile ./clients.json));
     };
-    server = mkOption {
+    serverNode = mkOption {
       type = node;
       default = {
-        id = "herd";
-        key = "5tBj2GFA6GTqvPyy883y4bmDH0at3QJ/QIhCi4Gd6FQ=";
+        name = "herd";
+        publicKey = "5tBj2GFA6GTqvPyy883y4bmDH0at3QJ/QIhCi4Gd6FQ=";
         section = 0;
         token = 1;
         endpoint = "herd.heyi7086.com:51820";
+        allowedIPs = [
+          (net.cidr.hostCidr 1 cfg.ip4.internal)
+          (net.cidr.hostCidr 1 cfg.ip6.internal)
+        ];
       };
     };
     members = mkOption {
@@ -99,12 +95,10 @@ in
             vcfg = v.config.services.heon.client;
           in
           {
-            id = k;
-            key = vcfg.publicKey;
-            section = vcfg.section;
-            token = vcfg.token;
+            name = k;
+            inherit (vcfg) publicKey section token;
             endpoint = "${v.config.networking.fqdn}:${toString vcfg.port}";
-            ips = genIP vcfg.section vcfg.token;
+            allowedIPs = genIP vcfg.section vcfg.token;
           }
         ))
       ];

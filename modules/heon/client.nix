@@ -101,31 +101,21 @@ in
         peers =
           [
             {
-              name = cfg.server.id;
-              publicKey = cfg.server.key;
-              endpoint = cfg.server.endpoint;
-              allowedIPs = [
-                (toString cfg.ip4.internal)
-                (toString cfg.ip6.internal)
-                "::/0"
-              ];
+              inherit (cfg.serverNode) name publicKey endpoint;
+              allowedIPs = (map (net.cidr.canonicalize) cfg.server.allowedIPs) ++ [ "::/0" ];
               persistentKeepalive = 25;
             }
           ]
           ++ map (
             member: with member; {
-              name = id;
-              publicKey = key;
-              endpoint = endpoint;
-              allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 ips);
+              inherit name publicKey endpoint;
+              allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 allowedIPs);
               persistentKeepalive = 25;
             }
           ) cfg.members
           ++ (map (
             client: with client; {
-              name = id;
-              publicKey = key;
-              allowedIPs = ips;
+              inherit name publicKey allowedIPs;
             }
           ) (filter (client: client.section == cfgc.section) cfg.clients));
       };

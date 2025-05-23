@@ -37,25 +37,18 @@ in
     };
     networking.wireguard.interfaces."${cfgs.interface}" = {
       listenPort = cfgs.port;
-      ips = [
-        (net.cidr.hostCidr 1 cfg.ip4.internal)
-        (net.cidr.hostCidr 1 cfg.ip6.internal)
-      ];
+      ips = cfg.serverNode.allowedIPs;
       privateKeyFile = cfgs.privateKeyFile;
       peers =
         (map (
           client: with client; {
-            name = id;
-            publicKey = key;
-            allowedIPs = ips;
+            inherit name publicKey allowedIPs;
           }
         ) (filter (c: !elem c.section (map (m: m.section) cfg.members)) cfg.clients))
         ++ (map (
           member: with member; {
-            name = id;
-            publicKey = key;
-            endpoint = endpoint;
-            allowedIPs = map (net.cidr.canonicalize) ips;
+            inherit name publicKey endpoint;
+            allowedIPs = map (net.cidr.canonicalize) allowedIPs;
             persistentKeepalive = 25;
           }
         ) cfg.members);

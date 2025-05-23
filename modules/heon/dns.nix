@@ -53,12 +53,10 @@ mkIf cfgs.enable {
   services.unbound =
     let
       hostName = config.networking.hostName;
-      ips = map (
-        client: {
-          name = client.id;
-          ip = map (net.cidr.ip) client.ips;
-        }
-      ) (cfg.clients ++ cfg.members);
+      ips = map (client: {
+        name = client.name;
+        ip = map (net.cidr.ip) client.allowedIPs;
+      }) (cfg.clients ++ cfg.members);
       ip4_int = map (c: {
         host = c.name;
         addr = elemAt c.ip 0;
