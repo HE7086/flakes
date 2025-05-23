@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib;
@@ -49,8 +48,6 @@ in
     let
       gateway = net.cidr.host 1 cfg.ip6.internal;
       ip6_forward = net.cidr.subnet 16 cfgc.section cfg.ip6.external;
-      ip = "${pkgs.iproute2}/bin/ip";
-      rc = "${pkgs.systemd}/bin/resolvectl";
     in
     mkIf cfgc.enable {
       # networking.firewall.trustedInterfaces = [ cfgc.interface ];
@@ -75,23 +72,6 @@ in
           ((host cfgc.token (subnet 16 cfgc.section cfg.ip6.external)) + "/128")
         ];
         privateKeyFile = cfgc.privateKeyFile;
-
-        postSetup = ''
-          ${ip} -6 route replace ${ip6_forward} dev ${cfgc.interface}
-          ${ip} -6 rule add from ${ip6_forward} lookup ${cfgc.routeTable} priority 100
-          ${ip} -6 route replace default via ${gateway} dev ${cfgc.interface} table ${cfgc.routeTable}
-          ${ip} -6 route replace ${gateway}/128 dev ${cfgc.interface}
-          ${rc} dns ${cfgc.interface} ${gateway}
-          ${rc} domain ${cfgc.interface} ~l ~r
-        '';
-        preShutdown = ''
-          ${ip} -6 route delete ${ip6_forward} dev ${cfgc.interface}
-          ${ip} -6 rule delete from ${ip6_forward} lookup ${cfgc.routeTable} priority 100
-          ${ip} -6 route flush table ${cfgc.routeTable}
-          ${ip} -6 route delete ${gateway}/128 dev ${cfgc.interface}
-          ${rc} revert ${cfgc.interface}
-        '';
-
         allowedIPsAsRoutes = false;
         # table = "off";
         # dns = [ gateway ];
@@ -112,6 +92,32 @@ in
           ++ (map (client: {
             inherit (client) name publicKey allowedIPs;
           }) (filter (client: client.section == cfgc.section) cfg.clients));
+      };
+      systemd.network.networks.${cfgc.interface} = {
+        routes = [
+          {
+            Destination = ip6_forward;
+          }
+          {
+            Destination = net.cidr.make 128 gateway;
+          }
+          {
+            Destination = "::/0";
+            Gateway = gateway;
+            Table = cfgc.routeTable;
+          }
+        ];
+        routingPolicyRules = [
+          {
+            From = ip6_forward;
+            Table = cfgc.routeTable;
+          }
+        ];
+        dns = [ gateway ];
+        domains = [
+          "~l"
+          "~r"
+        ];
       };
     };
 }
