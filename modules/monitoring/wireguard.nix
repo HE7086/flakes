@@ -1,11 +1,21 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib;
+let
+  cfg = config.services.prometheus.exporters.wireguard;
+in
 {
   services.prometheus.exporters.wireguard =
-    lib.mkIf (config.networking.wireguard.enable || config.networking.wg-quick.interfaces != { })
+    mkIf (config.networking.wireguard.enable || config.networking.wg-quick.interfaces != { })
       {
         enable = true;
         withRemoteIp = true;
         singleSubnetPerField = true;
+        extraFlags = [ "-d true" ];
       };
   services.alloy.extraConfigs = with config.services.prometheus.exporters.wireguard; [
     ''
@@ -17,4 +27,17 @@
       }
     ''
   ];
+
+  systemd.services.prometheus-wireguard-exporter = {
+    serviceConfig.ExecStart = mkForce ''
+      ${pkgs.prometheus-wireguard-exporter}/bin/prometheus_wireguard_exporter \
+      -p ${toString cfg.port} \
+      -l ${cfg.listenAddress} \
+      ${optionalString cfg.verbose "-v true"} \
+      ${optionalString cfg.singleSubnetPerField "-s true"} \
+      ${optionalString cfg.withRemoteIp "-r true"} \
+      ${optionalString (cfg.wireguardConfig != null) "-n ${escapeShellArg cfg.wireguardConfig}"} \
+      ${optionalString (cfg.extraFlags != [ ]) (concatStringsSep " " cfg.extraFlags)}
+    '';
+  };
 }
