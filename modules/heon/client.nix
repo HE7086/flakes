@@ -91,7 +91,16 @@ in
           }) cfg.members
           ++ (map (client: {
             inherit (client) name publicKey allowedIPs;
-          }) (filter (client: client.section == cfgc.section) cfg.clients));
+          }) (filter (client: client.section == cfgc.section) cfg.clients))
+          # floating clients
+          ++ (map (client: {
+            inherit (client) name publicKey;
+            allowedIPs = with client; [
+              (net.cidr.make 32 (net.cidr.host token (net.cidr.subnet 8 255 cfg.ip4.internal)))
+              (net.cidr.make 128 (net.cidr.host token (net.cidr.subnet 16 65535 cfg.ip6.internal)))
+            ];
+          }) (filter (client: client.section == 1) cfg.clients))
+          ;
       };
       systemd.network.networks.${cfgc.interface} = {
         routes = [
@@ -118,6 +127,12 @@ in
           "~l"
           "~r"
         ];
+      };
+      networking.nat = {
+        enable = true;
+        enableIPv6 = true;
+        externalInterface = cfgc.externalInterface;
+        internalInterfaces = [ cfgc.interface ];
       };
     };
 }
