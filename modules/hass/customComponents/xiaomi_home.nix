@@ -4,13 +4,13 @@
     (callPackage buildHomeAssistantComponent rec {
       owner = "XiaoMi";
       domain = "xiaomi_home";
-      version = "0.2.4";
+      version = "0.3.2";
 
       src = fetchFromGitHub {
         inherit owner;
         repo = "ha_xiaomi_home";
         rev = "v${version}";
-        sha256 = "sha256-scKwqm/uJkLFHWNwLf7Plh4qy282LrCYN8cazjBafXY=";
+        sha256 = "sha256-NIgkw9AtPLO/cb1kn6vnPTGrKjuWIpwuvYrz3qGQDNE=";
         # nix shell 'nixpkgs#nix-prefetch-github' -c nix-prefetch-github --rev "v0.2.4" XiaoMi ha_xiaomi_home
       };
 
