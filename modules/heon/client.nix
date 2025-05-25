@@ -99,8 +99,7 @@ in
               (net.cidr.make 32 (net.cidr.host token (net.cidr.subnet 8 255 cfg.ip4.internal)))
               (net.cidr.make 128 (net.cidr.host token (net.cidr.subnet 16 65535 cfg.ip6.internal)))
             ];
-          }) (filter (client: client.section == 1) cfg.clients))
-          ;
+          }) (filter (client: client.section == 1) cfg.clients));
       };
       systemd.network.networks.${cfgc.interface} = {
         routes = [

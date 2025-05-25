@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -31,37 +31,23 @@
   outputs =
     inputs:
     with inputs;
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
-        devShells.default = pkgs.mkShellNoCC {
-          buildInputs = with pkgs; [
-            coreutils
-            git
-            just
-            rsync
-            curl
-            openssh
-            age
-            sops
-            jq
-            mkpasswd
-            ssh-to-age
-            opentofu
-          ];
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      perSystem =
+        { pkgs, ... }:
+        {
+          formatter = pkgs.nixfmt-tree;
         };
-        formatter = pkgs.nixfmt-rfc-style;
-      }
-    )
-    // {
-      overlays = import ./overlays { inherit inputs; };
-      nixosModules = import ./modules { inherit inputs; };
-      nixosConfigurations = import ./hosts {
-        inherit inputs self;
-        rootPath = ./.;
+      flake = {
+        overlays = import ./overlays { inherit inputs; };
+        nixosModules = import ./modules { inherit inputs; };
+        nixosConfigurations = import ./hosts {
+          inherit inputs self;
+          rootPath = ./.;
+        };
       };
     };
 }
