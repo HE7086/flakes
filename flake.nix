@@ -14,6 +14,10 @@
     };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -30,22 +34,18 @@
 
   outputs =
     inputs:
-    with inputs;
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ inputs.treefmt-nix.flakeModule ];
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
-      perSystem =
-        { pkgs, ... }:
-        {
-          formatter = pkgs.nixfmt-tree;
-        };
       flake = {
         overlays = import ./overlays { inherit inputs; };
         nixosModules = import ./modules { inherit inputs; };
         nixosConfigurations = import ./hosts {
-          inherit inputs self;
+          inherit inputs;
+          inherit (inputs) self;
           rootPath = ./.;
         };
       };
