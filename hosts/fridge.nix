@@ -105,6 +105,5 @@
     section = 2;
     token = 2;
     publicKey = "Ry1T28Xmn9GnoSEOWjJqsw1gb9Moy59imbgjaPMOmCg=";
-    externalInterface = "br0";
   };
 }

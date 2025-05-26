@@ -39,10 +39,6 @@ in
       type = types.int;
       default = 0;
     };
-    externalInterface = mkOption {
-      type = types.str;
-      default = "ens3";
-    };
   };
   config =
     let
