@@ -48,6 +48,8 @@ in
     let
       gateway = net.cidr.host 1 cfg.ip6.internal;
       ip6_forward = net.cidr.subnet 16 cfgc.section cfg.ip6.external;
+      f_subnet4 = net.cidr.subnet 8 255 cfg.ip4.internal;
+      f_subnet6 = net.cidr.subnet 16 65535 cfg.ip6.internal;
     in
     mkIf cfgc.enable {
       # networking.firewall.trustedInterfaces = [ cfgc.interface ];
@@ -96,8 +98,8 @@ in
           ++ (map (client: {
             inherit (client) name publicKey;
             allowedIPs = with client; [
-              (net.cidr.make 32 (net.cidr.host token (net.cidr.subnet 8 255 cfg.ip4.internal)))
-              (net.cidr.make 128 (net.cidr.host token (net.cidr.subnet 16 65535 cfg.ip6.internal)))
+              (net.cidr.make 32 (net.cidr.host token f_subnet4))
+              (net.cidr.make 128 (net.cidr.host token f_subnet6))
             ];
           }) (filter (client: client.section == 1) cfg.clients));
       };
@@ -130,8 +132,8 @@ in
       networking.nat = {
         enable = true;
         enableIPv6 = true;
-        externalInterface = cfgc.externalInterface;
-        internalInterfaces = [ cfgc.interface ];
+        internalIPs = [ f_subnet4 ];
+        internalIPv6s = [ f_subnet6 ];
       };
     };
 }
