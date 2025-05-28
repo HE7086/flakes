@@ -56,6 +56,7 @@
     user = "root";
     group = "root";
     rsyncd = false;
+    acmeHost = false;
   };
 
   services.heon.server.enable = true;

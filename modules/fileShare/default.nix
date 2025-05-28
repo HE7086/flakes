@@ -41,6 +41,10 @@ with lib;
         type = types.bool;
         default = false;
       };
+      acmeHost = mkOption {
+        type = types.bool;
+        default = true;
+      };
     };
     services.fileShare.local = {
       enable = mkOption {
