@@ -12,6 +12,7 @@
     # disabled by default
     ./docker.nix
     ./nginx.nix
+    ./acme.nix
   ];
 
   boot.kernelModules = [ "tcp_bbr" ];
