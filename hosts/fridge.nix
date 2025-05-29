@@ -54,6 +54,12 @@
       "enp3s0"
       "enp4s0"
     ];
+    interfaces = {
+      enp1s0.mtu = 1492;
+      enp2s0.mtu = 1492;
+      enp3s0.mtu = 1492;
+      enp4s0.mtu = 1492;
+    };
   };
   networking.nftables.enable = true;
   networking.nftables.tables = {
@@ -90,6 +96,7 @@
           "prefix:inet:filter:lan_prefix"
         ];
       };
+      linkConfig.MTUBytes = 1492;
     };
   };
 
