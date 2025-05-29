@@ -12,9 +12,9 @@ lib.mkIf cfg.enable {
   services.nginx.virtualHosts = {
     "${cfg.virtualHost}" = {
       forceSSL = true;
-      # enableACME = !cfg.acmeHost;
-      # useACMEHost = lib.mkIf cfg.acmeHost config.networking.fqdn;
-      enableACME = true;
+      # enableACME = true;
+      enableACME = !cfg.acmeHost;
+      useACMEHost = lib.mkIf cfg.acmeHost config.networking.fqdn;
       root = cfg.dir;
       locations."/".extraConfig = ''
         fancyindex on;

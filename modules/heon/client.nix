@@ -124,6 +124,10 @@ in
           "~l"
           "~r"
         ];
+        networkConfig = {
+          DNSOverTLS = "no";
+          DNSSEC = "no";
+        };
       };
       networking.nat = {
         enable = true;

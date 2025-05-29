@@ -88,7 +88,7 @@
       matchConfig.Name = "br0";
       address = [ "192.168.1.2/24" ];
       gateway = [ "192.168.1.1" ];
-      dns = [ "192.168.1.1" ];
+      # dns = [ "192.168.1.1" ];
       DHCP = "ipv6";
       ipv6AcceptRAConfig = {
         Token = "::2";
@@ -98,6 +98,15 @@
       };
       linkConfig.MTUBytes = 1492;
     };
+  };
+  services.resolved = {
+    dnssec = "allow-downgrade";
+    dnsovertls = "true";
+    domains = [ "~." ];
+    extraConfig = ''
+      DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com
+      FallbackDNS=8.8.8.8#dns.google 8.8.4.4#dns.google
+    '';
   };
 
   services.fileShare = {
