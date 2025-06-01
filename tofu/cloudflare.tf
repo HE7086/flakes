@@ -9,6 +9,10 @@ locals {
         herd = module.hcloud["herd"].ipv4
         # fridge = #ddns
         toaster = module.oci.ipv4
+
+        #---- local only services -----
+        "suwayomi.fridge"     = "192.168.1.2"
+        "transmission.fridge" = "192.168.1.2"
       }
       AAAA = {
         herd = module.hcloud["herd"].ipv6
