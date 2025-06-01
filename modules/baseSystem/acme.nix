@@ -7,7 +7,7 @@
 lib.mkIf config.services.nginx.enable {
   security.acme = {
     acceptTerms = true;
-    defaults.email = "me@heyi7086.com";
+    defaults.email = "acme@heyi7086.com";
   };
 
   # FIXME: fritzbox blocks SOA request in PPPoE passthrough mode
@@ -16,7 +16,7 @@ lib.mkIf config.services.nginx.enable {
   # Temporarily solved using dns-over-tls
 
   security.acme.certs."${config.networking.fqdn}" = {
-    domain = "*.${config.networking.fqdn}";
+    extraDomainNames = [ "*.${config.networking.fqdn}" ];
     dnsProvider = "cloudflare";
     credentialFiles = {
       CF_DNS_API_TOKEN_FILE = config.sops.secrets."cloudflare/token/acme".path;
