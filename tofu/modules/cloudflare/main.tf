@@ -49,7 +49,9 @@ resource "cloudflare_dns_record" "dns_records" {
   for_each = local.zones_flattened
 
   zone_id = cloudflare_zone.zone.id
-  name    = each.value.name
+  # HACK: https://github.com/cloudflare/terraform-provider-cloudflare/issues/5517#issuecomment-2917715192
+  # name    = each.value.name
+  name    = each.value.name == "@" ? var.zone : (each.value.name == var.zone ? var.zone : "${each.value.name}.${var.zone}")
   type    = each.value.type
   content = each.value.content
   proxied = false
