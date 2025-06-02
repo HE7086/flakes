@@ -17,6 +17,7 @@
 
   boot.kernelModules = [ "tcp_bbr" ];
   boot.kernel.sysctl = {
+    "kernel.dmesg_restrict" = 0;
     "net.ipv4.tcp_congestion_control" = "bbr";
     "net.core.default_qdisc" = "fq";
     "net.ipv6.conf.default.forwarding" = 1;
