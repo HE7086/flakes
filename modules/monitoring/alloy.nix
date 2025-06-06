@@ -25,8 +25,16 @@ with lib;
               }
             }
           }
+          loki.relabel "journal" {
+            forward_to = []
+            rule {
+              source_labels = ["__journal__systemd_unit"]
+              target_label  = "unit"
+            }
+          }
 
           loki.source.journal "${config.networking.hostName}" {
+            relabel_rules = loki.relabel.journal.rules
             max_age = "24h"
             forward_to = [loki.write.default.receiver]
           }
