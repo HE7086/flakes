@@ -28,6 +28,13 @@
       storage_config.filesystem.directory = "/tmp/loki/chunks";
     };
   };
+  services.grafana.provision.datasources.settings.datasources = [
+    {
+      name = "loki";
+      type = "loki";
+      url = "http://localhost:${toString config.services.loki.configuration.server.http_listen_port}";
+    }
+  ];
   services.nginx.virtualHosts."loki.heyi7086.com" = {
     forceSSL = true;
     enableACME = true;

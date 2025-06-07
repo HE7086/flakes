@@ -5,6 +5,13 @@
     webExternalUrl = "https://prometheus.heyi7086.com";
     extraFlags = [ "--web.enable-remote-write-receiver" ];
   };
+  services.grafana.provision.datasources.settings.datasources = [
+    {
+      name = "prometheus";
+      type = "prometheus";
+      url = "http://localhost:${toString config.services.prometheus.port}";
+    }
+  ];
   services.nginx.virtualHosts."prometheus.heyi7086.com" = {
     forceSSL = true;
     enableACME = true;
