@@ -17,7 +17,10 @@ in
         cookie_secure = true;
       };
     };
+    # https://github.com/grafana/grafana/issues/69950#event-14536420532
+    provision.alerting.contactPoints.path = config.sops.secrets.contact_points.path;
   };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
