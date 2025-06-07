@@ -7,12 +7,14 @@ in
     enable = true;
     settings = {
       server = {
+        protocol = "socket";
         enforce_domain = true;
         domain = domain;
         root_url = "https://${domain}";
       };
       security = {
         admin_password = "$__file{${config.sops.secrets.grafana_admin_password.path}}";
+        cookie_secure = true;
       };
     };
   };
@@ -21,11 +23,11 @@ in
     enableACME = true;
 
     locations."/" = {
-      proxyPass =
-        with config.services.grafana.settings.server;
-        "http://${http_addr}:${toString http_port}";
+      proxyPass = "http://unix:${config.services.grafana.settings.server.socket}";
       proxyWebsockets = true;
       recommendedProxySettings = true;
     };
   };
+
+  users.users.nginx.extraGroups = [ "grafana" ];
 }
