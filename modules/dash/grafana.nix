@@ -9,6 +9,7 @@ in
       server = {
         enforce_domain = true;
         domain = domain;
+        root_url = "https://${domain}";
       };
       security = {
         admin_password = "$__file{${config.sops.secrets.grafana_admin_password.path}}";
