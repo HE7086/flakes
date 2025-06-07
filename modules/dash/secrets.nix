@@ -3,7 +3,7 @@
   sops.secrets.grafana_admin_password = {
     owner = "grafana";
     mode = "0400";
-    sopsFile = rootPath + /secrets/secrets.yaml;
+    sopsFile = rootPath + /secrets/dash.yaml;
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets.nginx_auth = {
@@ -15,7 +15,7 @@
   sops.secrets.contact_points = {
     owner = "grafana";
     mode = "0400";
-    sopsFile = rootPath + /secrets/secrets.yaml;
+    sopsFile = rootPath + /secrets/dash.yaml;
     restartUnits = [ "grafana.service" ];
   };
 }
