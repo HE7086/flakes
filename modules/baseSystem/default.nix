@@ -37,4 +37,9 @@
 
   services.dbus.implementation = "broker";
   services.logind.extraConfig = "RuntimeDirectorySize=50%";
+
+  environment.variables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
 }
