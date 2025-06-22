@@ -62,27 +62,32 @@
     };
   };
   networking.nftables.enable = true;
-  networking.nftables.tables = {
-    nixos-fw.enable = false;
-    # HACK: bypass NFTSet "Invalid table name nixos-fw"
-    filter = with config.networking.nftables.tables.nixos-fw; {
-      inherit family;
-      content =
-        ''
-          set lan_prefix {
-            type ipv6_addr
-            flags interval
-          }
-        ''
-        + content;
-    };
-  };
+  # networking.nftables.tables = {
+  #   nixos-fw.enable = false;
+  #   # HACK: bypass NFTSet "Invalid table name nixos-fw"
+  #
+  #   filter = with config.networking.nftables.tables.nixos-fw; {
+  #     inherit family;
+  #     content =
+  #       ''
+  #         set lan_prefix {
+  #           type ipv6_addr
+  #           flags interval
+  #         }
+  #       ''
+  #       + content;
+  #   };
+  # };
   networking.firewall.enable = true;
   networking.firewall.extraInputRules = ''
-    ip6 saddr @lan_prefix accept
     ip6 saddr fe80::/10 accept
     ip saddr 192.168.1.0/24 accept
   '';
+  # networking.firewall.extraInputRules = ''
+  #   ip6 saddr @lan_prefix accept
+  #   ip6 saddr fe80::/10 accept
+  #   ip saddr 192.168.1.0/24 accept
+  # '';
   systemd.network.networks = {
     "10-br0" = {
       matchConfig.Name = "br0";
@@ -92,9 +97,12 @@
       DHCP = "ipv6";
       ipv6AcceptRAConfig = {
         Token = "::2";
-        NFTSet = [
-          "prefix:inet:filter:lan_prefix"
-        ];
+        # FIXME: this causes journal being flooded some time after restart systemd-networkd
+        # Failed to add NFT set: ... ignoring: No buffer space available
+        #
+        # NFTSet = [
+        #   "prefix:inet:filter:lan_prefix"
+        # ];
       };
       linkConfig.MTUBytes = 1492;
     };
