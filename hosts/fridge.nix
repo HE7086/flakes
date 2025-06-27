@@ -108,7 +108,7 @@
     };
   };
   services.resolved = {
-    dnssec = "allow-downgrade";
+    dnssec = "false";
     dnsovertls = "true";
     domains = [ "~." ];
     extraConfig = ''
