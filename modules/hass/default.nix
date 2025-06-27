@@ -1,4 +1,5 @@
 { config, ... }:
+let port = toString config.services.home-assistant.config.http.server_port; in
 {
   imports = [
     ./default_config.nix
@@ -9,7 +10,8 @@
     ./customComponents/midea_ac.nix
   ];
 
-  services.home-assistant = {
+  services.home-assistant =
+    {
     enable = true;
     openFirewall = false;
     extraComponents = [
@@ -25,7 +27,7 @@
     config = {
       homeassistant = {
         external_url = "https://hass.heyi7086.com";
-        internal_url = "http://192.168.1.2:8123";
+        internal_url = "http://192.168.1.2:${port}";
       };
       http = {
         use_x_forwarded_for = true;
@@ -79,7 +81,7 @@
       proxy_buffering off;
     '';
     locations."/" = {
-      proxyPass = "http://127.0.0.1:8123";
+      proxyPass = "http://127.0.0.1:${port}";
       proxyWebsockets = true;
       recommendedProxySettings = true;
     };
