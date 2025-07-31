@@ -3,7 +3,7 @@
   imports = [ ./flaresolverr.nix ];
   services.suwayomi-server = {
     enable = true;
-    package = pkgs.unstable.suwayomi-server;
+    package = pkgs.suwayomi-server;
     settings = {
       server = {
         port = 7375;

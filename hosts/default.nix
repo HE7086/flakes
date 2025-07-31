@@ -26,6 +26,7 @@ let
         overlays = [
           self.overlays.net
           self.overlays.unstable
+          self.overlays.local
         ];
       };
     };
