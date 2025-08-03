@@ -23,11 +23,7 @@ let
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [
-          self.overlays.net
-          self.overlays.unstable
-          self.overlays.local
-        ];
+        overlays = nixpkgs.lib.mapAttrsToList (n: v: v) self.overlays;
       };
     };
 in

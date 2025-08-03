@@ -85,7 +85,7 @@ get-age:
 repl:
     # nix --extra-experimental-features 'repl-flake' repl '.#nixosConfigurations'
     # :p fridge.config.nix.settings
-    # lib = import fridge.pkgs.lib
+    # lib = fridge.pkgs.lib
     nix repl --show-trace '.#nixosConfigurations'
 
 check:
