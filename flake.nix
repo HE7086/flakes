@@ -40,13 +40,15 @@
         "x86_64-linux"
         "aarch64-linux"
       ];
-      perSystem = { pkgs, ...}: {
-        treefmt = {
-          projectRootFile = "flake.nix";
-          programs.nixfmt.enable = true;
-          programs.nixfmt.package = pkgs.nixfmt-rfc-style;
+      perSystem =
+        { pkgs, ... }:
+        {
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs.nixfmt.enable = true;
+            programs.nixfmt.package = pkgs.nixfmt-rfc-style;
+          };
         };
-      };
       flake = {
         overlays = import ./overlays { inherit inputs; };
         nixosModules = import ./modules { inherit inputs; };

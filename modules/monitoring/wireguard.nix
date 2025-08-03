@@ -22,7 +22,7 @@ in
       targets = [
         ''{"__address__" = "localhost:${toString port}", "job" = "wireguard", "instance" = "${config.networking.hostName}"}''
       ];
-      forward_to = ["prometheus.remote_write.default.receiver"];
+      forward_to = [ "prometheus.remote_write.default.receiver" ];
     };
   };
 

@@ -6,50 +6,55 @@
 }:
 with lib;
 let
-  parse_top = conf:
-    concatMapAttrsStringSep "\n" (key: value:
-      concatMapAttrsStringSep "\n" (k: v:
-        ''
+  parse_top =
+    conf:
+    concatMapAttrsStringSep "\n" (
+      key: value:
+      concatMapAttrsStringSep "\n" (k: v: ''
         ${key} "${k}" {
         ${parse_config 1 v}
-        }''
-      ) value
+        }'') value
     ) conf;
-  parse_config = depth: conf:
+  parse_config =
+    depth: conf:
     let
       indent = strings.replicate depth "  ";
       indent2 = strings.replicate (depth + 1) "  ";
     in
-    concatMapAttrsStringSep "\n" (key: value:
-    if isAttrs value then
-      ''
-      ${indent}${key} {
-      ${parse_config (depth + 1) value}
-      ${indent}}''
-    # INFO: don't add quotes in lists
-    else if isList value then
-      if value == [] then
-        ''${indent}${key} = []''
-      else if isAttrs (head value) then
-        concatMapStringsSep "\n" (v:
+    concatMapAttrsStringSep "\n" (
+      key: value:
+      if isAttrs value then
         ''
-        ${indent}${key} {
-        ${parse_config (depth + 1) v}
-        ${indent}}''
-        ) value
-      else if (length value) == 1 then
-        ''${indent}${key} = [${head value}]''
+          ${indent}${key} {
+          ${parse_config (depth + 1) value}
+          ${indent}}''
+      # INFO: don't add quotes in lists
+      else if isList value then
+        if value == [ ] then
+          ''${indent}${key} = []''
+        else if isAttrs (head value) then
+          concatMapStringsSep "\n" (v: ''
+            ${indent}${key} {
+            ${parse_config (depth + 1) v}
+            ${indent}}'') value
+        else if (length value) == 1 then
+          ''${indent}${key} = [${head value}]''
+        else
+          ''
+            ${indent}${key} = [
+            ${indent2}${concatMapStringsSep ",\n${indent2}" (v: "${v}") value},
+            ${indent}]''
+      # INFO: add quotes for plain values with blacklist
+      else if
+        elem key [
+          "relabel_rules"
+          "targets"
+        ]
+      then
+        ''${indent}${key} = ${value}''
       else
-        ''
-        ${indent}${key} = [
-        ${indent2}${concatMapStringsSep ",\n${indent2}" (v: "${v}") value},
-        ${indent}]''
-    # INFO: add quotes for plain values with blacklist
-    else if elem key [ "relabel_rules" "targets" ] then
-      ''${indent}${key} = ${value}''
-    else
-      ''${indent}${key} = "${value}"''
-  ) conf;
+        ''${indent}${key} = "${value}"''
+    ) conf;
   quote = str: "\"${str}\"";
 in
 {
@@ -59,10 +64,12 @@ in
       default = parse_top;
     };
     settings = mkOption {
-      type = attrsOf (attrsOf (submodule {
-        freeformType = anything;
-      }));
-      default = {};
+      type = attrsOf (
+        attrsOf (submodule {
+          freeformType = anything;
+        })
+      );
+      default = { };
     };
   };
   config.services.alloy.settings = {
@@ -76,22 +83,22 @@ in
       };
     };
     "loki.relabel".journal = {
-      forward_to = [];
+      forward_to = [ ];
       rule = [
         {
-          source_labels = map quote ["__journal__systemd_unit"];
-          target_label  = "unit";
+          source_labels = map quote [ "__journal__systemd_unit" ];
+          target_label = "unit";
         }
         {
-          source_labels = map quote ["__journal__systemd_priority"];
-          target_label  = "level";
+          source_labels = map quote [ "__journal__systemd_priority" ];
+          target_label = "level";
         }
       ];
     };
     "loki.source.journal".${config.networking.hostName} = {
       relabel_rules = "loki.relabel.journal.rules";
       max_age = "24h";
-      forward_to = ["loki.write.default.receiver"];
+      forward_to = [ "loki.write.default.receiver" ];
     };
     "prometheus.remote_write".default = {
       endpoint = {
@@ -103,23 +110,69 @@ in
       };
     };
     "prometheus.exporter.unix".${config.networking.hostName} = {
-      enable_collectors = map quote [ "boottime" "cpu" "loadavg" "meminfo" "vmstat" "filesystem" ];
+      enable_collectors = map quote [
+        "boottime"
+        "cpu"
+        "loadavg"
+        "meminfo"
+        "vmstat"
+        "filesystem"
+      ];
       disable_collectors = map quote [
-        "arp" "bcache" "bonding" "btrfs" "conntrack" "cpufreq" "diskstats" "dmi" "edac"
-        "entropy" "exec" "fibrechannel" "filfd" "hwmon" "infiniband" "ipvs" "mdadm"
-        "netclass" "netdev" "netisr" "netstat" "nfs" "nfsd" "nvme" "os" "powersupplyclass" "pressure"
-        "rapl" "schedstat" "sockstat" "softnet" "stat" "tapestats" "textfile" "thermal_zone" "thermal"
-        "time" "timex" "udp_queues" "uname" "xfs" "zfs"
+        "arp"
+        "bcache"
+        "bonding"
+        "btrfs"
+        "conntrack"
+        "cpufreq"
+        "diskstats"
+        "dmi"
+        "edac"
+        "entropy"
+        "exec"
+        "fibrechannel"
+        "filfd"
+        "hwmon"
+        "infiniband"
+        "ipvs"
+        "mdadm"
+        "netclass"
+        "netdev"
+        "netisr"
+        "netstat"
+        "nfs"
+        "nfsd"
+        "nvme"
+        "os"
+        "powersupplyclass"
+        "pressure"
+        "rapl"
+        "schedstat"
+        "sockstat"
+        "softnet"
+        "stat"
+        "tapestats"
+        "textfile"
+        "thermal_zone"
+        "thermal"
+        "time"
+        "timex"
+        "udp_queues"
+        "uname"
+        "xfs"
+        "zfs"
       ];
     };
     "prometheus.scrape".${config.networking.hostName} = {
       targets = "prometheus.exporter.unix.${config.networking.hostName}.targets";
-      forward_to = ["prometheus.remote_write.default.receiver"];
+      forward_to = [ "prometheus.remote_write.default.receiver" ];
     };
   };
 
   config.services.alloy.enable = true;
-  config.services.alloy.configPath = with config.services.alloy; pkgs.writeText "config.alloy" (parse settings);
+  config.services.alloy.configPath =
+    with config.services.alloy;
+    pkgs.writeText "config.alloy" (parse settings);
 
   # DynamicUser = true
   config.systemd.services.alloy.serviceConfig = {

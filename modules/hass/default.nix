@@ -1,5 +1,7 @@
 { config, ... }:
-let port = toString config.services.home-assistant.config.http.server_port; in
+let
+  port = toString config.services.home-assistant.config.http.server_port;
+in
 {
   imports = [
     ./default_config.nix
@@ -10,8 +12,7 @@ let port = toString config.services.home-assistant.config.http.server_port; in
     ./customComponents/midea_ac.nix
   ];
 
-  services.home-assistant =
-    {
+  services.home-assistant = {
     enable = true;
     openFirewall = false;
     extraComponents = [
