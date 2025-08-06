@@ -21,14 +21,14 @@
   services.nginx.virtualHosts."suwayomi.${config.networking.fqdn}" = {
     forceSSL = true;
     useACMEHost = config.networking.fqdn;
-    listenAddresses = [
-      "127.0.0.1"
-      "[::1]"
-
-      "192.168.1.2"
-      "10.1.2.2"
-      "[fd00:4845:7086:2::2]"
-    ];
+    # listenAddresses = [
+    #   "127.0.0.1"
+    #   "[::1]"
+    #
+    #   "192.168.1.2"
+    #   "10.1.2.2"
+    #   "[fd00:4845:7086:2::2]"
+    # ];
     extraConfig = ''
       proxy_buffering off;
     '';

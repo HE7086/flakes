@@ -22,12 +22,12 @@
   services.nginx.virtualHosts."transmission.${config.networking.fqdn}" = {
     forceSSL = true;
     useACMEHost = config.networking.fqdn;
-    listenAddresses = [
-      "127.0.0.1"
-      "[::1]"
-
-      "192.168.1.2"
-    ];
+    # listenAddresses = [
+    #   "127.0.0.1"
+    #   "[::1]"
+    #
+    #   "192.168.1.2"
+    # ];
     extraConfig = ''
       proxy_buffering off;
     '';
