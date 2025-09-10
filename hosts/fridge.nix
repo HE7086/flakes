@@ -19,6 +19,7 @@
     self.nixosModules.netbootxyz
     self.nixosModules.heon
     self.nixosModules.monitoring
+    self.nixosModules.tailscale
   ];
 
   disko.devices.disk.root.device = lib.mkForce "/dev/disk/by-id/nvme-eui.0024cf014c003c56";
