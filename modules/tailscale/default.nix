@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   services.tailscale = {
     package = pkgs.unstable.tailscale;
@@ -6,4 +6,7 @@
     useRoutingFeatures = "both";
     openFirewall = true;
   };
+  networking.firewall.trustedInterfaces = [
+    config.services.tailscale.interfaceName
+  ];
 }
