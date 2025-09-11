@@ -17,7 +17,6 @@
     self.nixosModules.download
     self.nixosModules.hass
     self.nixosModules.netbootxyz
-    self.nixosModules.heon
     self.nixosModules.monitoring
     self.nixosModules.tailscale
   ];
@@ -125,10 +124,10 @@
       rsyncd = false;
     };
   };
-  services.heon.client = {
-    enable = true;
-    section = 2;
-    token = 2;
-    publicKey = "Ry1T28Xmn9GnoSEOWjJqsw1gb9Moy59imbgjaPMOmCg=";
-  };
+  # services.heon.client = {
+  #   enable = true;
+  #   section = 2;
+  #   token = 2;
+  #   publicKey = "Ry1T28Xmn9GnoSEOWjJqsw1gb9Moy59imbgjaPMOmCg=";
+  # };
 }

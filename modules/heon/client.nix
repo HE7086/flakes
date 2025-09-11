@@ -74,30 +74,29 @@ in
         # table = "off";
         # dns = [ gateway ];
 
-        peers =
-          [
-            {
-              inherit (cfg.serverNode) name publicKey endpoint;
-              allowedIPs = (map (net.cidr.canonicalize) cfg.serverNode.allowedIPs) ++ [ "::/0" ];
-              persistentKeepalive = 25;
-            }
-          ]
-          ++ map (member: {
-            inherit (member) name publicKey endpoint;
-            allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 member.allowedIPs);
+        peers = [
+          {
+            inherit (cfg.serverNode) name publicKey endpoint;
+            allowedIPs = (map (net.cidr.canonicalize) cfg.serverNode.allowedIPs) ++ [ "::/0" ];
             persistentKeepalive = 25;
-          }) cfg.members
-          ++ (map (client: {
-            inherit (client) name publicKey allowedIPs;
-          }) (filter (client: client.section == cfgc.section) cfg.clients))
-          # floating clients
-          ++ (map (client: {
-            inherit (client) name publicKey;
-            allowedIPs = with client; [
-              (net.cidr.make 32 (net.cidr.host token f_subnet4))
-              (net.cidr.make 128 (net.cidr.host token f_subnet6))
-            ];
-          }) (filter (client: client.section == 1) cfg.clients));
+          }
+        ]
+        ++ map (member: {
+          inherit (member) name publicKey endpoint;
+          allowedIPs = map (net.cidr.canonicalize) (sublist 0 2 member.allowedIPs);
+          persistentKeepalive = 25;
+        }) cfg.members
+        ++ (map (client: {
+          inherit (client) name publicKey allowedIPs;
+        }) (filter (client: client.section == cfgc.section) cfg.clients))
+        # floating clients
+        ++ (map (client: {
+          inherit (client) name publicKey;
+          allowedIPs = with client; [
+            (net.cidr.make 32 (net.cidr.host token f_subnet4))
+            (net.cidr.make 128 (net.cidr.host token f_subnet6))
+          ];
+        }) (filter (client: client.section == 1) cfg.clients));
       };
       systemd.network.networks.${cfgc.interface} = {
         routes = [

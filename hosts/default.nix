@@ -19,7 +19,8 @@ let
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         self.nixosModules.baseSystem
-      ] ++ module;
+      ]
+      ++ module;
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;

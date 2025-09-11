@@ -10,7 +10,6 @@
     ./filesystems/btrfs-uefi-gpt-root.nix
     self.nixosModules.netbootxyz
     self.nixosModules.monitoring
-    self.nixosModules.heon
     self.nixosModules.tailscale
   ];
   disko.devices.disk.root.device = lib.mkForce "/dev/sda";
@@ -33,10 +32,10 @@
     firewall.enable = true;
   };
 
-  services.heon.client = {
-    enable = true;
-    section = 3;
-    token = 1;
-    publicKey = "jotrh61rV9hW1/5H+rzxWZNjzFZkIfFJOupmflA5jHQ=";
-  };
+  # services.heon.client = {
+  #   enable = true;
+  #   section = 3;
+  #   token = 1;
+  #   publicKey = "jotrh61rV9hW1/5H+rzxWZNjzFZkIfFJOupmflA5jHQ=";
+  # };
 }
