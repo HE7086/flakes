@@ -32,9 +32,10 @@ locals {
       }
       # MX = {}
       TXT = {
-        "_dmarc"                              = "\"v=DMARC1;  p=none; rua=mailto:49bd918599184cc9822dd895640ce3d4@dmarc-reports.cloudflare.net\""
         "_github-pages-challenge-he7086.blog" = "\"b7af5788718d4e4b2357532df01fb5\""
         "heyi7086.com"                        = "\"v=spf1 include:_spf.mx.cloudflare.net include:_spf.google.com ~all\""
+        "google._domainkey"                   = "\"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAynnk/Y4qx2xI1BR3R8f8N/XNd1Nla36PVOVnIbPViisGI6sPo5Qk1M8CpSedSCxBGfVYxt2q4u0qb8ZHTcbfeRfJcinnEQpLQm75frEe3JFSn0o8AFBRzZ5e22mzT/8P+DV9PZSeUCJ84XsGUEiCOpkFD49RsvWTbCoPuso72ImGY7X6Zo5vOV5tM2fstY3v2\" \"4caiXLj+56vhvR0MRIHHtoLPV9H6A+EyhPTb0hHLyemmmxXXipZ1fRgO/cAOM813klctQaL9NmJDkcTvVXQqcEnWcFRMg5Z7aY5rmhhTFw750WhdNs5jGIPTANTaxGW1f2j7TDPSiSmaXEd+P4ErQIDAQAB\""
+        "_dmarc"                              = "\"v=DMARC1;  p=reject; rua=mailto:report@heyi7086.com; pct=100; adkim=s; aspf=s\""
       }
     }
   }

@@ -7,8 +7,8 @@ provider "oci" {
 }
 
 module "oci" {
-  source = "./modules/oci"
-  tenancy = local.secrets.oci.tenancy
-  vnic = local.secrets.oci.vnic
+  source              = "./modules/oci"
+  tenancy             = local.secrets.oci.tenancy
+  vnic                = local.secrets.oci.vnic
   availability_domain = local.secrets.oci.availability_domain
 }
